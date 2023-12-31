@@ -42,8 +42,8 @@ public class Location {
     @Column
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    private Date creationTime;
+    private Date creationAt;
 
     @Column(columnDefinition = "boolean default true")
-    private boolean isOperating = true;
+    private boolean isOperational = true;
 }
