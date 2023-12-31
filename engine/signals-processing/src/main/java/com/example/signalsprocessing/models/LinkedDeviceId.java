@@ -5,6 +5,7 @@ import jakarta.persistence.Embeddable;
 @Embeddable
 public class LinkedDeviceId {
     private Long firstDeviceId;
+    private Long secondDeviceId;
 
     LinkedDeviceId(Long firstDeviceId, Long secondDeviceId) {
         this.firstDeviceId = firstDeviceId;
@@ -27,5 +28,4 @@ public class LinkedDeviceId {
         this.secondDeviceId = secondDeviceId;
     }
 
-    private Long secondDeviceId;
 }
