@@ -1,13 +1,13 @@
-package com.example.signalsprocessing;
+package com.signalsprocessing.engine;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SignalsProcessingApplication {
+public class EngineApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SignalsProcessingApplication.class, args);
+		SpringApplication.run(EngineApplication.class, args);
 	}
 
 }

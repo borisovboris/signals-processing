@@ -1,4 +1,4 @@
-package com.example.signalsprocessing.models;
+package com.signalsprocessing.engine.models;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.EmbeddedId;
@@ -7,15 +7,15 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 
 @Entity
-public class LinkedDevice {
+public class EventDevice {
     @EmbeddedId
-    private LinkedDeviceId id;
+    private EventDeviceId id;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @MapsId("firstDeviceId")
-    private Device firstDevice;
+    @MapsId("eventId")
+    private Event event;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @MapsId("secondDeviceId")
-    private Device secondDevice;
+    @MapsId("deviceId")
+    private Device device;
 }

@@ -1,7 +1,6 @@
-package com.example.signalsprocessing.models;
+package com.signalsprocessing.engine.models;
 
 import java.util.Date;
-
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
@@ -15,23 +14,28 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
-public class Device {
+public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 255)
-    private String code;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "event_type_id", nullable = false)
+    private EventType type;
 
-    @Column(nullable = false, unique = true, length = 255)
-    private String name;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "signal_id", nullable = false)
+    private Signal signal;
 
-    @ManyToOne()
-    @JoinColumn(name = "status_id")
-    private DeviceStatus status;
+    @Column(columnDefinition = "boolean default false")
+    private boolean manualInsert = false;
 
-    @Column
+    @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE")
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationAt;
+
+    @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date eventCreationAt;
 }

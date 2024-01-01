@@ -1,4 +1,4 @@
-package com.example.signalsprocessing.models;
+package com.signalsprocessing.engine.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

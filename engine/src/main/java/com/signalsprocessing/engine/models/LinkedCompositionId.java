@@ -1,4 +1,4 @@
-package com.example.signalsprocessing.models;
+package com.signalsprocessing.engine.models;
 
 public class LinkedCompositionId {
     private Long firstCompositionId;

@@ -8,10 +8,10 @@
 		<version>3.2.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
-	<artifactId>signals-processing</artifactId>
+	<groupId>com.signals-processing</groupId>
+	<artifactId>engine</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>signals-processing</name>
+	<name>engine</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>

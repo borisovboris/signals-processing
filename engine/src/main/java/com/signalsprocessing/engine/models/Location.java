@@ -1,4 +1,4 @@
-package com.example.signalsprocessing.models;
+package com.signalsprocessing.engine.models;
 
 import java.util.Date;
 
@@ -15,21 +15,35 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
-public class DeviceStatusRecord {
+public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "device_id", nullable = false)
-    private Device device;
+    @Column(nullable = false, length = 255)
+    private String code;
+
+    @Column(nullable = false, length = 255)
+    private String name;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "status_id", nullable = false)
-    private DeviceStatus status;
+    @JoinColumn(name = "city_id", nullable = false)
+    private City city;
+
+    @Column(nullable = false, length = 255)
+    private String address;
+
+    @Column(length = 255)
+    private String coordinates;
+
+    @Column(length = 255)
+    private String description;
 
     @Column
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationAt;
+
+    @Column(columnDefinition = "boolean default true")
+    private boolean isOperational = true;
 }

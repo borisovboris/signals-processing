@@ -1,11 +1,11 @@
-package com.example.signalsprocessing.signals;
+package com.signalsprocessing.engine.signals;
 
 import java.util.List;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
-import com.example.signalsprocessing.models.Signal;
+import com.signalsprocessing.engine.models.Signal;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;

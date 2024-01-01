@@ -1,4 +1,4 @@
-package com.example.signalsprocessing.models;
+package com.signalsprocessing.engine.models;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.EmbeddedId;

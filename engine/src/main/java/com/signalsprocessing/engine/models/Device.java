@@ -1,4 +1,4 @@
-package com.example.signalsprocessing.models;
+package com.signalsprocessing.engine.models;
 
 import java.util.Date;
 
@@ -15,7 +15,7 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
-public class Composition {
+public class Device {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,23 +23,12 @@ public class Composition {
     @Column(nullable = false, unique = true, length = 255)
     private String code;
 
-    @Column(length = 255)
-    private String coordinates;
+    @Column(nullable = false, unique = true, length = 255)
+    private String name;
 
-    @Column(length = 255)
-    private String description;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "type_id", nullable = false)
-    private CompositionType type;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "status_id", nullable = false)
-    private CompositionStatus status;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "location_id", nullable = false)
-    private Location location;
+    @ManyToOne()
+    @JoinColumn(name = "status_id")
+    private DeviceStatus status;
 
     @Column
     @CreationTimestamp

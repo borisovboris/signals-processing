@@ -1,4 +1,4 @@
-package com.example.signalsprocessing.models;
+package com.signalsprocessing.engine.models;
 
 import java.util.Date;
 
@@ -15,23 +15,13 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
-public class Location {
+public class Composition {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, unique = true, length = 255)
     private String code;
-
-    @Column(nullable = false, length = 255)
-    private String name;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "city_id", nullable = false)
-    private City city;
-
-    @Column(nullable = false, length = 255)
-    private String address;
 
     @Column(length = 255)
     private String coordinates;
@@ -39,11 +29,20 @@ public class Location {
     @Column(length = 255)
     private String description;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "type_id", nullable = false)
+    private CompositionType type;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "status_id", nullable = false)
+    private CompositionStatus status;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "location_id", nullable = false)
+    private Location location;
+
     @Column
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationAt;
-
-    @Column(columnDefinition = "boolean default true")
-    private boolean isOperational = true;
 }

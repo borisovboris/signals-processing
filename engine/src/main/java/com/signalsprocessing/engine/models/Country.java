@@ -1,13 +1,17 @@
-package com.example.signalsprocessing.models;
+package com.signalsprocessing.engine.models;
 
+import java.util.Set;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
-public class CompositionStatus {
+public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -15,12 +19,6 @@ public class CompositionStatus {
     @Column(nullable = false, unique = true, length = 255)
     private String name;
 
-    @Column(columnDefinition = "boolean default true")
-    private boolean isOperational = true;
-
-    @Column(columnDefinition = "boolean default true")
-    private boolean isBroken = false;
-
-    @Column(columnDefinition = "boolean default true")
-    private boolean inMaintenance = false;
+    @OneToMany(mappedBy="country", cascade = CascadeType.ALL)
+    private Set<City> cities;
 }

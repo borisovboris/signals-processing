@@ -1,4 +1,4 @@
-package com.example.signalsprocessing.signals;
+package com.signalsprocessing.engine.signals;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.context.annotation.ComponentScan;
