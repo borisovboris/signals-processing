@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "generate:api": "npx openapi-generator generate -g typescript-angular -i http://localhost:8080/v3/api-docs -o ./build/openapi",
+    "generate:api": "openapi-generator-cli generate -i http://localhost:8080/v3/api-docs -g typescript-angular -o generated-sources/openapi",
     "prestart": "npm run generate:api",
     "start": "ng serve",
     "build": "ng build",
@@ -28,6 +28,7 @@
     "@angular-devkit/build-angular": "^17.0.8",
     "@angular/cli": "^17.0.8",
     "@angular/compiler-cli": "^17.0.0",
+    "@openapitools/openapi-generator-cli": "^2.7.0",
     "@types/jasmine": "~5.1.0",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
