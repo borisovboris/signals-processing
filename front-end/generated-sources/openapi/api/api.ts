@@ -1,3 +1,3 @@
-export * from './signalsController.service';
-import { SignalsControllerService } from './signalsController.service';
-export const APIS = [SignalsControllerService];
+export * from './signals.service';
+import { SignalsService } from './signals.service';
+export const APIS = [SignalsService];

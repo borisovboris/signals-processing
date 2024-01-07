@@ -2,11 +2,12 @@
 README.md
 api.module.ts
 api/api.ts
-api/signalsController.service.ts
+api/signals.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
 index.ts
 model/models.ts
+model/signalDTO.ts
 param.ts
 variables.ts
