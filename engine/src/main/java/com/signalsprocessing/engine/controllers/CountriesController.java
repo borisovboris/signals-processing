@@ -13,7 +13,7 @@ import org.springframework.http.MediaType;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@RequestMapping(name = "/api/countries/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(name = "/api/countries/", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "countries")
 @RestController
 public class CountriesController {

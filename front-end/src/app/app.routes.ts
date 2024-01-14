@@ -1,11 +1,9 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { LocationsComponent } from './locations/locations.component';
-import { DevicesComponent } from './devices/devices.component';
-import { EventsComponent } from './events/events.component';
 import { AppRoute } from './routing/routing.model';
 import { provideState } from '@ngrx/store';
 import { countryReducer } from './store/country/country.reducer';
+import { provideEffects } from '@ngrx/effects';
+import { CountryEffects } from './store/country/country.effects';
 
 export const routes: Routes = [
   {
@@ -26,6 +24,7 @@ export const routes: Routes = [
       ),
     providers: [
       provideState({ name: 'countryState', reducer: countryReducer }),
+      provideEffects([CountryEffects]),
     ],
   },
   {

@@ -1,9 +1,6 @@
-import { createSelector } from '@ngrx/store';
-import { AppState } from '../state';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { AppState, CountryState } from '../state';
 
-export const selectFeature = (state: AppState) => state.country;
+export const feature = createFeatureSelector<CountryState>('countryState');
 
-export const selectFeatureCount = createSelector(
-  selectFeature,
-  (state) => state.countries
-);
+export const countries = createSelector(feature, (state) => state.countries);
