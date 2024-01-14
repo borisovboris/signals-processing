@@ -3,28 +3,35 @@ import { HomeComponent } from './home/home.component';
 import { LocationsComponent } from './locations/locations.component';
 import { DevicesComponent } from './devices/devices.component';
 import { EventsComponent } from './events/events.component';
+import { AppRoute } from './routing/routing.model';
 
 export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'home',
+    redirectTo: AppRoute.HOME,
   },
   {
-    path: 'home',
-    component: HomeComponent,
+    path: AppRoute.HOME,
+    loadComponent: () =>
+      import('./home/home.component').then((mod) => mod.HomeComponent),
   },
   {
-    path: 'locations',
-    component: LocationsComponent,
+    path: AppRoute.LOCATIONS,
+    loadComponent: () =>
+      import('./locations/locations.component').then(
+        (mod) => mod.LocationsComponent
+      ),
   },
   {
-    path: 'devices',
-    component: DevicesComponent,
+    path: AppRoute.DEVICES,
+    loadComponent: () =>
+      import('./devices/devices.component').then((mod) => mod.DevicesComponent),
   },
   {
-    path: 'events',
-    component: EventsComponent,
+    path: AppRoute.EVENTS,
+    loadComponent: () =>
+      import('./events/events.component').then((mod) => mod.EventsComponent),
   },
   {
     path: '**',

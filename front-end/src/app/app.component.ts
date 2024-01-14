@@ -9,12 +9,12 @@ import {
 import { SignalsService } from '../../generated-sources/openapi';
 import { HttpClient } from '@angular/common/http';
 import { MaterialModule } from './material/material.module';
-import { ROUTE, isRoute } from './routing/routing.model';
+import { AppRoute, isRoute } from './routing/routing.model';
 import { filter, take } from 'rxjs/operators';
 
-export interface AppRoute {
+export interface LabeledRoute {
   label: string;
-  path: ROUTE;
+  path: AppRoute;
 }
 
 @Component({
@@ -25,26 +25,26 @@ export interface AppRoute {
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  links: AppRoute[] = [
+  links: LabeledRoute[] = [
     {
       label: 'Home',
-      path: ROUTE.HOME,
+      path: AppRoute.HOME,
     },
     {
       label: 'Locations',
-      path: ROUTE.LOCATIONS,
+      path: AppRoute.LOCATIONS,
     },
     {
       label: 'Devices',
-      path: ROUTE.DEVICES,
+      path: AppRoute.DEVICES,
     },
     {
       label: 'Events',
-      path: ROUTE.EVENTS,
+      path: AppRoute.EVENTS,
     },
   ];
 
-  activeLink: ROUTE = this.links[0].path;
+  activeLink: AppRoute = this.links[0].path;
 
   title = 'signals-processing';
 
@@ -58,8 +58,12 @@ export class AppComponent implements OnInit {
     // Get the active path from the URL, the first time AppComponent is loaded.
     // We need the active path in order to set which nav tab is currently active.
     this.router.events.pipe(filter(event => event instanceof NavigationEnd), take(1)).subscribe((event) => {
-      if (event instanceof NavigationEnd && isRoute(event.url)) {
-        this.activeLink = event.url;
+      if (event instanceof NavigationEnd) {
+        const path = event.url.replaceAll('/', '');
+
+        if(isRoute(path)) {
+          this.activeLink = path;
+        }
       }
     });
 
