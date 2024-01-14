@@ -1,6 +1,5 @@
+@import 'page';
+
 :host {
-    padding-top: 68px;
-    display: inline-block;
-    width: inherit;
-    height: inherit;
+ @include page;
 }

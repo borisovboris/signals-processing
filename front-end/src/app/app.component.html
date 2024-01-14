@@ -1,10 +1,16 @@
 <div class="navbar mat-elevation-z2">
-  <mat-tab-group>
-    <mat-tab label="Home"> </mat-tab>
-    <mat-tab label="Locations"> </mat-tab>
-    <mat-tab label="Devices"> </mat-tab>
-    <mat-tab label="Events"> </mat-tab>
-  </mat-tab-group>
+  <nav mat-tab-nav-bar [tabPanel]="tabPanel">
+    @for (link of links; track link.path) {
+      <a mat-tab-link
+        [routerLink]="link.path"
+        (click)="activeLink = link.path"
+        [active]="activeLink == link.path"> {{link.label}} </a>
+    }
+    <a mat-tab-link disabled>Disabled Link</a>
+  </nav>
 </div>
 
-<router-outlet></router-outlet>
+<mat-tab-nav-panel #tabPanel>
+  <router-outlet></router-outlet>
+</mat-tab-nav-panel>
+
