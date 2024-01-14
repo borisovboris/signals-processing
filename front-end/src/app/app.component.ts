@@ -1,14 +1,19 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { MatTabsModule } from '@angular/material/tabs';
 import { SignalsService } from '../../generated-sources/openapi';
 import { HttpClient } from '@angular/common/http';
+import { MaterialModule } from './material/material.module';
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, MatTabsModule],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    MaterialModule,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
