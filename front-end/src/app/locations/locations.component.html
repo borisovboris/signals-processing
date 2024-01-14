@@ -1,2 +1,11 @@
-{{ countries$ | async | json}}
-
+<div class="wrapper">
+  <mat-card>
+    <ng-container *ngFor="let country of countries$ | async">
+        <div class="country-wrapper" >
+            <div class="country mat-elevation-z2" >
+                <p> {{ country.name }} </p>
+            </div>
+        </div>
+    </ng-container>
+  </mat-card>
+</div>

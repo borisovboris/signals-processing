@@ -4,11 +4,12 @@ import { AppState } from '../store/state';
 import { countries } from '../store/country/country.selectors';
 import { CountryActions } from '../store/country/country.actions';
 import { CommonModule } from '@angular/common';
+import { MaterialModule } from '../material/material.module';
 
 @Component({
   selector: 'app-locations',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MaterialModule],
   templateUrl: './locations.component.html',
   styleUrl: './locations.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
