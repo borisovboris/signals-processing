@@ -1,13 +1,14 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.module.ts
 api/api.ts
+api/countries.service.ts
 api/signals.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/countryDTO.ts
 model/models.ts
 model/signalDTO.ts
 param.ts

@@ -1,4 +1,4 @@
-package com.signalsprocessing.engine.signals;
+package com.signalsprocessing.engine.services;
 
 import java.util.List;
 

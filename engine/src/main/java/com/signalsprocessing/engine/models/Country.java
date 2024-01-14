@@ -17,8 +17,8 @@ public class Country {
     private Long id;
 
     @Column(nullable = false, unique = true, length = 255)
-    private String name;
+    public String name;
 
     @OneToMany(mappedBy="country", cascade = CascadeType.ALL)
-    private Set<City> cities;
+    public Set<City> cities;
 }
