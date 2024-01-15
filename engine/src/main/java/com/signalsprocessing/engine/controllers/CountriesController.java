@@ -1,7 +1,9 @@
 package com.signalsprocessing.engine.controllers;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.signalsprocessing.engine.services.CountryService;
@@ -27,5 +29,11 @@ public class CountriesController {
     @GetMapping("read-countries")
     public List<CountryDTO> readCountries() {
         return service.getCountries();
+    }
+
+    @GetMapping("read-countries-with-offset/{id}")
+    @ResponseBody
+    public List<CountryDTO> readCountriesWithOffset(@PathVariable("id") Long id) {
+        return service.getCountriesWithOffset(id);
     }
 }

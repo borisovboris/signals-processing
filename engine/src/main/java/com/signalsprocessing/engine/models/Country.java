@@ -14,7 +14,7 @@ import jakarta.persistence.OneToMany;
 public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    public Long id;
 
     @Column(nullable = false, unique = true, length = 255)
     public String name;

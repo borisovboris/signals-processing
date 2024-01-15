@@ -11,5 +11,15 @@ export const countryReducer = createReducer(
   on(CountryActions.countriesFetched, (state, { countries }) => ({
     ...state,
     countries,
-  }))
+  })),
+  on(CountryActions.additionalCountriesFetched, (state, { countries }) => {
+    const currentCountries = state.countries.map((country) => country.id);
+    const countriesToAdd = countries.filter(
+      (c) => !currentCountries.includes(c.id)
+    );
+
+    const finalCountries = [...state.countries, ...countriesToAdd];
+
+    return { ...state, countries: finalCountries };
+  })
 );

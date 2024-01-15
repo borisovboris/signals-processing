@@ -9,27 +9,45 @@ import com.signalsprocessing.engine.models.Country;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import jakarta.validation.constraints.NotNull;
 
 @Component
 @ComponentScan
 public class CountryService {
     private EntityManager entityManager;
+    private static final int LIMIT = 25;
 
     public CountryService(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
     public List<CountryDTO> getCountries() {
-        TypedQuery<Country> query = entityManager.createQuery("SELECT c from Country c", Country.class);
+        TypedQuery<Country> query = entityManager
+                .createQuery("SELECT c from Country c", Country.class)
+                .setMaxResults(CountryService.LIMIT);
         List<CountryDTO> list = query
                 .getResultList()
                 .stream()
-                .map(entity -> new CountryDTO(entity.name))
+                .map(entity -> new CountryDTO(entity.id, entity.name))
                 .toList();
 
         return list;
     }
 
-    public record CountryDTO(String name) {
+    public List<CountryDTO> getCountriesWithOffset(Long minId) {
+        TypedQuery<Country> query = entityManager
+                .createQuery("SELECT c from Country c WHERE c.id > :minId", Country.class)
+                .setParameter("minId", minId)
+                .setMaxResults(CountryService.LIMIT);
+        List<CountryDTO> list = query
+                .getResultList()
+                .stream()
+                .map(entity -> new CountryDTO(entity.id, entity.name))
+                .toList();
+
+        return list;
+    }
+
+    public record CountryDTO(@NotNull long id, @NotNull String name) {
     }
 }
