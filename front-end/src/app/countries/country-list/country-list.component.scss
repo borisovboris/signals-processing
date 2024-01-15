@@ -13,7 +13,7 @@
 
 mat-card {
   padding: 30px 0;
-  background-color: map.get($primary, 100);
+  background-color: map.get($primary, 50);
 
   height: 100%;
   overflow-y: hidden;
@@ -25,7 +25,7 @@ mat-card {
 
   .country {
     padding: 10px 0;
-    background-color: map.get($primary, 50);
+    background-color: #ffffff;
     display: flex;
     justify-content: center;
     border-radius: 20px;

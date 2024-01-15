@@ -8,6 +8,7 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/citiesDTO.ts
 model/cityDTO.ts
 model/countryDTO.ts
 model/models.ts

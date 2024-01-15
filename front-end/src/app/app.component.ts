@@ -59,7 +59,7 @@ export class AppComponent implements OnInit {
     // We need the active path in order to set which nav tab is currently active.
     this.router.events.pipe(filter(event => event instanceof NavigationEnd), take(1)).subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        const path = event.url.replaceAll('/', '');
+        const path = event.url.split('/')[1];
 
         if(isRoute(path)) {
           this.activeLink = path;

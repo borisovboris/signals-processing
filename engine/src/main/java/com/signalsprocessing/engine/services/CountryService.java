@@ -22,6 +22,14 @@ public class CountryService {
         this.entityManager = entityManager;
     }
 
+    public CountryDTO getCountry(long id) {
+        TypedQuery<Country> query = entityManager
+                .createQuery("SELECT c from Country c WHERE c.id = :id", Country.class).setParameter("id", id);
+        Country country = query.getSingleResult();
+
+        return new CountryDTO(country.id, country.name);
+    }
+
     public List<CountryDTO> getCountries() {
         TypedQuery<Country> query = entityManager
                 .createQuery("SELECT c from Country c", Country.class)
@@ -49,7 +57,9 @@ public class CountryService {
         return list;
     }
 
-    public List<CityDTO> getCitiesOfCountry(long countryId) {
+    public CitiesDTO getCitiesOfCountry(long countryId) {
+        CountryDTO country = getCountry(countryId);
+
         TypedQuery<City> query = entityManager
                 .createQuery("SELECT c from City c WHERE c.country.id = :countryId", City.class)
                 .setParameter("countryId", countryId)
@@ -60,12 +70,15 @@ public class CountryService {
                 .map(entity -> new CityDTO(entity.id, entity.name, entity.postalCode))
                 .toList();
 
-        return list;
+        return new CitiesDTO(country, list);
     }
 
     public record CountryDTO(@NotNull long id, @NotNull String name) {
     }
 
     public record CityDTO(@NotNull long id, @NotNull String name, @NotNull String postalCode) {
+    }
+
+    public record CitiesDTO(@NotNull CountryDTO country, @NotNull List<CityDTO> cities) {
     }
 }

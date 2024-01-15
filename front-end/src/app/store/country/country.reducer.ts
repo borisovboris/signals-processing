@@ -21,5 +21,8 @@ export const countryReducer = createReducer(
     const finalCountries = [...state.countries, ...countriesToAdd];
 
     return { ...state, countries: finalCountries };
-  })
+  }),
+  on(CountryActions.citiesOfCountryFetched, (state, { cities }) => {
+    return { ...state, cities };
+  }),
 );

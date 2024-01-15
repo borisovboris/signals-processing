@@ -50,14 +50,12 @@ export class CountryEffects {
       this.actions$.pipe(
         ofType(CountryActions.getCitiesOfCountry),
         switchMap(({ countryId }) =>
-          this.countriesService
-            .readCities(countryId)
-            .pipe(
-              catchError(() => EMPTY)
-            )
+          this.countriesService.readCities(countryId).pipe(
+            map((cities) => CountryActions.citiesOfCountryFetched({ cities })),
+            catchError(() => EMPTY)
+          )
         )
       ),
-    { dispatch: false }
   );
 
   constructor(
