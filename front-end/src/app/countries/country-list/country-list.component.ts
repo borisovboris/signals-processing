@@ -59,6 +59,6 @@ export class CountryListComponent implements OnInit {
   }
 
   goToDetails(id: number) {
-    this.router.navigate([`details`], { relativeTo: this.route });
+    this.router.navigate([`details`], { relativeTo: this.route, queryParams: { id } });
   }
 }

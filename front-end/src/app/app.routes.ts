@@ -27,8 +27,8 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./events/events.component').then((mod) => mod.EventsComponent),
   },
-  // {
-  //   path: '**',
-  //   redirectTo: 'home',
-  // },
+  {
+    path: '**',
+    redirectTo: 'home',
+  },
 ];
