@@ -1,9 +1,5 @@
 import { Routes } from '@angular/router';
 import { AppRoute } from './routing/routing.model';
-import { provideState } from '@ngrx/store';
-import { countryReducer } from './store/country/country.reducer';
-import { provideEffects } from '@ngrx/effects';
-import { CountryEffects } from './store/country/country.effects';
 
 export const routes: Routes = [
   {
@@ -18,14 +14,8 @@ export const routes: Routes = [
   },
   {
     path: AppRoute.COUNTRIES,
-    loadComponent: () =>
-      import('./countries/countries.component').then(
-        (mod) => mod.CountriesComponent
-      ),
-    providers: [
-      provideState({ name: 'countryState', reducer: countryReducer }),
-      provideEffects([CountryEffects]),
-    ],
+    loadChildren: () =>
+      import('./countries/routes').then((mod) => mod.COUNTRIES_ROUTES),
   },
   {
     path: AppRoute.DEVICES,
@@ -37,8 +27,8 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./events/events.component').then((mod) => mod.EventsComponent),
   },
-  {
-    path: '**',
-    redirectTo: 'home',
-  },
+  // {
+  //   path: '**',
+  //   redirectTo: 'home',
+  // },
 ];
