@@ -17,14 +17,14 @@ import {
 import { Subject, debounceTime } from 'rxjs';
 
 @Component({
-  selector: 'app-locations',
+  selector: 'app-countries',
   standalone: true,
   imports: [CommonModule, MaterialModule, ScrollingModule],
-  templateUrl: './locations.component.html',
-  styleUrl: './locations.component.scss',
+  templateUrl: './countries.component.html',
+  styleUrl: './countries.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LocationsComponent implements OnInit {
+export class CountriesComponent implements OnInit {
   @ViewChild(CdkVirtualScrollViewport)
   viewport!: CdkVirtualScrollViewport;
   private scrolled$ = new Subject<void>();

@@ -17,10 +17,10 @@ export const routes: Routes = [
       import('./home/home.component').then((mod) => mod.HomeComponent),
   },
   {
-    path: AppRoute.LOCATIONS,
+    path: AppRoute.COUNTRIES,
     loadComponent: () =>
-      import('./locations/locations.component').then(
-        (mod) => mod.LocationsComponent
+      import('./countries/countries.component').then(
+        (mod) => mod.CountriesComponent
       ),
     providers: [
       provideState({ name: 'countryState', reducer: countryReducer }),
