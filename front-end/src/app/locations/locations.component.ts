@@ -5,11 +5,12 @@ import { countries } from '../store/country/country.selectors';
 import { CountryActions } from '../store/country/country.actions';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../material/material.module';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-locations',
   standalone: true,
-  imports: [CommonModule, MaterialModule],
+  imports: [CommonModule, MaterialModule, ScrollingModule],
   templateUrl: './locations.component.html',
   styleUrl: './locations.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
