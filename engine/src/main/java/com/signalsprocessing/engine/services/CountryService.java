@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
+import com.signalsprocessing.engine.models.City;
 import com.signalsprocessing.engine.models.Country;
 
 import jakarta.persistence.EntityManager;
@@ -34,7 +35,7 @@ public class CountryService {
         return list;
     }
 
-    public List<CountryDTO> getCountriesWithOffset(Long minId) {
+    public List<CountryDTO> getCountriesWithOffset(long minId) {
         TypedQuery<Country> query = entityManager
                 .createQuery("SELECT c from Country c WHERE c.id > :minId", Country.class)
                 .setParameter("minId", minId)
@@ -48,6 +49,23 @@ public class CountryService {
         return list;
     }
 
+    public List<CityDTO> getCitiesOfCountry(long countryId) {
+        TypedQuery<City> query = entityManager
+                .createQuery("SELECT c from City c WHERE c.country.id = :countryId", City.class)
+                .setParameter("countryId", countryId)
+                .setMaxResults(CountryService.LIMIT);
+        List<CityDTO> list = query
+                .getResultList()
+                .stream()
+                .map(entity -> new CityDTO(entity.id, entity.name, entity.postalCode))
+                .toList();
+
+        return list;
+    }
+
     public record CountryDTO(@NotNull long id, @NotNull String name) {
+    }
+
+    public record CityDTO(@NotNull long id, @NotNull String name, @NotNull String postalCode) {
     }
 }

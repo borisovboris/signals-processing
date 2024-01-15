@@ -16,18 +16,18 @@ import jakarta.persistence.OneToMany;
 public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    public Long id;
 
     @Column(nullable = false, unique = true, length = 16)
-    private String postalCode;
+    public String postalCode;
 
     @Column(nullable = false, unique = true, length = 255)
-    private String name;
+    public String name;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "country_id", nullable = false)
-    private Country country;
+    public Country country;
 
     @OneToMany(mappedBy="city", cascade = CascadeType.ALL)
-    private Set<Location> locations;
+    public Set<Location> locations;
 }

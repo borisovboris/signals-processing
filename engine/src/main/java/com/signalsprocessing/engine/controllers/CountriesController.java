@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.signalsprocessing.engine.services.CountryService;
+import com.signalsprocessing.engine.services.CountryService.CityDTO;
 import com.signalsprocessing.engine.services.CountryService.CountryDTO;
 
 import java.util.List;
@@ -35,5 +36,11 @@ public class CountriesController {
     @ResponseBody
     public List<CountryDTO> readCountriesWithOffset(@PathVariable("id") Long id) {
         return service.getCountriesWithOffset(id);
+    }
+
+    @GetMapping("read-cities/{id}")
+    @ResponseBody
+    public List<CityDTO> readCities(@PathVariable("id") Long id) {
+        return service.getCitiesOfCountry(id);
     }
 }

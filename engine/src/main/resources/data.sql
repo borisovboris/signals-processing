@@ -5,7 +5,7 @@ INSERT INTO country (name) VALUES ('Italy');
 INSERT INTO country (name) VALUES ('Belarus');
 INSERT INTO country (name) VALUES ('Belgium');
 INSERT INTO country (name) VALUES ('Germany');
-INSERT INTO country (name) VALUES ('Bulgaria');
+INSERT INTO country (id, name) VALUES (681, 'Bulgaria');
 INSERT INTO country (name) VALUES ('China');
 INSERT INTO country (name) VALUES ('Canada');
 INSERT INTO country (name) VALUES ('Columbia');
@@ -39,3 +39,19 @@ INSERT INTO country (name) VALUES ('Slovenia');
 INSERT INTO country (name) VALUES ('South Africa');
 INSERT INTO country (name) VALUES ('South Sudan');
 INSERT INTO country (name) VALUES ('Spain');
+
+INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Lovech', 5500);
+INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Sofia', 1000);
+INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Plovdiv', 2000);
+INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Stara Zagora', 3000);
+INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Varna', 4000);
+INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Burgas', 5000);
+INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Bansko', 6000);
+INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Troyan', 7000);
+INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Pleven', 8000);
+INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Montana', 9000);
+INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Vidin', 10000);
+INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Vraca', 11000);
+
+
+

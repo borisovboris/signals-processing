@@ -8,5 +8,6 @@ export const CountryActions = createActionGroup({
     'Get Countries With Offset': props<any>(),
     'Countries Fetched': props<{ countries: CountryDTO[] }>(),
     'Additional Countries Fetched': props<{ countries: CountryDTO[] }>(),
+    'Get Cities Of Country': props<{ countryId: number }>(),
   },
 });
