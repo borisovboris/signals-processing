@@ -4,11 +4,13 @@ import { Store } from '@ngrx/store';
 import { CountryActions } from '../../store/country/country.actions';
 import { cities } from '../../store/country/country.selectors';
 import { CommonModule } from '@angular/common';
+import { MaterialModule } from '../../material/material.module';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-country-details',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MaterialModule, ScrollingModule],
   templateUrl: './country-details.component.html',
   styleUrl: './country-details.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
