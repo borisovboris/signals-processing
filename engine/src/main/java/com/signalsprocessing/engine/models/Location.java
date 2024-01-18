@@ -3,6 +3,7 @@ package com.signalsprocessing.engine.models;
 import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SourceType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,32 +19,30 @@ import jakarta.persistence.TemporalType;
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    public Long id;
 
     @Column(nullable = false, length = 255)
-    private String code;
+    public String code;
 
     @Column(nullable = false, length = 255)
-    private String name;
+    public String name;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "city_id", nullable = false)
-    private City city;
+    public City city;
 
     @Column(nullable = false, length = 255)
-    private String address;
+    public String address;
 
     @Column(length = 255)
-    private String coordinates;
+    public String coordinates;
 
     @Column(length = 255)
-    private String description;
+    public String description;
 
-    @Column
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date creationAt;
+    @Column(insertable = false, updatable = false, nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    public Date creationAt;
 
     @Column(columnDefinition = "boolean default true")
-    private boolean isOperational = true;
+    public boolean isOperational = true;
 }

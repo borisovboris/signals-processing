@@ -1,22 +1,22 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { CountryActions } from '../../store/country/country.actions';
-import { cities } from '../../store/country/country.selectors';
+import { locations } from '../../store/country/country.selectors';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../material/material.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @Component({
-  selector: 'app-country-details',
+  selector: 'app-city-details',
   standalone: true,
   imports: [CommonModule, MaterialModule, ScrollingModule],
-  templateUrl: './country-details.component.html',
-  styleUrl: './country-details.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './city-details.component.html',
+  styleUrl: './city-details.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CountryDetailsComponent implements OnInit {
-  cities$ = this.store.select(cities);
+export class CityDetailsComponent {
+  locations$ = this.store.select(locations);
 
   constructor(
     private readonly store: Store,
@@ -24,15 +24,12 @@ export class CountryDetailsComponent implements OnInit {
     private readonly route: ActivatedRoute,
   ) {}
 
+
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       const id = params['id'];
 
-      this.store.dispatch(CountryActions.getCitiesOfCountry({ countryId: id }));
+      this.store.dispatch(CountryActions.getLocations({ cityId: id }));
     });
-  }
-
-  goToCity(id: number) {
-    this.router.navigate([`/countries/city`], { queryParams: { id } });
   }
 }

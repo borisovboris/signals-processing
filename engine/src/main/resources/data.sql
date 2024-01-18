@@ -41,7 +41,7 @@ INSERT INTO country (name) VALUES ('South Sudan');
 INSERT INTO country (name) VALUES ('Spain');
 
 INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Lovech', 5500);
-INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Sofia', 1000);
+INSERT INTO city (id, country_id, name, postal_code) VALUES (1700, 681, 'Sofia', 1000);
 INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Plovdiv', 2000);
 INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Stara Zagora', 3000);
 INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Varna', 4000);
@@ -52,6 +52,13 @@ INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Pleven', 8000);
 INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Montana', 9000);
 INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Vidin', 10000);
 INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Vraca', 11000);
+
+INSERT INTO location (city_id, code, name, address, coordinates, description) 
+VALUES (1700, 'BLOK_59_A', 'Blok 59 A', 'ul. "Professor Kiril Popov"', '42.64292808523189, 23.338815289344673', 'A place so majestic, you''d be lucky to live there');
+INSERT INTO location (city_id, code, name, address, coordinates, description) 
+VALUES (1700, 'MALL_OF_SOFIA', 'Mall of Sofia', 'Some ulitsa', '49.64292808523189, 32.338815289344673', 'Random');
+INSERT INTO location (city_id, code, name, address, coordinates, description) 
+VALUES (1700, 'BULGARIA_MALL', 'Bulgaria Mall', 'Some ulitsa', '65.64292808523189, 12.338815289344673', 'Random');
 
 
 

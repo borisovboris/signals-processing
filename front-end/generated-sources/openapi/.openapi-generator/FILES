@@ -11,6 +11,8 @@ index.ts
 model/citiesDTO.ts
 model/cityDTO.ts
 model/countryDTO.ts
+model/locationDTO.ts
+model/locationsDTO.ts
 model/models.ts
 model/signalDTO.ts
 param.ts

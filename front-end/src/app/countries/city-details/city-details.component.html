@@ -1,0 +1,20 @@
+<div class="wrapper" *ngIf="locations$ | async as locations">
+    <div class="titles">
+      <h1>{{ locations.city.name }}</h1>
+      <h2>Locations:</h2>
+    </div>
+    <mat-card>
+      <cdk-virtual-scroll-viewport
+        CdkScrollable
+        [itemSize]="60"
+        class="example-viewport"
+      >
+        <div class="country-wrapper" *cdkVirtualFor="let location of locations.locations">
+          <div class="country mat-elevation-z2">
+            <p>{{ location.name }}</p>
+          </div>
+        </div>
+      </cdk-virtual-scroll-viewport>
+    </mat-card>
+  </div>
+  

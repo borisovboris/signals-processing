@@ -58,6 +58,19 @@ export class CountryEffects {
       ),
   );
 
+  loadLocations = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(CountryActions.getLocations),
+        switchMap(({ cityId }) =>
+          this.countriesService.readLocations(cityId).pipe(
+            map((locations) => CountryActions.locationsFetched({ locations })),
+            catchError(() => EMPTY)
+          )
+        )
+      ),
+  );
+
   constructor(
     private actions$: Actions,
     private countriesService: CountriesService,

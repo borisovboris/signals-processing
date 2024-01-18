@@ -7,6 +7,7 @@ import { provideEffects } from '@ngrx/effects';
 import { countryReducer } from '../store/country/country.reducer';
 import { CountryEffects } from '../store/country/country.effects';
 import { CountriesComponent } from './countries.component';
+import { CityDetailsComponent } from './city-details/city-details.component';
 
 export const COUNTRIES_ROUTES: Route[] = [
   {
@@ -19,6 +20,7 @@ export const COUNTRIES_ROUTES: Route[] = [
     children: [
       { path: '', component: CountryListComponent },
       { path: 'details', component: CountryDetailsComponent },
+      { path: 'city', component: CityDetailsComponent },
     ],
   },
 ];

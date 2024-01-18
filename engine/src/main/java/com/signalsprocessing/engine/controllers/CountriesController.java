@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.signalsprocessing.engine.services.CountryService;
 import com.signalsprocessing.engine.services.CountryService.CitiesDTO;
-import com.signalsprocessing.engine.services.CountryService.CityDTO;
 import com.signalsprocessing.engine.services.CountryService.CountryDTO;
+import com.signalsprocessing.engine.services.CountryService.LocationsDTO;
 
 import java.util.List;
 
@@ -43,5 +43,11 @@ public class CountriesController {
     @ResponseBody
     public CitiesDTO readCities(@PathVariable("id") Long id) {
         return service.getCitiesOfCountry(id);
+    }
+
+    @GetMapping("read-locations/{id}")
+    @ResponseBody
+    public LocationsDTO readLocations(@PathVariable("id") Long id) {
+        return service.getLocations(id);
     }
 }
