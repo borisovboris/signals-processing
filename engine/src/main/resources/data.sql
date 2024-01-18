@@ -56,9 +56,11 @@ INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Vraca', 11000);
 INSERT INTO location (city_id, code, name, address, coordinates, description) 
 VALUES (1700, 'BLOK_59_A', 'Blok 59 A', 'ul. "Professor Kiril Popov"', '42.64292808523189, 23.338815289344673', 'A place so majestic, you''d be lucky to live there');
 INSERT INTO location (city_id, code, name, address, coordinates, description) 
-VALUES (1700, 'MALL_OF_SOFIA', 'Mall of Sofia', 'Some ulitsa', '49.64292808523189, 32.338815289344673', 'Random');
+VALUES (1700, 'MALL_OF_SOFIA', 'Mall of Sofia', '"Some ulitsa"', '49.64292808523189, 32.338815289344673', 'Random');
 INSERT INTO location (city_id, code, name, address, coordinates, description) 
-VALUES (1700, 'BULGARIA_MALL', 'Bulgaria Mall', 'Some ulitsa', '65.64292808523189, 12.338815289344673', 'Random');
+VALUES (1700, 'BULGARIA_MALL', 'Bulgaria Mall', '"Some ulitsa"', '65.64292808523189, 12.338815289344673', 'Random');
+INSERT INTO location (city_id, code, name, address, coordinates, description, is_operational) 
+VALUES (1700, 'FAKULTETA', 'Fakulteta', '"Ulitsa Suhodolska"', '65.64292808523189, 12.338815289344673', 'Random', false);
 
 
 

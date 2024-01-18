@@ -97,7 +97,8 @@ public class CountryService {
                                 .stream()
                                 .map(entity -> new LocationDTO(entity.id, entity.code, entity.name, entity.address,
                                                 entity.coordinates,
-                                                entity.description, entity.creationAt, entity.isOperational))
+                                                entity.description, entity.creationAt, entity.isOperational,
+                                                entity.compositions.size()))
                                 .toList();
 
                 return new LocationsDTO(city, list);
@@ -112,9 +113,9 @@ public class CountryService {
         public record CitiesDTO(@NotNull CountryDTO country, @NotNull List<CityDTO> cities) {
         }
 
-        public record LocationDTO(@NotNull long id, @NotNull String code, @NotNull String name, @NotNull String adress,
+        public record LocationDTO(@NotNull long id, @NotNull String code, @NotNull String name, @NotNull String address,
                         String coordinates, String description, @NotNull Date creationAt,
-                        @NotNull boolean isOperational) {
+                        @NotNull boolean isOperational, @NotNull int compositionsSize) {
         }
 
         public record LocationsDTO(@NotNull CityDTO city, @NotNull List<LocationDTO> locations) {

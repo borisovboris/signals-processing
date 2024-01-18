@@ -15,7 +15,7 @@ export interface LocationDTO {
     id: number;
     code: string;
     name: string;
-    adress: string;
+    address: string;
     coordinates?: string;
     description?: string;
     creationAt: string;

@@ -1,9 +1,7 @@
 package com.signalsprocessing.engine.models;
 
 import java.util.Date;
-
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SourceType;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,8 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Location {
@@ -45,4 +42,7 @@ public class Location {
 
     @Column(columnDefinition = "boolean default true")
     public boolean isOperational = true;
+
+    @OneToMany(mappedBy = "location")
+    public Set<Composition> compositions;
 }

@@ -1,20 +1,34 @@
 <div class="wrapper" *ngIf="locations$ | async as locations">
-    <div class="titles">
-      <h1>{{ locations.city.name }}</h1>
-      <h2>Locations:</h2>
-    </div>
-    <mat-card>
-      <cdk-virtual-scroll-viewport
-        CdkScrollable
-        [itemSize]="60"
-        class="example-viewport"
-      >
-        <div class="country-wrapper" *cdkVirtualFor="let location of locations.locations">
-          <div class="country mat-elevation-z2">
-            <p>{{ location.name }}</p>
-          </div>
-        </div>
-      </cdk-virtual-scroll-viewport>
-    </mat-card>
+  <div class="titles">
+    <h1>{{ locations.city.name }}</h1>
+    <h2>Locations:</h2>
   </div>
-  
+  <mat-card>
+    <div class="columns">
+      <p>Name</p>
+      <p>Address</p>
+      <p>Status</p>
+      <p>Compositions</p>
+    </div>
+    <cdk-virtual-scroll-viewport
+      CdkScrollable
+      [itemSize]="60"
+      class="example-viewport"
+    >
+      <div
+        class="country-wrapper"
+        *cdkVirtualFor="let location of locations.locations"
+      >
+        <div
+          class="country mat-elevation-z2"
+          [class.not-operational]="!location.isOperational"
+        >
+          <p>{{ location.name }}</p>
+          <p>{{ location.address }}</p>
+          <p>{{ getOperationalLabel(location.isOperational) }}</p>
+          <p>{{ location.compositionsSize }}</p>
+        </div>
+      </div>
+    </cdk-virtual-scroll-viewport>
+  </mat-card>
+</div>

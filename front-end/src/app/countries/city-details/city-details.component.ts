@@ -32,4 +32,7 @@ export class CityDetailsComponent {
       this.store.dispatch(CountryActions.getLocations({ cityId: id }));
     });
   }
+  getOperationalLabel(operational: boolean) {
+    return operational ? 'Operational' : 'Not operational';
+  }
 }
