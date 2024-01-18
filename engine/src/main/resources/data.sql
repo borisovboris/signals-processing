@@ -1,66 +1,91 @@
-INSERT INTO country (name) VALUES ('India');
-INSERT INTO country (name) VALUES ('Brazil');
-INSERT INTO country (name) VALUES ('USA');
-INSERT INTO country (name) VALUES ('Italy');
-INSERT INTO country (name) VALUES ('Belarus');
-INSERT INTO country (name) VALUES ('Belgium');
-INSERT INTO country (name) VALUES ('Germany');
+INSERT INTO country (name) 
+VALUES 
+('India'),
+('Brazil'),
+('USA'),
+('Italy'),
+('Belarus'),
+('Belgium'),
+('Germany'),
+('China'),
+('Canada'),
+('Columbia'),
+('Republic of the Congo'),
+('Denmark'),
+('Fiji'),
+('Georgia'),
+('Cuba'),
+('Cyprus'),
+('Croatia'),
+('Romania'),
+('Sweden'),
+('Norway'),
+('Hungary'),
+('Ireland'),
+('Japan'),
+('Venezuela'),
+('Luxembourg'),
+('Samoa'),
+('San Marino'),
+('Sao Tome and Principe'),
+('Saudi Arabia'),
+('Schaumburg-Lippe'),
+('Senegal'),
+('Seychelles'),
+('Sierra Leone'),
+('Singapore'),
+('Slovakia'),
+('Slovenia'),
+('South Africa'),
+('South Sudan'),
+('Spain');
 INSERT INTO country (id, name) VALUES (681, 'Bulgaria');
-INSERT INTO country (name) VALUES ('China');
-INSERT INTO country (name) VALUES ('Canada');
-INSERT INTO country (name) VALUES ('Columbia');
-INSERT INTO country (name) VALUES ('Republic of the Congo');
-INSERT INTO country (name) VALUES ('Denmark');
-INSERT INTO country (name) VALUES ('Fiji');
-INSERT INTO country (name) VALUES ('Georgia');
-INSERT INTO country (name) VALUES ('Serbia');
-INSERT INTO country (name) VALUES ('Cuba');
-INSERT INTO country (name) VALUES ('Cyprus');
-INSERT INTO country (name) VALUES ('Croatia');
-INSERT INTO country (name) VALUES ('Romania');
-INSERT INTO country (name) VALUES ('Sweden');
-INSERT INTO country (name) VALUES ('Norway');
-INSERT INTO country (name) VALUES ('Hungary');
-INSERT INTO country (name) VALUES ('Ireland');
-INSERT INTO country (name) VALUES ('Japan');
-INSERT INTO country (name) VALUES ('Venezuela');
-INSERT INTO country (name) VALUES ('Luxembourg');
-INSERT INTO country (name) VALUES ('Samoa');
-INSERT INTO country (name) VALUES ('San Marino');
-INSERT INTO country (name) VALUES ('Sao Tome and Principe');
-INSERT INTO country (name) VALUES ('Saudi Arabia');
-INSERT INTO country (name) VALUES ('Schaumburg-Lippe');
-INSERT INTO country (name) VALUES ('Senegal');
-INSERT INTO country (name) VALUES ('Seychelles');
-INSERT INTO country (name) VALUES ('Sierra Leone');
-INSERT INTO country (name) VALUES ('Singapore');
-INSERT INTO country (name) VALUES ('Slovakia');
-INSERT INTO country (name) VALUES ('Slovenia');
-INSERT INTO country (name) VALUES ('South Africa');
-INSERT INTO country (name) VALUES ('South Sudan');
-INSERT INTO country (name) VALUES ('Spain');
 
-INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Lovech', 5500);
+INSERT INTO city (country_id, name, postal_code) 
+VALUES 
+(681, 'Lovech', 5500),
+(681, 'Plovdiv', 2000),
+(681, 'Stara Zagora', 3000),
+(681, 'Varna', 4000),
+(681, 'Burgas', 5000),
+(681, 'Bansko', 6000),
+(681, 'Troyan', 7000),
+(681, 'Pleven', 8000),
+(681, 'Montana', 9000),
+(681, 'Vidin', 10000),
+(681, 'Vraca', 11000);
 INSERT INTO city (id, country_id, name, postal_code) VALUES (1700, 681, 'Sofia', 1000);
-INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Plovdiv', 2000);
-INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Stara Zagora', 3000);
-INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Varna', 4000);
-INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Burgas', 5000);
-INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Bansko', 6000);
-INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Troyan', 7000);
-INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Pleven', 8000);
-INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Montana', 9000);
-INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Vidin', 10000);
-INSERT INTO city (country_id, name, postal_code) VALUES (681, 'Vraca', 11000);
 
-INSERT INTO location (city_id, code, name, address, coordinates, description) 
-VALUES (1700, 'BLOK_59_A', 'Blok 59 A', 'ul. "Professor Kiril Popov"', '42.64292808523189, 23.338815289344673', 'A place so majestic, you''d be lucky to live there');
-INSERT INTO location (city_id, code, name, address, coordinates, description) 
-VALUES (1700, 'MALL_OF_SOFIA', 'Mall of Sofia', '"Some ulitsa"', '49.64292808523189, 32.338815289344673', 'Random');
-INSERT INTO location (city_id, code, name, address, coordinates, description) 
-VALUES (1700, 'BULGARIA_MALL', 'Bulgaria Mall', '"Some ulitsa"', '65.64292808523189, 12.338815289344673', 'Random');
 INSERT INTO location (city_id, code, name, address, coordinates, description, is_operational) 
-VALUES (1700, 'FAKULTETA', 'Fakulteta', '"Ulitsa Suhodolska"', '65.64292808523189, 12.338815289344673', 'Random', false);
+VALUES
+(1700, 'BLOK_59_A', 'Blok 59 A', 'ul. "Professor Kiril Popov"', '42.64292808523189, 23.338815289344673', 'A place so majestic, you''d be lucky to live there', true),
+(1700, 'BULGARIA_MALL', 'Bulgaria Mall', '"Some ulitsa"', '65.64292808523189, 12.338815289344673', 'Random', true),
+(1700, 'FAKULTETA', 'Fakulteta', '"Ulitsa Suhodolska"', '65.64292808523189, 12.338815289344673', 'Random', false);
+INSERT INTO location (city_id, id, code, name, address, coordinates, description) 
+VALUES
+(1700, 50, 'MALL_OF_SOFIA', 'Mall of Sofia', '"Some ulitsa"', '49.64292808523189, 32.338815289344673', 'Random');
+
+
+INSERT INTO composition_type (id, name) 
+VALUES 
+(1, 'Revolving door');
+
+INSERT INTO composition_status (id, name, is_operational, is_broken, in_maintenance) 
+VALUES 
+(1, 'Sensor not working', false, true, false),
+(2, 'Sensor in maintenance', false, false, true),
+(3, 'Sensor in order', true, false, false);
+
+INSERT INTO composition (id, code, type_id, location_id, status_id) 
+VALUES 
+(1, 'REVOLVING_DOOR', 1, 50, 3);
+
+INSERT INTO composition_status_record (composition_id, status_id) 
+VALUES 
+(1, 1),
+(1, 2);
+
+
 
 
 
