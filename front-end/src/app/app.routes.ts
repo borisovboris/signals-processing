@@ -18,9 +18,9 @@ export const routes: Routes = [
       import('./countries/routes').then((mod) => mod.COUNTRIES_ROUTES),
   },
   {
-    path: AppRoute.DEVICES,
-    loadComponent: () =>
-      import('./devices/devices.component').then((mod) => mod.DevicesComponent),
+    path: AppRoute.COMPOSITIONS,
+    loadChildren: () =>
+      import('./compositions/routes').then((mod) => mod.COMPOSITIONS_ROUTES),
   },
   {
     path: AppRoute.EVENTS,

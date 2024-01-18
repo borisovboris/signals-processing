@@ -10,17 +10,17 @@ import jakarta.persistence.Id;
 public class CompositionStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    public Long id;
 
     @Column(nullable = false, unique = true, length = 255)
-    private String name;
+    public String name;
 
     @Column(columnDefinition = "boolean default true")
-    private boolean isOperational = true;
+    public boolean isOperational;
 
-    @Column(columnDefinition = "boolean default true")
-    private boolean isBroken = false;
+    @Column(columnDefinition = "boolean default false")
+    public boolean isBroken;
 
-    @Column(columnDefinition = "boolean default true")
-    private boolean inMaintenance = false;
+    @Column(columnDefinition = "boolean default false")
+    public boolean inMaintenance;
 }

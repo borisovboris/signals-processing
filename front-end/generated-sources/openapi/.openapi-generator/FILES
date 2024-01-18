@@ -2,6 +2,7 @@
 README.md
 api.module.ts
 api/api.ts
+api/compositions.service.ts
 api/countries.service.ts
 api/signals.service.ts
 configuration.ts
@@ -10,10 +11,12 @@ git_push.sh
 index.ts
 model/citiesDTO.ts
 model/cityDTO.ts
+model/compositionDTO.ts
 model/countryDTO.ts
 model/locationDTO.ts
 model/locationsDTO.ts
 model/models.ts
 model/signalDTO.ts
+model/statusDTO.ts
 param.ts
 variables.ts

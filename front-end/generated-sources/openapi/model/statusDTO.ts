@@ -11,15 +11,10 @@
  */
 
 
-export interface LocationDTO { 
-    id: number;
-    code: string;
+export interface StatusDTO { 
     name: string;
-    address: string;
-    coordinates?: string;
-    description?: string;
-    creationAt: string;
     isOperational: boolean;
-    compositionsSize: number;
+    isBroken: boolean;
+    inMaintenance: boolean;
 }
 

@@ -72,9 +72,9 @@ VALUES
 
 INSERT INTO composition_status (id, name, is_operational, is_broken, in_maintenance) 
 VALUES 
-(1, 'Sensor not working', false, true, false),
-(2, 'Sensor in maintenance', false, false, true),
-(3, 'Sensor in order', true, false, false);
+(1, 'Revolving door not opening', false, true, false),
+(2, 'Revolving door in maintenance', false, false, true),
+(3, 'Revolving door in order', true, false, false);
 
 INSERT INTO composition (id, code, type_id, location_id, status_id) 
 VALUES 
@@ -85,6 +85,26 @@ VALUES
 (1, 1),
 (1, 2);
 
+INSERT INTO device_status(id, name, is_operational, is_broken, in_maintenance) 
+VALUES 
+(1, 'Sensor not working', false, true, false),
+(2, 'Sensor in maintenance', false, false, true),
+(3, 'Sensor in order', true, false, false),
+(4, 'Camera in order', false, false, true),
+(5, 'Motor in order', true, false, false);
+
+INSERT INTO device (id, code, name, composition_id, status_id) 
+VALUES 
+(1, 'MOVEMENT_SENSOR', 'Movement sensor', 1, 3),
+(2, 'CAMERA', 'Camera', 1, 4),
+(3, 'MOTOR', 'Motor', 1, 5);
+
+
+
+INSERT INTO device_status_record(device_id, status_id) 
+VALUES 
+(1, 1),
+(1, 2);
 
 
 

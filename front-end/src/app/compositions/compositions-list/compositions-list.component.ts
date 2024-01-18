@@ -1,38 +1,33 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { CountryActions } from '../../store/country/country.actions';
-import { locations } from '../../store/country/country.selectors';
+import { CompositionActions } from '../../store/composition/composition.actions';
+import { compositions } from '../../store/composition/composition.selectors';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../material/material.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @Component({
-  selector: 'app-city-details',
+  selector: 'app-compositions-list',
   standalone: true,
   imports: [CommonModule, MaterialModule, ScrollingModule],
-  templateUrl: './city-details.component.html',
-  styleUrl: './city-details.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: './compositions-list.component.html',
+  styleUrl: './compositions-list.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CityDetailsComponent {
-  locations$ = this.store.select(locations);
+export class CompositionsListComponent {
+  compositions$ = this.store.select(compositions);
 
   constructor(
     private readonly store: Store,
     private readonly router: Router,
-    private readonly route: ActivatedRoute,
+    private readonly route: ActivatedRoute
   ) {}
 
-
   ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
-      const id = params['id'];
-
-      this.store.dispatch(CountryActions.getLocations({ cityId: id }));
-    });
+    this.store.dispatch(CompositionActions.getCompositions());
   }
-  
+
   getOperationalLabel(operational: boolean) {
     return operational ? 'Operational' : 'Not operational';
   }

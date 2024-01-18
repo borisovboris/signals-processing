@@ -2,8 +2,6 @@ package com.signalsprocessing.engine.models;
 
 import java.util.Date;
 
-import org.hibernate.annotations.CreationTimestamp;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,8 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 @Entity
 public class Device {
@@ -26,12 +22,14 @@ public class Device {
     @Column(nullable = false, unique = true, length = 255)
     private String name;
 
-    @ManyToOne()
+    @ManyToOne(optional = false)
     @JoinColumn(name = "status_id")
     private DeviceStatus status;
 
-    @Column
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date creationAt;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "composition_id")
+    private Composition composition;
+
+    @Column(insertable = false, updatable = false, nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    public Date creationAt;
 }

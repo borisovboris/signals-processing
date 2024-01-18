@@ -41,7 +41,7 @@ public class Location {
     public Date creationAt;
 
     @Column(columnDefinition = "boolean default true")
-    public boolean isOperational = true;
+    public boolean isOperational;
 
     @OneToMany(mappedBy = "location")
     public Set<Composition> compositions;

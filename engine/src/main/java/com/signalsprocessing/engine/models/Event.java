@@ -1,7 +1,6 @@
 package com.signalsprocessing.engine.models;
 
 import java.util.Date;
-import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,10 +29,8 @@ public class Event {
     @Column(columnDefinition = "boolean default false")
     private boolean manualInsert = false;
 
-    @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE")
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date creationAt;
+    @Column(insertable = false, updatable = false, nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    public Date creationAt;
 
     @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE")
     @Temporal(TemporalType.TIMESTAMP)

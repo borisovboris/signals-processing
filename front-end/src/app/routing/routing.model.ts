@@ -1,7 +1,7 @@
 export enum AppRoute {
     HOME = 'home',
     COUNTRIES = 'countries',
-    DEVICES = 'devices',
+    COMPOSITIONS = 'compositions',
     EVENTS = 'events',
 }
 

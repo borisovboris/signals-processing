@@ -9,17 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { StatusDTO } from './statusDTO';
 
 
-export interface LocationDTO { 
-    id: number;
-    code: string;
-    name: string;
-    address: string;
-    coordinates?: string;
-    description?: string;
-    creationAt: string;
-    isOperational: boolean;
-    compositionsSize: number;
+export interface CompositionDTO { 
+    type: string;
+    devicesSize: number;
+    status: StatusDTO;
 }
 

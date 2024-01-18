@@ -35,8 +35,8 @@ export class AppComponent implements OnInit {
       path: AppRoute.COUNTRIES,
     },
     {
-      label: 'Devices',
-      path: AppRoute.DEVICES,
+      label: 'Compositions',
+      path: AppRoute.COMPOSITIONS,
     },
     {
       label: 'Events',
