@@ -2,7 +2,7 @@
   <mat-label>Cities</mat-label>
   <mat-chip-grid #chipGrid>
     @for (chip of chips; track chip) {
-    <mat-chip-row (removed)="remove(chip)">
+    <mat-chip-row (removed)="remove(chip)" class="mat-chip">
       {{ chip }}
       <button matChipRemove>
         <mat-icon>cancel</mat-icon>
