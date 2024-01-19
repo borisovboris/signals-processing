@@ -23,7 +23,6 @@ import {
   switchMap,
   takeUntil,
 } from 'rxjs';
-import { CountriesService } from '../../../../generated-sources/openapi';
 import { isDefined } from '../utils';
 
 @Component({
@@ -37,6 +36,8 @@ import { isDefined } from '../utils';
 export class AutocompleteComponent implements OnInit, OnDestroy {
   itemCtrl = new FormControl('');
   @Input() options$!: Observable<string[]>;
+  @Input() placeholder: string = '';
+  @Input() label: string = '';
   destroy$ = new Subject<void>();
   chips: string[] = [];
   @Output() itemsUpdated = new EventEmitter<string[]>();

@@ -10,6 +10,7 @@ import com.signalsprocessing.engine.services.CountryService;
 import com.signalsprocessing.engine.services.CountryService.CitiesDTO;
 import com.signalsprocessing.engine.services.CountryService.CityDTO;
 import com.signalsprocessing.engine.services.CountryService.CountryDTO;
+import com.signalsprocessing.engine.services.CountryService.LocationDTO;
 import com.signalsprocessing.engine.services.CountryService.LocationsDTO;
 
 import java.util.List;
@@ -50,6 +51,12 @@ public class CountriesController {
     @ResponseBody
     public List<CityDTO> readCitiesLikeName(@PathVariable("name") String name) {
         return service.getCitiesLikeName(name);
+    }
+
+    @GetMapping("read-locations-like-name/{name}")
+    @ResponseBody
+    public List<LocationDTO> readLocationsLikeName(@PathVariable("name") String name) {
+        return service.getLocationsLikeName(name);
     }
 
     @GetMapping("read-locations/{id}")

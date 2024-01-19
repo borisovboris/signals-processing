@@ -27,24 +27,33 @@ public class CompositionService {
         this.entityManager = entityManager;
     }
 
-    public List<CompositionDTO> readCompositions(Optional< CompositionFiltersDTO> filters) {
+    public List<CompositionDTO> readCompositions(Optional<CompositionFiltersDTO> filters) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Composition> criteriaQuery = criteriaBuilder.createQuery(Composition.class);
         Root<Composition> root = criteriaQuery.from(Composition.class);
-        CriteriaQuery<Composition> select = criteriaQuery.select(root);
+        // This is the query that selects all rows from the table
+        CriteriaQuery<Composition> initialQuery = criteriaQuery.select(root);
 
         if (filters.isPresent()) {
-            List<String> cityNames = filters.get().cityNames();
+            CompositionFiltersDTO presentFilters = filters.get();
+            List<String> cityNames = presentFilters.cityNames();
+            List<String> locationNames =presentFilters.locationNames();
 
             if (cityNames != null) {
                 var cityName = root.get("location").get("city").get("name");
-                select.where(cityName.in(cityNames));
+                initialQuery.where(cityName.in(cityNames));
+            }
+
+            if(locationNames != null) {
+                var locationName = root.get("location").get("name");
+                initialQuery.where(locationName.in(locationNames));
             }
         }
 
         TypedQuery<Composition> query = entityManager
-                .createQuery(select)
+                .createQuery(initialQuery)
                 .setMaxResults(CompositionService.LIMIT);
+                
         List<CompositionDTO> list = query
                 .getResultList()
                 .stream()
@@ -70,7 +79,7 @@ public class CompositionService {
             @NotNull boolean inMaintenance) {
     }
 
-    public record CompositionFiltersDTO(@Nullable List<String> cityNames) {
+    public record CompositionFiltersDTO(@Nullable List<String> cityNames, @Nullable List<String> locationNames) {
     }
 
 }

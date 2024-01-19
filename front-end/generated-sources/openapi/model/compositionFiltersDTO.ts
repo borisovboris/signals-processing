@@ -13,5 +13,6 @@
 
 export interface CompositionFiltersDTO { 
     cityNames?: Array<string>;
+    locationNames?: Array<string>;
 }
 

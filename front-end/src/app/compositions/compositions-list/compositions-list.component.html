@@ -1,37 +1,41 @@
 <div class="wrapper" *ngIf="compositions$ | async as compositions">
-    <mat-card class="sidebar">
-        <h2>Filters:</h2>
-        <app-city-name-autocomplete (itemsUpdated)="onCityNameFilter($event)"></app-city-name-autocomplete>
-    </mat-card>
+  <mat-card class="sidebar">
+    <h2>Filters:</h2>
+    <app-city-name-autocomplete
+      (itemsUpdated)="onCityNameFilter($event)"
+    ></app-city-name-autocomplete>
+    <app-location-name-autocomplete
+      (itemsUpdated)="onLocationNameFilter($event)"
+    ></app-location-name-autocomplete>
+  </mat-card>
 
-    <mat-card class="list">
-        <div class="titles">
-            <h2>Compositions:</h2>
-          </div>
-      <div class="columns">
-        <p>Type</p>
-        <p>Devices</p>
-        <p>Status</p>
-      </div>
-      <cdk-virtual-scroll-viewport
-        CdkScrollable
-        [itemSize]="60"
-        class="example-viewport"
+  <mat-card class="list">
+    <div class="titles">
+      <h2>Compositions:</h2>
+    </div>
+    <div class="columns">
+      <p>Type</p>
+      <p>Devices</p>
+      <p>Status</p>
+    </div>
+    <cdk-virtual-scroll-viewport
+      CdkScrollable
+      [itemSize]="60"
+      class="example-viewport"
+    >
+      <div
+        class="country-wrapper"
+        *cdkVirtualFor="let composition of compositions"
       >
         <div
-          class="country-wrapper"
-          *cdkVirtualFor="let composition of compositions"
+          class="country mat-elevation-z2"
+          [class.not-operational]="!composition.status.isOperational"
         >
-          <div
-            class="country mat-elevation-z2"
-            [class.not-operational]="!composition.status.isOperational"
-          >
-            <p>{{ composition.type }}</p>
-            <p>{{ composition.devicesSize }}</p>
-            <p>{{ getOperationalLabel(composition.status.isOperational) }}</p>
-          </div>
+          <p>{{ composition.type }}</p>
+          <p>{{ composition.devicesSize }}</p>
+          <p>{{ getOperationalLabel(composition.status.isOperational) }}</p>
         </div>
-      </cdk-virtual-scroll-viewport>
-    </mat-card>
-  </div>
-  
+      </div>
+    </cdk-virtual-scroll-viewport>
+  </mat-card>
+</div>

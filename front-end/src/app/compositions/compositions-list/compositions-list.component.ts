@@ -8,6 +8,7 @@ import { MaterialModule } from '../../material/material.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { AutocompleteComponent } from '../../shared/autocomplete/autocomplete.component';
 import { CityNameAutocompleteComponent } from '../autocompletes/city-name-autocomplete/city-name-autocomplete.component';
+import { LocationNameAutocompleteComponent } from '../autocompletes/location-name-autocomplete/location-name-autocomplete.component';
 
 @Component({
   selector: 'app-compositions-list',
@@ -15,6 +16,7 @@ import { CityNameAutocompleteComponent } from '../autocompletes/city-name-autoco
   imports: [
     AutocompleteComponent,
     CityNameAutocompleteComponent,
+    LocationNameAutocompleteComponent,
     CommonModule,
     MaterialModule,
     ScrollingModule,
@@ -25,7 +27,8 @@ import { CityNameAutocompleteComponent } from '../autocompletes/city-name-autoco
 })
 export class CompositionsListComponent {
   compositions$ = this.store.select(compositions);
-  value = '';
+  cityNames: string[] = [];
+  locationNames: string[] = [];
 
   constructor(
     private readonly store: Store,
@@ -42,8 +45,23 @@ export class CompositionsListComponent {
   }
 
   onCityNameFilter(names: string[]) {
+    this.cityNames = names;
+    this.getCompositions();
+  }
+
+  onLocationNameFilter(names: string[]) {
+    this.locationNames = names;
+    this.getCompositions();
+  }
+
+  getCompositions() {
     this.store.dispatch(
-      CompositionActions.getCompositions({ filters: { cityNames: names } })
+      CompositionActions.getCompositions({
+        filters: {
+          cityNames: this.cityNames,
+          locationNames: this.locationNames,
+        },
+      })
     );
   }
 }
