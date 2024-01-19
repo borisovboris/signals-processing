@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Input,
   OnDestroy,
   OnInit,
   Output,
@@ -14,6 +15,7 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import {
   BehaviorSubject,
+  Observable,
   Subject,
   debounceTime,
   filter,
@@ -33,36 +35,27 @@ import { isDefined } from '../utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AutocompleteComponent implements OnInit, OnDestroy {
-  cityCtrl = new FormControl('');
-  cities$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+  itemCtrl = new FormControl('');
+  @Input() options$!: Observable<string[]>;
   destroy$ = new Subject<void>();
   chips: string[] = [];
   @Output() itemsUpdated = new EventEmitter<string[]>();
+  @Output() userTextInput = new EventEmitter<string>();
 
-  @ViewChild('cityInput') cityInput!: ElementRef<HTMLInputElement>;
-
-  constructor(private readonly service: CountriesService) {}
+  @ViewChild('textInput') textInput!: ElementRef<HTMLInputElement>;
 
   ngOnInit() {
-    this.cityCtrl.valueChanges
+    this.itemCtrl.valueChanges
       .pipe(
-        debounceTime(100),
+        debounceTime(300),
         filter((input) => isDefined(input) && input.length > 0),
-        switchMap((data) => {
-          return this.service
-            .readCitiesLikeName(data!)
-            .pipe(map((cities) => cities.map((city) => city.name)));
-        }),
-        map((cities) => {
-          this.cities$.next(cities);
-        }),
         takeUntil(this.destroy$)
       )
-      .subscribe();
+      .subscribe(text => this.userTextInput.emit(text!));
   }
 
-  remove(city: string): void {
-    const index = this.chips.indexOf(city);
+  remove(item: string): void {
+    const index = this.chips.indexOf(item);
 
     if (index >= 0) {
       this.chips.splice(index, 1);
@@ -71,8 +64,6 @@ export class AutocompleteComponent implements OnInit, OnDestroy {
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    this.cities$.next([]);
-
     const cityToAdd = event.option.viewValue;
 
     if (!this.chips.includes(cityToAdd)) {
@@ -80,8 +71,8 @@ export class AutocompleteComponent implements OnInit, OnDestroy {
       this.itemsUpdated.emit(this.chips.slice());
     }
 
-    this.cityInput.nativeElement.value = '';
-    this.cityCtrl.setValue(null);
+    this.textInput.nativeElement.value = '';
+    this.itemCtrl.setValue(null);
   }
 
   ngOnDestroy() {

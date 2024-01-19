@@ -12,14 +12,14 @@
   </mat-chip-grid>
   <input
     placeholder="City..."
-    #cityInput
-    [formControl]="cityCtrl"
+    #textInput
+    [formControl]="itemCtrl"
     [matChipInputFor]="chipGrid"
     [matAutocomplete]="auto"
   />
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-    @for (city of cities$ | async; track city) {
-    <mat-option [value]="city">{{ city }}</mat-option>
+    @for (option of options$ | async; track option) {
+    <mat-option [value]="option">{{ option }}</mat-option>
     }
     <mat-option disabled>No results</mat-option>
   </mat-autocomplete>

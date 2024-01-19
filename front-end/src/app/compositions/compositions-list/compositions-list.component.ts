@@ -7,12 +7,14 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../material/material.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { AutocompleteComponent } from '../../shared/autocomplete/autocomplete.component';
+import { CityNameAutocompleteComponent } from '../autocompletes/city-name-autocomplete/city-name-autocomplete.component';
 
 @Component({
   selector: 'app-compositions-list',
   standalone: true,
   imports: [
     AutocompleteComponent,
+    CityNameAutocompleteComponent,
     CommonModule,
     MaterialModule,
     ScrollingModule,
