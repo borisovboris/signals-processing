@@ -10,8 +10,8 @@ export class CompositionEffects {
   loadCompositions = createEffect(() =>
     this.actions$.pipe(
       ofType(CompositionActions.getCompositions),
-      switchMap(() =>
-        this.compositionService.readCompositions().pipe(
+      switchMap(( { filters }) =>
+        this.compositionService.readCompositions(filters).pipe(
           map((compositions) =>
             CompositionActions.compositionsFetched({ compositions })
           ),

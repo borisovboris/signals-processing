@@ -1,8 +1,24 @@
 <div class="wrapper" *ngIf="compositions$ | async as compositions">
-    <div class="titles">
-      <h2>Compositions:</h2>
-    </div>
-    <mat-card>
+    <mat-card class="sidebar">
+        <h2>Filters:</h2>
+        <app-autocomplete (itemsUpdated)="onCityNameFilter($event)"></app-autocomplete>
+        <mat-form-field class="example-form-field">
+            <mat-label>Type</mat-label>
+            <input matInput type="text" [(ngModel)]="value">
+            @if (value) {
+              <button matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+                <mat-icon>close</mat-icon>
+              </button>
+            }
+          </mat-form-field>
+      
+          <mat-slide-toggle>Operational</mat-slide-toggle>
+    </mat-card>
+
+    <mat-card class="list">
+        <div class="titles">
+            <h2>Compositions:</h2>
+          </div>
       <div class="columns">
         <p>Type</p>
         <p>Devices</p>

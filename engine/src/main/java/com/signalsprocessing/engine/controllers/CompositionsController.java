@@ -1,6 +1,7 @@
 package com.signalsprocessing.engine.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.signalsprocessing.engine.services.CompositionService;
 import com.signalsprocessing.engine.services.CompositionService.CompositionDTO;
+import com.signalsprocessing.engine.services.CompositionService.CompositionFiltersDTO;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -24,7 +26,7 @@ public class CompositionsController {
     }
 
     @GetMapping("read-compositions")
-    public List<CompositionDTO> readCompositions() {
-        return service.readCompositions();
+    public List<CompositionDTO> readCompositions(Optional<CompositionFiltersDTO> filters) {
+        return service.readCompositions(filters);
     }
 }

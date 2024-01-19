@@ -12,6 +12,7 @@ index.ts
 model/citiesDTO.ts
 model/cityDTO.ts
 model/compositionDTO.ts
+model/compositionFiltersDTO.ts
 model/countryDTO.ts
 model/locationDTO.ts
 model/locationsDTO.ts

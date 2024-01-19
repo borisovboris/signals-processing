@@ -42,6 +42,21 @@ public class CountryService {
                 return new CityDTO(city.id, city.name, city.postalCode);
         }
 
+        public List<CityDTO> getCitiesLikeName(String name) {
+                TypedQuery<City> query = entityManager
+                                .createQuery("SELECT ci from City ci WHERE ci.name like :name", City.class)
+                                .setParameter("name", "" + name + "%")
+                                .setMaxResults(CountryService.LIMIT);
+
+                List<CityDTO> list = query
+                                .getResultList()
+                                .stream()
+                                .map(entity -> new CityDTO(entity.id, entity.name, entity.postalCode))
+                                .toList();
+
+                return list;
+        }
+
         public List<CountryDTO> getCountries() {
                 TypedQuery<Country> query = entityManager
                                 .createQuery("SELECT c from Country c", Country.class)

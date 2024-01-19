@@ -1,0 +1,26 @@
+<mat-form-field class="example-chip-list">
+  <mat-label>Cities</mat-label>
+  <mat-chip-grid #chipGrid>
+    @for (chip of chips; track chip) {
+    <mat-chip-row (removed)="remove(chip)">
+      {{ chip }}
+      <button matChipRemove>
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </mat-chip-row>
+    }
+  </mat-chip-grid>
+  <input
+    placeholder="City..."
+    #cityInput
+    [formControl]="cityCtrl"
+    [matChipInputFor]="chipGrid"
+    [matAutocomplete]="auto"
+  />
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+    @for (city of cities$ | async; track city) {
+    <mat-option [value]="city">{{ city }}</mat-option>
+    }
+    <mat-option disabled>No results</mat-option>
+  </mat-autocomplete>
+</mat-form-field>
