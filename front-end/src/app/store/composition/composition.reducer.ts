@@ -13,5 +13,11 @@ export const compositionReducer = createReducer(
       ...state,
       compositions,
     };
+  }),
+  on(CompositionActions.detailsFetched, (state, { details }) => {
+    return {
+      ...state,
+      details,
+    };
   })
 );

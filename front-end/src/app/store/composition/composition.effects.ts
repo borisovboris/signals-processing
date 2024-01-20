@@ -21,6 +21,20 @@ export class CompositionEffects {
     )
   );
 
+  loadDetails = createEffect(() =>
+  this.actions$.pipe(
+    ofType(CompositionActions.getDetails),
+    switchMap(( { id }) =>
+      this.compositionService.readCompositionDetails(id).pipe(
+        map((details) =>
+          CompositionActions.detailsFetched({ details })
+        ),
+        catchError(() => EMPTY)
+      )
+    )
+  )
+);
+
   constructor(
     private actions$: Actions,
     private compositionService: CompositionsService,

@@ -1,6 +1,7 @@
 export * from './citiesDTO';
 export * from './cityDTO';
 export * from './compositionDTO';
+export * from './compositionDetailsDTO';
 export * from './compositionFiltersDTO';
 export * from './countryDTO';
 export * from './locationDTO';

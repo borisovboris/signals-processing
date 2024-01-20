@@ -1,6 +1,7 @@
 import {
   CitiesDTO,
   CompositionDTO,
+  CompositionDetailsDTO,
   CountryDTO,
   LocationsDTO,
 } from '../../../generated-sources/openapi';
@@ -13,6 +14,7 @@ export interface CountryState {
 
 export interface CompositionState {
   compositions?: CompositionDTO[];
+  details?: CompositionDetailsDTO;
 }
 
 export interface AppState {

@@ -6,6 +6,7 @@ import { CompositionsComponent } from './compositions.component';
 import { CompositionsListComponent } from './compositions-list/compositions-list.component';
 import { compositionReducer } from '../store/composition/composition.reducer';
 import { CompositionEffects } from '../store/composition/composition.effects';
+import { CompositionDetailsComponent } from '../composition-details/composition-details.component';
 
 export const COMPOSITIONS_ROUTES: Route[] = [
   {
@@ -15,6 +16,9 @@ export const COMPOSITIONS_ROUTES: Route[] = [
       provideState({ name: 'compositionState', reducer: compositionReducer }),
       provideEffects([CompositionEffects]),
     ],
-    children: [{ path: '', component: CompositionsListComponent }],
+    children: [
+      { path: '', component: CompositionsListComponent },
+      { path: 'details', component: CompositionDetailsComponent },
+    ],
   },
 ];

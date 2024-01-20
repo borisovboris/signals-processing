@@ -30,6 +30,7 @@
         <div
           class="country mat-elevation-z2"
           [class.not-operational]="!composition.status.isOperational"
+          (click)="goToDetails(composition.id)"
         >
           <p>{{ composition.type }}</p>
           <p>{{ composition.devicesSize }}</p>

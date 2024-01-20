@@ -55,16 +55,14 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Get the active path from the URL, the first time AppComponent is loaded.
-    // We need the active path in order to set which nav tab is currently active.
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event) => {
         if (event instanceof NavigationEnd) {
           const path = this.getPathFromUrl(event.url);
-          console.log(path);
 
           if (isRoute(path)) {
+              // We need the active path in order to set which material nav tab is currently active.
             this.activeLink = path;
           }
         }

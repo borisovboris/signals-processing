@@ -1,14 +1,8 @@
 import {
-  AfterContentInit,
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  ContentChild,
-  ContentChildren,
-  ElementRef,
-  QueryList,
   ViewChild,
-  ViewChildren,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -21,6 +15,7 @@ import { AutocompleteComponent } from '../../shared/autocomplete/autocomplete.co
 import { CityNameAutocompleteComponent } from '../autocompletes/city-name-autocomplete/city-name-autocomplete.component';
 import { LocationNameAutocompleteComponent } from '../autocompletes/location-name-autocomplete/location-name-autocomplete.component';
 import { isDefined } from '../../shared/utils';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-compositions-list',
@@ -79,7 +74,7 @@ export class CompositionsListComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.route.queryParams.subscribe((params) => {
+    this.route.queryParams.pipe(take(1)).subscribe((params) => {
       this.cityName = params['cityName'];
       this.locationName = params['locationName'];
 
@@ -111,5 +106,9 @@ export class CompositionsListComponent implements AfterViewInit {
         },
       })
     );
+  }
+
+  goToDetails(id: number) {
+    this.router.navigate([`details`], { relativeTo: this.route, queryParams: { id } });
   }
 }

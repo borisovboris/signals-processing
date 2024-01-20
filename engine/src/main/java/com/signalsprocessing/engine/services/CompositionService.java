@@ -37,14 +37,14 @@ public class CompositionService {
         if (filters.isPresent()) {
             CompositionFiltersDTO presentFilters = filters.get();
             List<String> cityNames = presentFilters.cityNames();
-            List<String> locationNames =presentFilters.locationNames();
+            List<String> locationNames = presentFilters.locationNames();
 
             if (cityNames != null) {
                 var cityName = root.get("location").get("city").get("name");
                 initialQuery.where(cityName.in(cityNames));
             }
 
-            if(locationNames != null) {
+            if (locationNames != null) {
                 var locationName = root.get("location").get("name");
                 initialQuery.where(locationName.in(locationNames));
             }
@@ -53,7 +53,7 @@ public class CompositionService {
         TypedQuery<Composition> query = entityManager
                 .createQuery(initialQuery)
                 .setMaxResults(CompositionService.LIMIT);
-                
+
         List<CompositionDTO> list = query
                 .getResultList()
                 .stream()
@@ -63,7 +63,33 @@ public class CompositionService {
         return list;
     }
 
-    public record CompositionDTO(@NotNull String type, @NotNull int devicesSize, @NotNull StatusDTO status) {
+    public CompositionDetailsDTO getCompositionDetails(long id) {
+        TypedQuery<LinkedCompositions> query = entityManager.createQuery("SELECT NEW " +
+                "LinkedCompositions(fc, sc)"
+                + " FROM LinkedComposition lc"
+                + " LEFT JOIN lc.firstComposition fc"
+                + " LEFT JOIN lc.secondComposition sc"
+                + " WHERE fc.id = :id OR sc.id = :id", LinkedCompositions.class).setParameter("id", id);
+
+        List<LinkedCompositions> list = query.getResultList();
+        List<CompositionDTO> relatedCompositions = list.stream().map(lc -> {
+            return lc.firstComposition.id != id ? lc.firstComposition : lc.secondComposition;
+        }).map(rc -> mapComposition(rc)).toList();
+        CompositionDTO composition = getComposition(id);
+
+        return new CompositionDetailsDTO(composition, relatedCompositions);
+    }
+
+    public CompositionDTO getComposition(long id) {
+        TypedQuery<Composition> query = entityManager
+                .createQuery("SELECT c from Composition c WHERE c.id = :id", Composition.class)
+                .setParameter("id", id);
+        Composition composition = query.getSingleResult();
+
+        return mapComposition(composition);
+    }
+
+    public record CompositionDTO(@NotNull long id, @NotNull String type, @NotNull int devicesSize, @NotNull StatusDTO status) {
     }
 
     public CompositionDTO mapComposition(Composition composition) {
@@ -72,11 +98,17 @@ public class CompositionService {
         StatusDTO status = new StatusDTO(composition.status.name, composition.status.isOperational,
                 composition.status.isBroken, composition.status.inMaintenance);
 
-        return new CompositionDTO(type, devicesSize, status);
+        return new CompositionDTO(composition.id, type, devicesSize, status);
     }
 
     public record StatusDTO(@NotNull String name, @NotNull boolean isOperational, @NotNull boolean isBroken,
             @NotNull boolean inMaintenance) {
+    }
+
+    public record LinkedCompositions(Composition firstComposition, Composition secondComposition) {
+    }
+
+    public record CompositionDetailsDTO(CompositionDTO composition, List<CompositionDTO> relatedCompositions) {
     }
 
     public record CompositionFiltersDTO(@Nullable List<String> cityNames, @Nullable List<String> locationNames) {
