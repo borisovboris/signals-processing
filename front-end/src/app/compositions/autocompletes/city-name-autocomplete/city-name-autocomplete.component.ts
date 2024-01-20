@@ -3,7 +3,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  Input,
   Output,
+  ViewChild,
 } from '@angular/core';
 import { AutocompleteComponent } from '../../../shared/autocomplete/autocomplete.component';
 import { BehaviorSubject, map, take } from 'rxjs';
@@ -22,6 +24,8 @@ export class CityNameAutocompleteComponent implements AutoComplete {
   cities$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   options$ = this.cities$.asObservable();
   @Output() itemsUpdated = new EventEmitter<string[]>();
+  @ViewChild(AutocompleteComponent)
+  autocomplete!: AutocompleteComponent;
 
   constructor(private readonly service: CountriesService) {}
 
@@ -38,5 +42,9 @@ export class CityNameAutocompleteComponent implements AutoComplete {
   onItemsUpdated(cities: string[]) {
     this.cities$.next([]);
     this.itemsUpdated.emit(cities);
+  }
+
+  setChips(chips: string[]) {
+    this.autocomplete.setChips(chips);
   }
 }

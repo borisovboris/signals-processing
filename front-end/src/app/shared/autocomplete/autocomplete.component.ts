@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -39,11 +40,13 @@ export class AutocompleteComponent implements OnInit, OnDestroy {
   @Input() placeholder: string = '';
   @Input() label: string = '';
   destroy$ = new Subject<void>();
-  chips: string[] = [];
-  @Output() itemsUpdated = new EventEmitter<string[]>();
+  @Input() chips: string[] = [];
+  @Output() chipsChange = new EventEmitter<string[]>();
   @Output() userTextInput = new EventEmitter<string>();
 
   @ViewChild('textInput') textInput!: ElementRef<HTMLInputElement>;
+
+  constructor(private readonly changeRef: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.itemCtrl.valueChanges
@@ -60,7 +63,7 @@ export class AutocompleteComponent implements OnInit, OnDestroy {
 
     if (index >= 0) {
       this.chips.splice(index, 1);
-      this.itemsUpdated.emit(this.chips.slice());
+      this.chipsChange.emit(this.chips.slice());
     }
   }
 
@@ -69,7 +72,7 @@ export class AutocompleteComponent implements OnInit, OnDestroy {
 
     if (!this.chips.includes(cityToAdd)) {
       this.chips.push(cityToAdd);
-      this.itemsUpdated.emit(this.chips.slice());
+      this.chipsChange.emit(this.chips.slice());
     }
 
     this.textInput.nativeElement.value = '';
@@ -78,5 +81,10 @@ export class AutocompleteComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.destroy$.next();
+  }
+
+  setChips(chips: string[]) {
+    this.chips = chips;
+    this.changeRef.markForCheck();
   }
 }

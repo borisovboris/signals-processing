@@ -5,6 +5,8 @@ export enum AppRoute {
     EVENTS = 'events',
 }
 
+export const routePaths = Object.values(AppRoute);
+
 export function isRoute(input: any): input is AppRoute {
-    return Object.values(AppRoute).includes(input);
+    return routePaths.includes(input);
 }

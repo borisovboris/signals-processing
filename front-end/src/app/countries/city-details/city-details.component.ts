@@ -36,4 +36,8 @@ export class CityDetailsComponent {
   getOperationalLabel(operational: boolean) {
     return operational ? 'Operational' : 'Not operational';
   }
+
+  goToLocationCompositions(cityName: string, locationName: string) {
+    this.router.navigate([`/compositions`], { relativeTo: this.route, queryParams: { cityName, locationName } });
+  }
 }

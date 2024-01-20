@@ -22,6 +22,7 @@
         <div
           class="country mat-elevation-z2"
           [class.not-operational]="!location.isOperational"
+          (click)="goToLocationCompositions(locations.city.name, location.name)"
         >
           <p>{{ location.name }}</p>
           <p>{{ location.address }}</p>
