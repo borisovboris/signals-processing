@@ -9,13 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { CompositionDTO } from './compositionDTO';
-import { DeviceDTO } from './deviceDTO';
+import { StatusDTO } from './statusDTO';
 
 
-export interface CompositionDetailsDTO { 
-    composition?: CompositionDTO;
-    relatedCompositions?: Array<CompositionDTO>;
-    devices?: Array<DeviceDTO>;
+export interface DeviceDTO { 
+    id: number;
+    name: string;
+    status: StatusDTO;
+    creationAt: string;
 }
 

@@ -14,21 +14,21 @@ import jakarta.persistence.ManyToOne;
 public class Device {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    public Long id;
 
     @Column(nullable = false, unique = true, length = 255)
-    private String code;
+    public String code;
 
     @Column(nullable = false, unique = true, length = 255)
-    private String name;
+    public String name;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "status_id")
-    private DeviceStatus status;
+    public DeviceStatus status;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "composition_id")
-    private Composition composition;
+    public Composition composition;
 
     @Column(insertable = false, updatable = false, nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     public Date creationAt;

@@ -13,23 +13,23 @@ import jakarta.persistence.OneToMany;
 public class DeviceStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    public Long id;
 
     @Column(nullable = false, unique = true, length = 255)
-    private String name;
+    public String name;
 
     @Column(columnDefinition = "boolean default true")
-    private boolean isOperational = true;
+    public boolean isOperational = true;
 
     @Column(columnDefinition = "boolean default true")
-    private boolean isBroken = false;
+    public boolean isBroken = false;
 
     @Column(columnDefinition = "boolean default true")
-    private boolean inMaintenance = false;
+    public boolean inMaintenance = false;
 
     @OneToMany(mappedBy = "status")
-    private Set<Device> devices;
+    public Set<Device> devices;
 
     @OneToMany(mappedBy = "status")
-    private Set<DeviceStatusRecord> records;
+    public Set<DeviceStatusRecord> records;
 }

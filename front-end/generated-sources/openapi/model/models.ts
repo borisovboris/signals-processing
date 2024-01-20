@@ -4,6 +4,7 @@ export * from './compositionDTO';
 export * from './compositionDetailsDTO';
 export * from './compositionFiltersDTO';
 export * from './countryDTO';
+export * from './deviceDTO';
 export * from './locationDTO';
 export * from './locationsDTO';
 export * from './signalDTO';

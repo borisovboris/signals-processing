@@ -1,5 +1,6 @@
 package com.signalsprocessing.engine.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,6 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 import com.signalsprocessing.engine.models.Composition;
+import com.signalsprocessing.engine.models.Device;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
@@ -75,21 +77,26 @@ public class CompositionService {
         List<CompositionDTO> relatedCompositions = list.stream().map(lc -> {
             return lc.firstComposition.id != id ? lc.firstComposition : lc.secondComposition;
         }).map(rc -> mapComposition(rc)).toList();
-        CompositionDTO composition = getComposition(id);
+        Composition composition = getComposition(id);
+        List<DeviceDTO> devices = composition.devices.stream().map(d -> mapDevice(d)).toList();
 
-        return new CompositionDetailsDTO(composition, relatedCompositions);
+        return new CompositionDetailsDTO(mapComposition(composition), relatedCompositions, devices);
     }
 
-    public CompositionDTO getComposition(long id) {
+    public Composition getComposition(long id) {
         TypedQuery<Composition> query = entityManager
                 .createQuery("SELECT c from Composition c WHERE c.id = :id", Composition.class)
                 .setParameter("id", id);
         Composition composition = query.getSingleResult();
 
-        return mapComposition(composition);
+        return composition;
     }
 
-    public record CompositionDTO(@NotNull long id, @NotNull String type, @NotNull int devicesSize, @NotNull StatusDTO status) {
+    public DeviceDTO mapDevice(Device device) {
+        StatusDTO status = new StatusDTO(device.status.name, device.status.isOperational,
+                device.status.isBroken, device.status.inMaintenance);
+
+        return new DeviceDTO(device.id, device.name, status, device.creationAt);
     }
 
     public CompositionDTO mapComposition(Composition composition) {
@@ -101,6 +108,10 @@ public class CompositionService {
         return new CompositionDTO(composition.id, type, devicesSize, status);
     }
 
+    public record CompositionDTO(@NotNull long id, @NotNull String type, @NotNull int devicesSize,
+            @NotNull StatusDTO status) {
+    }
+
     public record StatusDTO(@NotNull String name, @NotNull boolean isOperational, @NotNull boolean isBroken,
             @NotNull boolean inMaintenance) {
     }
@@ -108,10 +119,14 @@ public class CompositionService {
     public record LinkedCompositions(Composition firstComposition, Composition secondComposition) {
     }
 
-    public record CompositionDetailsDTO(CompositionDTO composition, List<CompositionDTO> relatedCompositions) {
+    public record CompositionDetailsDTO(CompositionDTO composition, List<CompositionDTO> relatedCompositions,
+            List<DeviceDTO> devices) {
     }
 
     public record CompositionFiltersDTO(@Nullable List<String> cityNames, @Nullable List<String> locationNames) {
     }
 
+    public record DeviceDTO(@NotNull long id, @NotNull String name,
+            @NotNull StatusDTO status, @NotNull Date creationAt) {
+    }
 }

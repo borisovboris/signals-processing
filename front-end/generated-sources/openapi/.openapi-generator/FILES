@@ -15,6 +15,7 @@ model/compositionDTO.ts
 model/compositionDetailsDTO.ts
 model/compositionFiltersDTO.ts
 model/countryDTO.ts
+model/deviceDTO.ts
 model/locationDTO.ts
 model/locationsDTO.ts
 model/models.ts
