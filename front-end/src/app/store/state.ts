@@ -15,6 +15,7 @@ export interface CountryState {
 export interface CompositionState {
   compositions?: CompositionDTO[];
   details?: CompositionDetailsDTO;
+  currentlyViewedCompositionId?: number;
 }
 
 export interface AppState {

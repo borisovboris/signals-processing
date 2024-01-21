@@ -12,7 +12,7 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class DeviceStatus {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     public Long id;
 
     @Column(nullable = false, unique = true, length = 255)
@@ -32,4 +32,36 @@ public class DeviceStatus {
 
     @OneToMany(mappedBy = "status")
     public Set<DeviceStatusRecord> records;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isOperational() {
+        return isOperational;
+    }
+
+    public void setOperational(boolean isOperational) {
+        this.isOperational = isOperational;
+    }
+
+    public boolean isBroken() {
+        return isBroken;
+    }
+
+    public void setBroken(boolean isBroken) {
+        this.isBroken = isBroken;
+    }
+
+    public boolean isInMaintenance() {
+        return inMaintenance;
+    }
+
+    public void setInMaintenance(boolean inMaintenance) {
+        this.inMaintenance = inMaintenance;
+    }
 }

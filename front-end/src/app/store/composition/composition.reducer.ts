@@ -14,6 +14,12 @@ export const compositionReducer = createReducer(
       compositions,
     };
   }),
+  on(CompositionActions.getDetails, (state, { id }) => {
+    return {
+      ...state,
+      currentlyViewedCompositionId: id,
+    };
+  }),
   on(CompositionActions.detailsFetched, (state, { details }) => {
     return {
       ...state,

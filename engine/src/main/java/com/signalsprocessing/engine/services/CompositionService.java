@@ -6,9 +6,11 @@ import java.util.Optional;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.signalsprocessing.engine.models.Composition;
 import com.signalsprocessing.engine.models.Device;
+import com.signalsprocessing.engine.models.DeviceStatus;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
@@ -108,6 +110,27 @@ public class CompositionService {
         return new CompositionDTO(composition.id, type, devicesSize, status);
     }
 
+    @Transactional
+    public void createDevice(NewDeviceDTO newDevice) {
+        Composition composition = entityManager.getReference(Composition.class, newDevice.compositionId);
+
+        DeviceStatus deviceStatus = new DeviceStatus();
+        deviceStatus.setName(newDevice.statusName);
+        deviceStatus.setOperational(newDevice.operational);
+        deviceStatus.setInMaintenance(newDevice.inMaintenance);
+        deviceStatus.setBroken(newDevice.broken);
+
+        entityManager.merge(deviceStatus);
+
+        Device device = new Device();
+        device.setCode(newDevice.deviceCode);
+        device.setName(newDevice.deviceName);
+        device.setStatus(deviceStatus);
+        device.setComposition(composition);
+
+        entityManager.merge(device);
+    }
+
     public record CompositionDTO(@NotNull long id, @NotNull String type, @NotNull int devicesSize,
             @NotNull StatusDTO status) {
     }
@@ -128,5 +151,10 @@ public class CompositionService {
 
     public record DeviceDTO(@NotNull long id, @NotNull String name,
             @NotNull StatusDTO status, @NotNull Date creationAt) {
+    }
+
+    public record NewDeviceDTO(@NotNull long compositionId, @NotNull String deviceCode, @NotNull String deviceName,
+            @NotNull String statusName,
+            @NotNull boolean operational, @NotNull boolean inMaintenance, @NotNull boolean broken) {
     }
 }

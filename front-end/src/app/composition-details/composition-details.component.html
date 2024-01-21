@@ -2,7 +2,9 @@
   <mat-card class="devices">
     <div class="heading">
       <h1>Devices</h1>
-      <button mat-raised-button color="accent">Add device</button>
+      <button mat-raised-button color="accent" (click)="openDeviceForm()">
+        Add device
+      </button>
     </div>
 
     <div class="columns">
@@ -29,7 +31,7 @@
       </cdk-virtual-scroll-viewport>
     </ng-container>
   </mat-card>
-  
+
   <mat-card class="related-compositions">
     <div class="heading">
       <h1>Linked compositions</h1>

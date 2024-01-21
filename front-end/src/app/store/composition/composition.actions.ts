@@ -1,5 +1,5 @@
 import { createActionGroup, props } from '@ngrx/store';
-import { CompositionDTO, CompositionDetailsDTO, CompositionFiltersDTO } from '../../../../generated-sources/openapi';
+import { CompositionDTO, CompositionDetailsDTO, CompositionFiltersDTO, NewDeviceDTO } from '../../../../generated-sources/openapi';
 
 export const CompositionActions = createActionGroup({
   source: 'Country',
@@ -8,5 +8,7 @@ export const CompositionActions = createActionGroup({
     'Compositions Fetched': props<{ compositions: CompositionDTO[] }>(),
     'Get Details': props<{ id: number }>(),
     'Details Fetched': props<{ details: CompositionDetailsDTO }>(),
+    'Create device': props<{ device: NewDeviceDTO }>(),
+    'Device created': props<any>(),
   },
 });

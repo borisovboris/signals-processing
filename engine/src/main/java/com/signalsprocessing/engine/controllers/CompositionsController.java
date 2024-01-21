@@ -13,8 +13,11 @@ import com.signalsprocessing.engine.services.CompositionService;
 import com.signalsprocessing.engine.services.CompositionService.CompositionDTO;
 import com.signalsprocessing.engine.services.CompositionService.CompositionDetailsDTO;
 import com.signalsprocessing.engine.services.CompositionService.CompositionFiltersDTO;
+import com.signalsprocessing.engine.services.CompositionService.NewDeviceDTO;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RequestMapping(name = "/api/compositions/", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "compositions")
@@ -35,5 +38,10 @@ public class CompositionsController {
     @GetMapping("read-composition-details/{id}")
     public CompositionDetailsDTO readCompositionDetails(@PathVariable long id) {
         return service.getCompositionDetails(id);
+    }
+
+    @PostMapping("create-device")
+    public void createDevice(@RequestBody NewDeviceDTO newDevice) {
+        service.createDevice(newDevice);
     }
 }

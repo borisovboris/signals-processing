@@ -6,11 +6,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @NgModule({
   declarations: [],
@@ -22,11 +22,11 @@ import { MatChipsModule } from '@angular/material/chips';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    FormsModule,
     MatSlideToggleModule,
     MatDividerModule,
     MatAutocompleteModule,
-    MatChipsModule
+    MatChipsModule,
+    MatButtonToggleModule,
   ],
   exports: [
     MatTabsModule,
@@ -35,11 +35,11 @@ import { MatChipsModule } from '@angular/material/chips';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    FormsModule,
     MatSlideToggleModule,
     MatDividerModule,
     MatAutocompleteModule,
-    MatChipsModule
+    MatChipsModule,
+    MatButtonToggleModule,
   ],
 })
 export class MaterialModule {}

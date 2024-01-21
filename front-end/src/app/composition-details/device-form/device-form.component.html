@@ -1,0 +1,41 @@
+<mat-card>
+  <h1>Add device</h1>
+  <form class="example-form" [formGroup]="deviceForm" (ngSubmit)="onSubmit()">
+    <mat-form-field class="example-full-width">
+      <mat-label>Device code</mat-label>
+      <input formControlName="deviceCode" matInput />
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Device name</mat-label>
+      <input formControlName="deviceName" matInput />
+    </mat-form-field>
+    <h3>Device status</h3>
+    <mat-form-field class="example-full-width">
+      <mat-label>Status name</mat-label>
+      <input formControlName="statusName" matInput />
+    </mat-form-field>
+    <mat-button-toggle-group formControlName="statusCondition">
+      <mat-button-toggle [checked]="true" [value]="StatusCondition.OPERATIONAL"
+        >Operational</mat-button-toggle
+      >
+      <mat-button-toggle [value]="StatusCondition.IN_MAINTENANCE"
+        >In maintenance</mat-button-toggle
+      >
+      <mat-button-toggle [value]="StatusCondition.BROKEN"
+        >Broken</mat-button-toggle
+      >
+    </mat-button-toggle-group>
+
+    <div class="actions">
+      <button mat-raised-button type="button" (click)="close()">Cancel</button>
+      <button
+        mat-raised-button
+        color="accent"
+        type="submit"
+        [disabled]="!deviceForm.valid"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</mat-card>

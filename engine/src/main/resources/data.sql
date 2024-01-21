@@ -100,6 +100,7 @@ VALUES
 (4, 'Camera in order', false, false, true),
 (5, 'Motor in order', true, false, false),
 (6, 'Stairs motor in order', true, false, false);
+ALTER SEQUENCE device_status_id_seq RESTART WITH 1000;
 
 INSERT INTO device (id, code, name, composition_id, status_id) 
 VALUES 
@@ -107,6 +108,7 @@ VALUES
 (2, 'CAMERA', 'Camera', 1, 4),
 (3, 'MOTOR', 'Motor', 1, 5),
 (4, 'STAIRS_MOTOR', 'Stairs motor', 2, 6);
+ALTER SEQUENCE device_id_seq RESTART WITH 1000;
 
 INSERT INTO device_status_record(device_id, status_id) 
 VALUES 
@@ -116,6 +118,8 @@ VALUES
 INSERT INTO linked_composition(first_composition_id, second_composition_id) 
 VALUES 
 (1, 2);
+
+
 
 
 

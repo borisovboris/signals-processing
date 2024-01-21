@@ -32,4 +32,36 @@ public class Device {
 
     @Column(insertable = false, updatable = false, nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     public Date creationAt;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public DeviceStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(DeviceStatus status) {
+        this.status = status;
+    }
+
+    public Composition getComposition() {
+        return composition;
+    }
+
+    public void setComposition(Composition composition) {
+        this.composition = composition;
+    }
 }

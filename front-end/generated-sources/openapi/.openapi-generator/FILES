@@ -19,6 +19,7 @@ model/deviceDTO.ts
 model/locationDTO.ts
 model/locationsDTO.ts
 model/models.ts
+model/newDeviceDTO.ts
 model/signalDTO.ts
 model/statusDTO.ts
 param.ts

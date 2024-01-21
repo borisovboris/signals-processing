@@ -7,5 +7,6 @@ export * from './countryDTO';
 export * from './deviceDTO';
 export * from './locationDTO';
 export * from './locationsDTO';
+export * from './newDeviceDTO';
 export * from './signalDTO';
 export * from './statusDTO';
