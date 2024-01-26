@@ -13,6 +13,7 @@ import com.signalsprocessing.engine.services.CompositionService;
 import com.signalsprocessing.engine.services.CompositionService.CompositionDTO;
 import com.signalsprocessing.engine.services.CompositionService.CompositionDetailsDTO;
 import com.signalsprocessing.engine.services.CompositionService.CompositionFiltersDTO;
+import com.signalsprocessing.engine.services.CompositionService.LinkedCompositionsDTO;
 import com.signalsprocessing.engine.services.CompositionService.NewDeviceDTO;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -43,5 +44,10 @@ public class CompositionsController {
     @PostMapping("create-device")
     public void createDevice(@RequestBody NewDeviceDTO newDevice) {
         service.createDevice(newDevice);
+    }
+
+    @PostMapping("link-compositions")
+    public void linkCompositions(@RequestBody LinkedCompositionsDTO link) {
+        service.linkCompositions(link);
     }
 }

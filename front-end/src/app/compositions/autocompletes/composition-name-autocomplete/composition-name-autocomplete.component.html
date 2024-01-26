@@ -1,0 +1,16 @@
+<mat-form-field class="example-full-width">
+  <mat-label>Composition</mat-label>
+  <input
+    type="text"
+    placeholder="Pick one"
+    aria-label="Number"
+    matInput
+    [matAutocomplete]="auto"
+    [formControl]="nameCtrl"
+  />
+  <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="selectOption($event)" [displayWith]="displayFn">
+    @for (option of options$ | async; track option.value) {
+    <mat-option [value]="option">{{ option.label }}</mat-option>
+    }
+  </mat-autocomplete>
+</mat-form-field>

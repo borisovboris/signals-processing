@@ -1,4 +1,4 @@
-<div class="wrapper">
+<div class="wrapper" *ngIf="details">
   <mat-card class="devices">
     <div class="heading">
       <h1>Devices</h1>
@@ -12,53 +12,55 @@
       <p>Added on</p>
       <p>Status</p>
     </div>
-    <ng-container *ngIf="details$ | async as details">
-      <cdk-virtual-scroll-viewport
-        CdkScrollable
-        [itemSize]="60"
-        class="example-viewport"
+    <cdk-virtual-scroll-viewport
+      CdkScrollable
+      [itemSize]="60"
+      class="example-viewport"
+    >
+      <div
+        class="country-wrapper"
+        *cdkVirtualFor="let device of details.devices"
       >
-        <div
-          class="country-wrapper"
-          *cdkVirtualFor="let device of details.devices"
-        >
-          <div class="country mat-elevation-z2">
-            <p>{{ device.name }}</p>
-            <p>{{ device.creationAt }}</p>
-            <p>{{ device.status.isOperational }}</p>
-          </div>
+        <div class="country mat-elevation-z2">
+          <p>{{ device.name }}</p>
+          <p>{{ device.creationAt }}</p>
+          <p>{{ device.status.isOperational }}</p>
         </div>
-      </cdk-virtual-scroll-viewport>
-    </ng-container>
+      </div>
+    </cdk-virtual-scroll-viewport>
   </mat-card>
 
   <mat-card class="related-compositions">
     <div class="heading">
       <h1>Linked compositions</h1>
-      <button mat-raised-button color="accent">Link composition</button>
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="openLinkCompositionForm()"
+      >
+        Link composition
+      </button>
     </div>
     <div class="columns">
-      <p>Type</p>
+      <p>Code</p>
       <p>Devices</p>
       <p>Status</p>
     </div>
-    <ng-container *ngIf="details$ | async as details">
-      <cdk-virtual-scroll-viewport
-        CdkScrollable
-        [itemSize]="60"
-        class="example-viewport"
+    <cdk-virtual-scroll-viewport
+      CdkScrollable
+      [itemSize]="60"
+      class="example-viewport"
+    >
+      <div
+        class="country-wrapper"
+        *cdkVirtualFor="let composition of details.relatedCompositions"
       >
-        <div
-          class="country-wrapper"
-          *cdkVirtualFor="let composition of details.relatedCompositions"
-        >
-          <div class="country mat-elevation-z2">
-            <p>{{ composition.type }}</p>
-            <p>{{ composition.devicesSize }}</p>
-            <p>{{ composition.status.isOperational }}</p>
-          </div>
+        <div class="country mat-elevation-z2">
+          <p>{{ composition.code }}</p>
+          <p>{{ composition.devicesSize }}</p>
+          <p>{{ composition.status.isOperational }}</p>
         </div>
-      </cdk-virtual-scroll-viewport>
-    </ng-container>
+      </div>
+    </cdk-virtual-scroll-viewport>
   </mat-card>
 </div>

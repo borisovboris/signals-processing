@@ -10,5 +10,7 @@ export const CompositionActions = createActionGroup({
     'Details Fetched': props<{ details: CompositionDetailsDTO }>(),
     'Create device': props<{ device: NewDeviceDTO }>(),
     'Device created': props<any>(),
+    'Link compositions': props<{ firstId: number, secondId: number }>(),
+    'Compositions linked': props<any>(),
   },
 });

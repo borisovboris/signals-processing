@@ -24,9 +24,13 @@ export class CompositionEffects {
 
   loadDetails = createEffect(() =>
     this.actions$.pipe(
-      ofType(CompositionActions.getDetails, CompositionActions.deviceCreated),
+      ofType(
+        CompositionActions.getDetails,
+        CompositionActions.deviceCreated,
+        CompositionActions.compositionsLinked
+      ),
       withLatestFrom(this.store.select(currentlyViewedCompositionId)),
-      switchMap(([_,  compositionId ]) =>
+      switchMap(([_, compositionId]) =>
         this.compositionService.readCompositionDetails(compositionId!).pipe(
           map((details) => CompositionActions.detailsFetched({ details })),
           catchError(() => EMPTY)
@@ -41,6 +45,18 @@ export class CompositionEffects {
       switchMap(({ device }) =>
         this.compositionService.createDevice(device).pipe(
           map(() => CompositionActions.deviceCreated()),
+          catchError(() => EMPTY)
+        )
+      )
+    )
+  );
+
+  linkCompositions = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CompositionActions.linkCompositions),
+      switchMap(({ firstId, secondId }) =>
+        this.compositionService.linkCompositions({ firstId, secondId }).pipe(
+          map(() => CompositionActions.compositionsLinked()),
           catchError(() => EMPTY)
         )
       )

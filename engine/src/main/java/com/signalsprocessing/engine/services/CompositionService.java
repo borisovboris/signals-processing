@@ -11,12 +11,15 @@ import org.springframework.transaction.annotation.Transactional;
 import com.signalsprocessing.engine.models.Composition;
 import com.signalsprocessing.engine.models.Device;
 import com.signalsprocessing.engine.models.DeviceStatus;
+import com.signalsprocessing.engine.models.LinkedComposition;
+import com.signalsprocessing.engine.models.LinkedCompositionId;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.validation.constraints.NotNull;
 
@@ -32,8 +35,8 @@ public class CompositionService {
     }
 
     public List<CompositionDTO> readCompositions(Optional<CompositionFiltersDTO> filters) {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Composition> criteriaQuery = criteriaBuilder.createQuery(Composition.class);
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Composition> criteriaQuery = cb.createQuery(Composition.class);
         Root<Composition> root = criteriaQuery.from(Composition.class);
         // This is the query that selects all rows from the table
         CriteriaQuery<Composition> initialQuery = criteriaQuery.select(root);
@@ -42,6 +45,8 @@ public class CompositionService {
             CompositionFiltersDTO presentFilters = filters.get();
             List<String> cityNames = presentFilters.cityNames();
             List<String> locationNames = presentFilters.locationNames();
+            List<String> excludedCompositionCodes = presentFilters.excludedCompositionCodes();
+            String code = presentFilters.code();
 
             if (cityNames != null) {
                 var cityName = root.get("location").get("city").get("name");
@@ -51,6 +56,14 @@ public class CompositionService {
             if (locationNames != null) {
                 var locationName = root.get("location").get("name");
                 initialQuery.where(locationName.in(locationNames));
+            }
+
+            if (code != null && excludedCompositionCodes != null) {
+                var compositionCode = root.get("code");
+                Predicate codeIsLike = cb.like(compositionCode.as(String.class), code + "%");
+                Predicate codeIsNotIn = compositionCode.in(excludedCompositionCodes).not();
+
+                initialQuery.where(cb.and(codeIsLike, codeIsNotIn));
             }
         }
 
@@ -102,12 +115,23 @@ public class CompositionService {
     }
 
     public CompositionDTO mapComposition(Composition composition) {
-        String type = composition.type.name;
+        String code = composition.code;
+        String locationName = composition.location.name;
         int devicesSize = composition.devices.size();
         StatusDTO status = new StatusDTO(composition.status.name, composition.status.isOperational,
                 composition.status.isBroken, composition.status.inMaintenance);
 
-        return new CompositionDTO(composition.id, type, devicesSize, status);
+        return new CompositionDTO(composition.id, locationName, code, devicesSize, status);
+    }
+
+    @Transactional
+    public void linkCompositions(LinkedCompositionsDTO link) {
+        Composition firstComposition = getComposition(link.firstId);
+        Composition secondComposition = getComposition(link.secondId);
+        LinkedComposition linkedComposition = new LinkedComposition();
+
+        
+        entityManager.merge(linkedComposition);
     }
 
     @Transactional
@@ -131,7 +155,8 @@ public class CompositionService {
         entityManager.merge(device);
     }
 
-    public record CompositionDTO(@NotNull long id, @NotNull String type, @NotNull int devicesSize,
+    public record CompositionDTO(@NotNull long id, @NotNull String locationName, @NotNull String code,
+            @NotNull int devicesSize,
             @NotNull StatusDTO status) {
     }
 
@@ -142,16 +167,21 @@ public class CompositionService {
     public record LinkedCompositions(Composition firstComposition, Composition secondComposition) {
     }
 
-    public record CompositionDetailsDTO(CompositionDTO composition, List<CompositionDTO> relatedCompositions,
-            List<DeviceDTO> devices) {
+    public record CompositionDetailsDTO(@NotNull CompositionDTO composition,
+            @NotNull List<CompositionDTO> relatedCompositions,
+            @NotNull List<DeviceDTO> devices) {
     }
 
-    public record CompositionFiltersDTO(@Nullable List<String> cityNames, @Nullable List<String> locationNames) {
+    public record CompositionFiltersDTO(@Nullable List<String> cityNames, @Nullable List<String> locationNames,
+            @Nullable List<String> excludedCompositionCodes, @Nullable String code) {
     }
 
     public record DeviceDTO(@NotNull long id, @NotNull String name,
             @NotNull StatusDTO status, @NotNull Date creationAt) {
     }
+
+    public record LinkedCompositionsDTO(@NotNull long firstId, @NotNull long secondId) {
+}
 
     public record NewDeviceDTO(@NotNull long compositionId, @NotNull String deviceCode, @NotNull String deviceName,
             @NotNull String statusName,

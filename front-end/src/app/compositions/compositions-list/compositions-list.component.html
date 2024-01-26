@@ -14,7 +14,7 @@
       <h2>Compositions:</h2>
     </div>
     <div class="columns">
-      <p>Type</p>
+      <p>Code</p>
       <p>Devices</p>
       <p>Status</p>
     </div>
@@ -32,7 +32,7 @@
           [class.not-operational]="!composition.status.isOperational"
           (click)="goToDetails(composition.id)"
         >
-          <p>{{ composition.type }}</p>
+          <p>{{ composition.code }}</p>
           <p>{{ composition.devicesSize }}</p>
           <p>{{ getOperationalLabel(composition.status.isOperational) }}</p>
         </div>

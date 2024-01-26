@@ -5,6 +5,7 @@ export * from './compositionDetailsDTO';
 export * from './compositionFiltersDTO';
 export * from './countryDTO';
 export * from './deviceDTO';
+export * from './linkedCompositionsDTO';
 export * from './locationDTO';
 export * from './locationsDTO';
 export * from './newDeviceDTO';

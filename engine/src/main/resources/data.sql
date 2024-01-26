@@ -68,24 +68,23 @@ VALUES
 
 INSERT INTO composition_type (id, name) 
 VALUES 
-(1, 'Revolving door');
-INSERT INTO composition_type (id, name) 
-VALUES 
-(2, 'Escalator');
+(1, 'Revolving door'),
+(2, 'Escalator'),
+(3, 'Fire alarm');
 
 INSERT INTO composition_status (id, name, is_operational, is_broken, in_maintenance) 
 VALUES 
 (1, 'Revolving door not opening', false, true, false),
 (2, 'Revolving door in maintenance', false, false, true),
 (3, 'Revolving door in order', true, false, false),
-(4, 'Escalator in order', true, false, false);
+(4, 'Escalator in order', true, false, false),
+(5, 'Fire alarm in order', true, false, false);
 
 INSERT INTO composition (id, code, type_id, location_id, status_id) 
 VALUES 
-(1, 'REVOLVING_DOOR', 1, 50, 3);
-INSERT INTO composition (id, code, type_id, location_id, status_id) 
-VALUES 
-(2, 'ESCALATOR', 2, 50, 4);
+(1, 'REVOLVING_DOOR', 1, 50, 3),
+(2, 'ESCALATOR', 2, 50, 4),
+(3, 'FIRE_ALARM', 3, 50, 5);
 
 INSERT INTO composition_status_record (composition_id, status_id) 
 VALUES 

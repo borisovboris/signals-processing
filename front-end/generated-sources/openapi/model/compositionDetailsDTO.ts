@@ -14,8 +14,8 @@ import { DeviceDTO } from './deviceDTO';
 
 
 export interface CompositionDetailsDTO { 
-    composition?: CompositionDTO;
-    relatedCompositions?: Array<CompositionDTO>;
-    devices?: Array<DeviceDTO>;
+    composition: CompositionDTO;
+    relatedCompositions: Array<CompositionDTO>;
+    devices: Array<DeviceDTO>;
 }
 
