@@ -5,14 +5,14 @@ import { BehaviorSubject, map, take } from 'rxjs';
 import { AutocompleteComponent } from '../../../shared/autocomplete/autocomplete.component';
 
 @Component({
-  selector: 'app-location-name-autocomplete',
+  selector: 'app-location-name-chips-autocomplete',
   standalone: true,
   imports: [AutocompleteComponent],
-  templateUrl: './location-name-autocomplete.component.html',
-  styleUrl: './location-name-autocomplete.component.scss',
+  templateUrl: './location-name-chips-autocomplete.component.html',
+  styleUrl: './location-name-chips-autocomplete.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LocationNameAutocompleteComponent implements AutoComplete {
+export class LocationNameChipsAutocompleteComponent implements AutoComplete {
   locations$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   options$ = this.locations$.asObservable();
   @Output() itemsUpdated = new EventEmitter<string[]>();

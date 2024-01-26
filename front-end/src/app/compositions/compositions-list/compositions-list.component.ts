@@ -12,8 +12,8 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../material/material.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { AutocompleteComponent } from '../../shared/autocomplete/autocomplete.component';
-import { CityNameAutocompleteComponent } from '../autocompletes/city-name-autocomplete/city-name-autocomplete.component';
-import { LocationNameAutocompleteComponent } from '../autocompletes/location-name-autocomplete/location-name-autocomplete.component';
+import { CityNameChipsAutocompleteComponent } from '../autocompletes/city-name-chips-autocomplete/city-name-chips-autocomplete.component';
+import { LocationNameChipsAutocompleteComponent } from '../autocompletes/location-name-chips-autocomplete/location-name-chips-autocomplete.component';
 import { isDefined } from '../../shared/utils';
 import { take } from 'rxjs';
 
@@ -22,8 +22,8 @@ import { take } from 'rxjs';
   standalone: true,
   imports: [
     AutocompleteComponent,
-    CityNameAutocompleteComponent,
-    LocationNameAutocompleteComponent,
+    CityNameChipsAutocompleteComponent,
+    LocationNameChipsAutocompleteComponent,
     CommonModule,
     MaterialModule,
     ScrollingModule,
@@ -33,10 +33,10 @@ import { take } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CompositionsListComponent implements AfterViewInit {
-  @ViewChild(CityNameAutocompleteComponent)
-  cityNameAutoComplete!: CityNameAutocompleteComponent;
-  @ViewChild(LocationNameAutocompleteComponent)
-  locationNameAutoComplete!: LocationNameAutocompleteComponent;
+  @ViewChild(CityNameChipsAutocompleteComponent)
+  cityNameAutoComplete!: CityNameChipsAutocompleteComponent;
+  @ViewChild(LocationNameChipsAutocompleteComponent)
+  locationNameAutoComplete!: LocationNameChipsAutocompleteComponent;
   cityName?: string;
   locationName?: string;
 

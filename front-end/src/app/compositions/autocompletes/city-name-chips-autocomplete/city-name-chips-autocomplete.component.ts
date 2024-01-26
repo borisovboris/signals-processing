@@ -13,14 +13,14 @@ import { CountriesService } from '../../../../../generated-sources/openapi';
 import { AutoComplete } from '../../../shared/autocomplete/autocomplete.model';
 
 @Component({
-  selector: 'app-city-name-autocomplete',
+  selector: 'app-city-name-chips-autocomplete',
   standalone: true,
   imports: [CommonModule, AutocompleteComponent],
-  templateUrl: './city-name-autocomplete.component.html',
-  styleUrl: './city-name-autocomplete.component.scss',
+  templateUrl: './city-name-chips-autocomplete.component.html',
+  styleUrl: './city-name-chips-autocomplete.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CityNameAutocompleteComponent implements AutoComplete {
+export class CityNameChipsAutocompleteComponent implements AutoComplete {
   cities$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   options$ = this.cities$.asObservable();
   @Output() itemsUpdated = new EventEmitter<string[]>();
