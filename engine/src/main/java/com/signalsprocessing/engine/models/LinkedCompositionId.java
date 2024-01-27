@@ -4,6 +4,9 @@ public class LinkedCompositionId {
     private Long firstCompositionId;
     private Long secondCompositionId;
 
+    public LinkedCompositionId() {
+    }
+
     public LinkedCompositionId(Long firstCompositonId, Long secondCompositionId) {
         this.firstCompositionId = firstCompositonId;
         this.secondCompositionId = secondCompositionId;

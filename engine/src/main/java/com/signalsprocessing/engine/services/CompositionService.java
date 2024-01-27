@@ -128,8 +128,12 @@ public class CompositionService {
     public void linkCompositions(LinkedCompositionsDTO link) {
         Composition firstComposition = getComposition(link.firstId);
         Composition secondComposition = getComposition(link.secondId);
+        LinkedCompositionId id = new LinkedCompositionId(link.firstId, link.secondId);
         LinkedComposition linkedComposition = new LinkedComposition();
 
+        linkedComposition.setId(id);
+        linkedComposition.setFirstComposition(firstComposition);
+        linkedComposition.setSecondComposition(secondComposition);
         
         entityManager.merge(linkedComposition);
     }

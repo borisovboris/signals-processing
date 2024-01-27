@@ -18,4 +18,16 @@ public class LinkedComposition {
     @ManyToOne(cascade = CascadeType.ALL)
     @MapsId("secondCompositionId")
     private Composition secondComposition;
+
+    public void setId(LinkedCompositionId id) {
+        this.id = id;
+    }
+
+    public void setFirstComposition(Composition firstComposition) {
+        this.firstComposition = firstComposition;
+    }
+
+    public void setSecondComposition(Composition secondComposition) {
+        this.secondComposition = secondComposition;
+    }
 }
