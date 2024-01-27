@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { CompositionActions } from '../store/composition/composition.actions';
@@ -10,7 +15,10 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { DialogService } from '../shared/services/dialog.service';
 import { DeviceFormComponent } from './device-form/device-form.component';
 import { isDefined } from '../shared/utils';
-import { LinkCompositionData, LinkCompositionFormComponent } from './link-composition-form/link-composition-form.component';
+import {
+  LinkCompositionData,
+  LinkCompositionFormComponent,
+} from './link-composition-form/link-composition-form.component';
 import { CompositionDetailsDTO } from '../../../generated-sources/openapi';
 
 @Component({
@@ -57,19 +65,35 @@ export class CompositionDetailsComponent implements OnInit {
   }
 
   openLinkCompositionForm() {
-    if(this.details === undefined || this.compositionId === undefined) {
+    if (this.details === undefined || this.compositionId === undefined) {
       return;
     }
 
-    let relatedCompositionCodes = this.details.relatedCompositions.map(c => c.code);
+    let relatedCompositionCodes = this.details.relatedCompositions.map(
+      (c) => c.code
+    );
     let currentCompositionCode = this.details.composition.code;
 
     const data: LinkCompositionData = {
       compositionId: this.compositionId,
       locationNames: [this.details.composition.locationName],
-      excludedCompositionCodes: [currentCompositionCode, ...relatedCompositionCodes],
-    }
+      excludedCompositionCodes: [
+        currentCompositionCode,
+        ...relatedCompositionCodes,
+      ],
+    };
 
     this.dialogService.open(LinkCompositionFormComponent, { data });
+  }
+
+  unlinkCompositions(linkedCompositionId: number) {
+    if (this.compositionId !== undefined) {
+      this.store.dispatch(
+        CompositionActions.unlinkCompositions({
+          firstId: this.compositionId,
+          secondId: linkedCompositionId,
+        })
+      );
+    }
   }
 }

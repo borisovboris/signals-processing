@@ -50,4 +50,9 @@ public class CompositionsController {
     public void linkCompositions(@RequestBody LinkedCompositionsDTO link) {
         service.linkCompositions(link);
     }
+
+    @PostMapping("unlink-compositions")
+    public void unlinkCompositions(@RequestBody LinkedCompositionsDTO link) {
+        service.unlinkCompositions(link);
+    }
 }

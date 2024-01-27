@@ -27,7 +27,8 @@ export class CompositionEffects {
       ofType(
         CompositionActions.getDetails,
         CompositionActions.deviceCreated,
-        CompositionActions.compositionsLinked
+        CompositionActions.compositionsLinked,
+        CompositionActions.compositionsUnlinked,
       ),
       withLatestFrom(this.store.select(currentlyViewedCompositionId)),
       switchMap(([_, compositionId]) =>
@@ -62,6 +63,18 @@ export class CompositionEffects {
       )
     )
   );
+
+  unlinkCompositions = createEffect(() =>
+  this.actions$.pipe(
+    ofType(CompositionActions.unlinkCompositions),
+    switchMap(({ firstId, secondId }) =>
+      this.compositionService.unlinkCompositions({ firstId, secondId }).pipe(
+        map(() => CompositionActions.compositionsUnlinked()),
+        catchError(() => EMPTY)
+      )
+    )
+  )
+);
 
   constructor(
     private actions$: Actions,

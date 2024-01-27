@@ -134,8 +134,23 @@ public class CompositionService {
         linkedComposition.setId(id);
         linkedComposition.setFirstComposition(firstComposition);
         linkedComposition.setSecondComposition(secondComposition);
-        
+
         entityManager.merge(linkedComposition);
+    }
+
+    @Transactional
+    public void unlinkCompositions(LinkedCompositionsDTO link) {
+        TypedQuery<LinkedComposition> query = entityManager.createQuery(
+                "SELECT lc from LinkedComposition lc " +
+                        "WHERE (lc.firstComposition.id = :firstId AND lc.secondComposition.id = :secondId) " +
+                        "OR (lc.firstComposition.id = :secondId AND lc.secondComposition.id = :firstId)",
+                LinkedComposition.class)
+                .setParameter("firstId", link.firstId)
+                .setParameter("secondId", link.secondId);
+
+        LinkedComposition linkedCompositions = query.getSingleResult();
+
+        entityManager.remove(linkedCompositions);
     }
 
     @Transactional
@@ -185,7 +200,7 @@ public class CompositionService {
     }
 
     public record LinkedCompositionsDTO(@NotNull long firstId, @NotNull long secondId) {
-}
+    }
 
     public record NewDeviceDTO(@NotNull long compositionId, @NotNull String deviceCode, @NotNull String deviceName,
             @NotNull String statusName,

@@ -45,6 +45,7 @@
       <p>Code</p>
       <p>Devices</p>
       <p>Status</p>
+      <p>Actions</p>
     </div>
     <cdk-virtual-scroll-viewport
       CdkScrollable
@@ -59,8 +60,9 @@
           <p>{{ composition.code }}</p>
           <p>{{ composition.devicesSize }}</p>
           <p>{{ composition.status.isOperational }}</p>
-        </div>
+          <p (click)="unlinkCompositions(composition.id)">Unlink</p>
       </div>
+    </div>
     </cdk-virtual-scroll-viewport>
   </mat-card>
 </div>

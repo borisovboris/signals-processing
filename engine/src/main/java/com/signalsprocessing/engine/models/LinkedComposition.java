@@ -11,11 +11,11 @@ public class LinkedComposition {
     @EmbeddedId
     private LinkedCompositionId id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @MapsId("firstCompositionId")
     private Composition firstComposition;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @MapsId("secondCompositionId")
     private Composition secondComposition;
 
