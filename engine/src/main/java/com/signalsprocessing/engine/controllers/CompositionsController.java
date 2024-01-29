@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,5 +55,10 @@ public class CompositionsController {
     @PostMapping("unlink-compositions")
     public void unlinkCompositions(@RequestBody LinkedCompositionsDTO link) {
         service.unlinkCompositions(link);
+    }
+
+    @DeleteMapping("delete-device/{id}")
+    public void deleteDevice(@PathVariable long id) {
+        service.deleteDevice(id);
     }
 }

@@ -174,6 +174,16 @@ public class CompositionService {
         entityManager.merge(device);
     }
 
+    @Transactional
+    public void deleteDevice(Long id) {
+        TypedQuery<Device> query = entityManager.createQuery("SELECT d from Device d WHERE d.id = :id", Device.class)
+        .setParameter("id", id);
+
+        Device device = query.getSingleResult();
+
+        entityManager.remove(device);
+    }
+
     public record CompositionDTO(@NotNull long id, @NotNull String locationName, @NotNull String code,
             @NotNull int devicesSize,
             @NotNull StatusDTO status) {

@@ -11,6 +11,7 @@
       <p>Name</p>
       <p>Added on</p>
       <p>Status</p>
+      <p>Actions</p>
     </div>
     <cdk-virtual-scroll-viewport
       CdkScrollable
@@ -25,6 +26,7 @@
           <p>{{ device.name }}</p>
           <p>{{ device.creationAt }}</p>
           <p>{{ device.status.isOperational }}</p>
+          <p (click)="deleteDevice(device.id)">Delete</p>
         </div>
       </div>
     </cdk-virtual-scroll-viewport>

@@ -14,5 +14,7 @@ export const CompositionActions = createActionGroup({
     'Compositions linked': props<any>(),
     'Unlink compositions': props<{ firstId: number, secondId: number }>(),
     'Compositions unlinked': props<any>(),
+    'Delete device': props<{ id: number }>(),
+    'Device deleted': props<any>(),
   },
 });

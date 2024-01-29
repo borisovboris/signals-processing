@@ -96,4 +96,8 @@ export class CompositionDetailsComponent implements OnInit {
       );
     }
   }
+
+  deleteDevice(id: number) {
+    this.store.dispatch(CompositionActions.deleteDevice({ id }));
+  }
 }

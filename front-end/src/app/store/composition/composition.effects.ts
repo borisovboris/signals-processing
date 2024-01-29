@@ -29,6 +29,7 @@ export class CompositionEffects {
         CompositionActions.deviceCreated,
         CompositionActions.compositionsLinked,
         CompositionActions.compositionsUnlinked,
+        CompositionActions.deleteDevice,
       ),
       withLatestFrom(this.store.select(currentlyViewedCompositionId)),
       switchMap(([_, compositionId]) =>
@@ -74,6 +75,18 @@ export class CompositionEffects {
       )
     )
   )
+);
+
+deleteDevice = createEffect(() =>
+this.actions$.pipe(
+  ofType(CompositionActions.deleteDevice),
+  switchMap(({ id }) =>
+    this.compositionService.deleteDevice(id).pipe(
+      map(() => CompositionActions.compositionsUnlinked()),
+      catchError(() => EMPTY)
+    )
+  )
+)
 );
 
   constructor(
