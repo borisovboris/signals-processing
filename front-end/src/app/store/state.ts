@@ -3,6 +3,7 @@ import {
   CompositionDTO,
   CompositionDetailsDTO,
   CountryDTO,
+  EventDTO,
   LocationsDTO,
 } from '../../../generated-sources/openapi';
 
@@ -16,6 +17,10 @@ export interface CompositionState {
   compositions?: CompositionDTO[];
   details?: CompositionDetailsDTO;
   currentlyViewedCompositionId?: number;
+}
+
+export interface EventState {
+  events: EventDTO[];
 }
 
 export interface AppState {

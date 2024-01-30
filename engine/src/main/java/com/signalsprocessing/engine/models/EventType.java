@@ -10,8 +10,8 @@ import jakarta.persistence.Id;
 public class EventType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    public Long id;
 
     @Column(nullable = false, unique = true, length = 255)
-    private String name;
+    public String name;
 }

@@ -11,11 +11,11 @@ public class EventDevice {
     @EmbeddedId
     private EventDeviceId id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @MapsId("eventId")
     private Event event;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @MapsId("deviceId")
     private Device device;
 }

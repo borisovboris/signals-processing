@@ -1,0 +1,22 @@
+<div class="wrapper">
+    <mat-card >
+      <ng-container *ngIf="events$ | async as events">
+        <cdk-virtual-scroll-viewport
+          CdkScrollable
+          [itemSize]="60"
+          class="example-viewport"
+        >
+          <div
+            class="country-wrapper"
+            *cdkVirtualFor="let event of events"
+          >
+            <div class="country mat-elevation-z2">
+              <p>{{ event.typeName }}</p>
+              <p>{{ event.manualInsert }}</p>
+            </div>
+          </div>
+        </cdk-virtual-scroll-viewport>
+      </ng-container>
+    </mat-card>
+  </div>
+  

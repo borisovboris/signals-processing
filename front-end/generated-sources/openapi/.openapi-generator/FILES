@@ -4,6 +4,7 @@ api.module.ts
 api/api.ts
 api/compositions.service.ts
 api/countries.service.ts
+api/events.service.ts
 api/signals.service.ts
 configuration.ts
 encoder.ts
@@ -16,6 +17,7 @@ model/compositionDetailsDTO.ts
 model/compositionFiltersDTO.ts
 model/countryDTO.ts
 model/deviceDTO.ts
+model/eventDTO.ts
 model/linkedCompositionsDTO.ts
 model/locationDTO.ts
 model/locationsDTO.ts

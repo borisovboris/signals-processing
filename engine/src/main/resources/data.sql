@@ -118,6 +118,26 @@ INSERT INTO linked_composition(first_composition_id, second_composition_id)
 VALUES 
 (1, 2);
 
+INSERT INTO event_type(id, name)
+VALUES
+(1, 'Start motor'),
+(2, 'Stop motor');
+
+INSERT INTO signal(id, device_id, value)
+VALUES
+(1, 3, 1),
+(2, 3, 0);
+
+INSERT INTO event(id, type_id, signal_id)
+VALUES
+(1, 1, 1),
+(2, 2, 2);
+
+INSERT INTO event_device(event_id, device_id)
+VALUES
+(1, 3),
+(2, 3);
+
 
 
 

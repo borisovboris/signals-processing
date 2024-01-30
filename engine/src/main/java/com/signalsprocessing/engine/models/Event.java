@@ -16,23 +16,22 @@ import jakarta.persistence.TemporalType;
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    public Long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "event_type_id", nullable = false)
-    private EventType type;
+    @JoinColumn(name = "type_id", nullable = false)
+    public EventType type;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "signal_id", nullable = false)
-    private Signal signal;
+    public Signal signal;
 
     @Column(columnDefinition = "boolean default false")
-    private boolean manualInsert = false;
+    public boolean manualInsert = false;
 
     @Column(insertable = false, updatable = false, nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     public Date creationAt;
 
-    @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date eventCreationAt;
+    @Column(insertable = false, updatable = false, nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    public Date eventCreationAt;
 }

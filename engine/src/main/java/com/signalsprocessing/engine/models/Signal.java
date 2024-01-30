@@ -15,17 +15,17 @@ import jakarta.persistence.ManyToOne;
 public class Signal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    public Long id;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "device_id", nullable = false)
-    private Device device;
+    public Device device;
 
     @Column
-    private BigDecimal value;
+    public BigDecimal value;
 
     @Column(length = 255)
-    private String description;
+    public String description;
 
     @Column(insertable = false, updatable = false, nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     public Date creationAt;

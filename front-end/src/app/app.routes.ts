@@ -24,8 +24,8 @@ export const routes: Routes = [
   },
   {
     path: AppRoute.EVENTS,
-    loadComponent: () =>
-      import('./events/events.component').then((mod) => mod.EventsComponent),
+    loadChildren: () =>
+      import('./events/routes').then((mod) => mod.EVENT_ROUTES),
   },
   {
     path: '**',
