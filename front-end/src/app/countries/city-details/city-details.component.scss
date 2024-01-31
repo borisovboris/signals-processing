@@ -1,6 +1,8 @@
-@use "sass:map";
-@import "./colors";
-@import "./dimensions";
+@import "./card";
+@import "./list";
+
+@include row;
+@include columns;
 
 .wrapper {
   padding: 0 15vw;
@@ -13,55 +15,9 @@
   }
 
   mat-card {
-    padding: 30px 0;
-    background-color: map.get($primary, 50);
-    height: 100%;
-    overflow-y: hidden;
-
-    .columns {
-        margin: 0 45px;
-        display: flex;
-        justify-content: space-evenly;
-
-        p {
-            text-align: center;
-            flex: 1;
-            font-size: 20px;
-        }
-    }
+   @include card;
+   @include list-margin;
   }
-
-  
-  .country-wrapper {
-    margin: 0 45px;
-    padding: 10px;
-  
-    .country {
-      padding: 10px 0;
-      background-color: #ffffff;
-      display: flex;
-      justify-content: space-evenly;
-      border-radius: 20px;
-  
-      p {
-        margin: 0;
-        flex: 1;
-        text-align: center;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-      }
-  
-      &:hover {
-        cursor: pointer;
-      }
-
-      &.not-operational {
-        background-color: map.get($warn, 200);;
-      }
-    }
-  }
-  
 }
 
 

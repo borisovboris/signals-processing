@@ -9,8 +9,8 @@
       [itemSize]="60"
       class="example-viewport"
     >
-      <div class="country-wrapper" *cdkVirtualFor="let city of cities.cities" (click)="goToCity(city.id)">
-        <div class="country mat-elevation-z2">
+      <div class="row-wrapper" *cdkVirtualFor="let city of cities.cities" (click)="goToCity(city.id)">
+        <div class="row mat-elevation-z2">
           <p>{{ city.name }}</p>
         </div>
       </div>

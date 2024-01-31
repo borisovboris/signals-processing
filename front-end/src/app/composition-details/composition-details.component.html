@@ -18,11 +18,8 @@
       [itemSize]="60"
       class="example-viewport"
     >
-      <div
-        class="country-wrapper"
-        *cdkVirtualFor="let device of details.devices"
-      >
-        <div class="country mat-elevation-z2">
+      <div class="row-wrapper" *cdkVirtualFor="let device of details.devices">
+        <div class="row mat-elevation-z2">
           <p>{{ device.name }}</p>
           <p>{{ device.creationAt }}</p>
           <p>{{ device.status.isOperational }}</p>
@@ -55,16 +52,16 @@
       class="example-viewport"
     >
       <div
-        class="country-wrapper"
+        class="row-wrapper"
         *cdkVirtualFor="let composition of details.relatedCompositions"
       >
-        <div class="country mat-elevation-z2">
+        <div class="row mat-elevation-z2">
           <p>{{ composition.code }}</p>
           <p>{{ composition.devicesSize }}</p>
           <p>{{ composition.status.isOperational }}</p>
           <p (click)="unlinkCompositions(composition.id)">Unlink</p>
+        </div>
       </div>
-    </div>
     </cdk-virtual-scroll-viewport>
   </mat-card>
 </div>

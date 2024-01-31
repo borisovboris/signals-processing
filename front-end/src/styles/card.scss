@@ -1,0 +1,10 @@
+@use "sass:map";
+@import "./colors";
+
+@mixin card {
+  padding: 30px 0;
+  background-color: map.get($primary, 50);
+  height: 100%;
+  width: 100%;
+  overflow-y: hidden;
+}

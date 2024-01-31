@@ -1,0 +1,54 @@
+@use "sass:map";
+@import "./colors";
+
+@mixin columns {
+  .columns {
+    display: flex;
+    justify-content: space-evenly;
+
+    p {
+      text-align: center;
+      flex: 1;
+      font-size: 20px;
+    }
+  }
+}
+
+@mixin list-margin() {
+  & > :not(.example-viewport) {
+    margin-left: 45px;
+    margin-right: 45px;
+  }
+}
+
+@mixin row {
+  .row-wrapper {
+    margin: 0 45px;
+    padding: 10px;
+
+    .row {
+      padding: 10px 0;
+      background-color: #ffffff;
+      display: flex;
+      justify-content: space-evenly;
+      border-radius: 20px;
+
+      p {
+        margin: 0;
+        flex: 1;
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      &.not-operational {
+        background-color: map.get($warn, 200);
+      }
+    }
+  }
+}

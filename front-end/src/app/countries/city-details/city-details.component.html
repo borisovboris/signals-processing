@@ -16,11 +16,11 @@
       class="example-viewport"
     >
       <div
-        class="country-wrapper"
+        class="row-wrapper"
         *cdkVirtualFor="let location of locations.locations"
       >
         <div
-          class="country mat-elevation-z2"
+          class="row mat-elevation-z2"
           [class.not-operational]="!location.isOperational"
           (click)="goToLocationCompositions(locations.city.name, location.name)"
         >

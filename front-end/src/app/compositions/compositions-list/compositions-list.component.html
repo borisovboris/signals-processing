@@ -24,11 +24,11 @@
       class="example-viewport"
     >
       <div
-        class="country-wrapper"
+        class="row-wrapper"
         *cdkVirtualFor="let composition of compositions"
       >
         <div
-          class="country mat-elevation-z2"
+          class="row mat-elevation-z2"
           [class.not-operational]="!composition.status.isOperational"
           (click)="goToDetails(composition.id)"
         >

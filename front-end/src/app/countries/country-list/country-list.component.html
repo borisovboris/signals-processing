@@ -1,5 +1,5 @@
 <div class="wrapper">
-  <mat-card >
+  <mat-card>
     <ng-container *ngIf="countries$ | async as countries">
       <cdk-virtual-scroll-viewport
         CdkScrollable
@@ -8,11 +8,11 @@
         (scrolledIndexChange)="onScroll()"
       >
         <div
-          class="country-wrapper"
+          class="row-wrapper"
           *cdkVirtualFor="let country of countries"
           (click)="goToDetails(country.id)"
         >
-          <div class="country mat-elevation-z2">
+          <div class="row mat-elevation-z2">
             <p>{{ country.name }}</p>
           </div>
         </div>
