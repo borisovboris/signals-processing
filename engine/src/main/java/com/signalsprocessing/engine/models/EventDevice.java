@@ -13,9 +13,9 @@ public class EventDevice {
 
     @ManyToOne()
     @MapsId("eventId")
-    private Event event;
+    public Event event;
 
     @ManyToOne()
     @MapsId("deviceId")
-    private Device device;
+    public Device device;
 }

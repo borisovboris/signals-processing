@@ -1,8 +1,8 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { CompositionState } from '../state';
+import { COMPOSITION_STATE, CompositionState } from '../state';
 
 export const feature =
-  createFeatureSelector<CompositionState>('compositionState');
+  createFeatureSelector<CompositionState>(COMPOSITION_STATE);
 
 export const compositions = createSelector(
   feature,

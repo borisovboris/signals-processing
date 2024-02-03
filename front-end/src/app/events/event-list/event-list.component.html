@@ -19,6 +19,7 @@
           <div
             class="row-wrapper"
             *cdkVirtualFor="let event of events"
+            (click)="goToDetails(event.id)"
           >
             <div class="row mat-elevation-z2">
               <p>{{ event.typeName }}</p>

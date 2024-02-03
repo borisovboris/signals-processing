@@ -18,6 +18,7 @@ model/compositionFiltersDTO.ts
 model/countryDTO.ts
 model/deviceDTO.ts
 model/eventDTO.ts
+model/eventDetailsDTO.ts
 model/linkedCompositionsDTO.ts
 model/locationDTO.ts
 model/locationsDTO.ts

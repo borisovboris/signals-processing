@@ -8,13 +8,14 @@ import { countryReducer } from '../store/country/country.reducer';
 import { CountryEffects } from '../store/country/country.effects';
 import { CountriesComponent } from './countries.component';
 import { CityDetailsComponent } from './city-details/city-details.component';
+import { COUNTRY_STATE } from '../store/state';
 
 export const COUNTRIES_ROUTES: Route[] = [
   {
     path: '',
     component: CountriesComponent,
     providers: [
-      provideState({ name: 'countryState', reducer: countryReducer }),
+      provideState({ name: COUNTRY_STATE, reducer: countryReducer }),
       provideEffects([CountryEffects]),
     ],
     children: [

@@ -5,16 +5,20 @@ import { eventReducer } from '../store/event/event.reducer';
 import { provideEffects } from '@ngrx/effects';
 import { EventEffects } from '../store/event/event.effects';
 import { EventListComponent } from './event-list/event-list.component';
+import { EventDetailsComponent } from './event-details/event-details.component';
+import { EVENT_STATE } from '../store/state';
 
 export const EVENT_ROUTES: Route[] = [
   {
     path: '',
     component: EventsComponent,
     providers: [
-        // TODO move name of state to a constant
-      provideState({ name: 'eventState', reducer: eventReducer }),
+      provideState({ name: EVENT_STATE, reducer: eventReducer }),
       provideEffects([EventEffects]),
     ],
-    children: [{ path: '', component: EventListComponent }],
+    children: [
+      { path: '', component: EventListComponent },
+      { path: 'details', component: EventDetailsComponent },
+    ],
   },
 ];

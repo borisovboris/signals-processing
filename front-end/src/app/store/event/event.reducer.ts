@@ -10,5 +10,8 @@ export const eventReducer = createReducer(
   initialState,
   on(EventActions.eventsFetched, (state, { events }) => {
     return { ...state, events };
+  }),
+  on(EventActions.eventDetailsFetched, (state, { details }) => {
+    return { ...state, details };
   })
 );

@@ -7,6 +7,9 @@ public class EventDeviceId {
     private Long eventId;
     private Long deviceId;
 
+    public EventDeviceId() {
+    }
+
     public EventDeviceId(Long eventId, Long deviceId) {
         this.eventId = eventId;
         this.deviceId = deviceId;

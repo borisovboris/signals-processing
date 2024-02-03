@@ -19,6 +19,18 @@ export class EventEffects {
     )
   );
 
+  loadDetails = createEffect(() =>
+  this.actions$.pipe(
+    ofType(EventActions.getEventDetails),
+    switchMap(({ id }) =>
+      this.eventsService.readEventDetails(id).pipe(
+        map((details) => EventActions.eventDetailsFetched({ details })),
+        catchError(() => EMPTY)
+      )
+    )
+  )
+);
+
   constructor(
     private actions$: Actions,
     private eventsService: EventsService,

@@ -5,6 +5,7 @@ import { events } from '../../store/event/event.selectors';
 import { CommonModule } from '@angular/common';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MaterialModule } from '../../material/material.module';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-event-list',
@@ -12,16 +13,25 @@ import { MaterialModule } from '../../material/material.module';
   imports: [ScrollingModule, CommonModule, MaterialModule],
   templateUrl: './event-list.component.html',
   styleUrl: './event-list.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EventListComponent implements OnInit{
+export class EventListComponent implements OnInit {
   events$ = this.store.select(events);
 
-  constructor(private readonly store: Store) {
-  }
+  constructor(
+    private readonly store: Store,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
     this.store.dispatch(EventActions.getEvents());
   }
 
+  goToDetails(id: number) {
+    this.router.navigate([`details`], {
+      relativeTo: this.route,
+      queryParams: { id },
+    });
+  }
 }

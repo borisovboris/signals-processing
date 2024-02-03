@@ -4,8 +4,13 @@ import {
   CompositionDetailsDTO,
   CountryDTO,
   EventDTO,
+  EventDetailsDTO,
   LocationsDTO,
 } from '../../../generated-sources/openapi';
+
+export const EVENT_STATE = "eventState";
+export const COUNTRY_STATE = "countryState";
+export const COMPOSITION_STATE = "compositionState";
 
 export interface CountryState {
   countries: CountryDTO[];
@@ -21,6 +26,7 @@ export interface CompositionState {
 
 export interface EventState {
   events: EventDTO[];
+  details?: EventDetailsDTO;
 }
 
 export interface AppState {

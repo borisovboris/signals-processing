@@ -6,6 +6,7 @@ export * from './compositionFiltersDTO';
 export * from './countryDTO';
 export * from './deviceDTO';
 export * from './eventDTO';
+export * from './eventDetailsDTO';
 export * from './linkedCompositionsDTO';
 export * from './locationDTO';
 export * from './locationsDTO';

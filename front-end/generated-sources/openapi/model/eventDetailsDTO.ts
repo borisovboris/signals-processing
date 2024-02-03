@@ -9,12 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EventDTO } from './eventDTO';
+import { DeviceDTO } from './deviceDTO';
+import { SignalDTO } from './signalDTO';
 
 
-export interface EventDTO { 
-    id: number;
-    typeName: string;
-    manualInsert: boolean;
-    eventCreationAt: string;
+export interface EventDetailsDTO { 
+    event: EventDTO;
+    signal: SignalDTO;
+    affectedDevices: Array<DeviceDTO>;
 }
 

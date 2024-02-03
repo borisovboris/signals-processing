@@ -7,13 +7,14 @@ import { CompositionsListComponent } from './compositions-list/compositions-list
 import { compositionReducer } from '../store/composition/composition.reducer';
 import { CompositionEffects } from '../store/composition/composition.effects';
 import { CompositionDetailsComponent } from '../composition-details/composition-details.component';
+import { COMPOSITION_STATE } from '../store/state';
 
 export const COMPOSITIONS_ROUTES: Route[] = [
   {
     path: '',
     component: CompositionsComponent,
     providers: [
-      provideState({ name: 'compositionState', reducer: compositionReducer }),
+      provideState({ name: COMPOSITION_STATE, reducer: compositionReducer }),
       provideEffects([CompositionEffects]),
     ],
     children: [

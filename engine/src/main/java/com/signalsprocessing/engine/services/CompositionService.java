@@ -107,7 +107,7 @@ public class CompositionService {
         return composition;
     }
 
-    public DeviceDTO mapDevice(Device device) {
+    public static DeviceDTO mapDevice(Device device) {
         StatusDTO status = new StatusDTO(device.status.name, device.status.isOperational,
                 device.status.isBroken, device.status.inMaintenance);
 
