@@ -1,5 +1,4 @@
 import { Route } from '@angular/router';
-import { AppRoute } from '../routing/routing.model';
 import { CountryListComponent } from './country-list/country-list.component';
 import { CountryDetailsComponent } from './country-details/country-details.component';
 import { provideState } from '@ngrx/store';
@@ -20,8 +19,8 @@ export const COUNTRIES_ROUTES: Route[] = [
     ],
     children: [
       { path: '', component: CountryListComponent },
-      { path: 'details', component: CountryDetailsComponent },
-      { path: 'city', component: CityDetailsComponent },
+      { path: ':countryId', component: CountryDetailsComponent },
+      { path: 'cities/:cityId', component: CityDetailsComponent },
     ],
   },
 ];

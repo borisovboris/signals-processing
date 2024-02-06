@@ -21,18 +21,16 @@ export class CountryDetailsComponent implements OnInit {
   constructor(
     private readonly store: Store,
     private readonly router: Router,
-    private readonly route: ActivatedRoute,
+    private readonly route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
-      const id = params['id'];
+    const id = Number(this.route.snapshot.paramMap.get('countryId'));
 
-      this.store.dispatch(CountryActions.getCitiesOfCountry({ countryId: id }));
-    });
+    this.store.dispatch(CountryActions.getCitiesOfCountry({ countryId: id }));
   }
 
   goToCity(id: number) {
-    this.router.navigate([`/countries/city`], { queryParams: { id } });
+    this.router.navigate([`/countries/cities`, id]);
   }
 }

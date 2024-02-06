@@ -18,7 +18,7 @@ export const EVENT_ROUTES: Route[] = [
     ],
     children: [
       { path: '', component: EventListComponent },
-      { path: 'details', component: EventDetailsComponent },
+      { path: ':id', component: EventDetailsComponent },
     ],
   },
 ];

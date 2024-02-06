@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { EventActions } from '../../store/event/event.actions';
 import { MaterialModule } from '../../material/material.module';
@@ -20,15 +20,12 @@ export class EventDetailsComponent implements OnInit {
   
   constructor(
     private readonly store: Store,
-    private readonly router: Router,
     private readonly route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
-      const id = params['id'];
+   const id = Number(this.route.snapshot.paramMap.get('id'));;
 
       this.store.dispatch(EventActions.getEventDetails({ id }));
-    });
   }
 }

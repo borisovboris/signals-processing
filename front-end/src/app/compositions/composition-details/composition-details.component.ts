@@ -4,7 +4,7 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { CommonModule } from '@angular/common';
@@ -17,7 +17,6 @@ import {
 import { MaterialModule } from '../../material/material.module';
 import { CompositionDetailsDTO } from '../../../../generated-sources/openapi';
 import { DialogService } from '../../shared/services/dialog.service';
-import { take } from 'rxjs';
 import { isDefined } from '../../shared/utils';
 import { CompositionActions } from '../../store/composition/composition.actions';
 import { details } from '../../store/composition/composition.selectors';
@@ -36,7 +35,6 @@ export class CompositionDetailsComponent implements OnInit {
 
   constructor(
     private readonly store: Store,
-    private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly dialogService: DialogService,
     private readonly changeRef: ChangeDetectorRef

@@ -26,11 +26,9 @@ export class CityDetailsComponent {
 
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
-      const id = params['id'];
+    const id = Number(this.route.snapshot.paramMap.get('cityId'));
 
       this.store.dispatch(CountryActions.getLocations({ cityId: id }));
-    });
   }
   
   getOperationalLabel(operational: boolean) {

@@ -29,9 +29,6 @@ export class EventListComponent implements OnInit {
   }
 
   goToDetails(id: number) {
-    this.router.navigate([`details`], {
-      relativeTo: this.route,
-      queryParams: { id },
-    });
+    this.router.navigate([`events`, id]);
   }
 }
