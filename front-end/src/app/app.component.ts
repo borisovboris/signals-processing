@@ -10,7 +10,7 @@ import { SignalsService } from '../../generated-sources/openapi';
 import { HttpClient } from '@angular/common/http';
 import { MaterialModule } from './material/material.module';
 import { AppRoute, isRoute, routePaths } from './routing/routing.model';
-import { filter, take } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 
 export interface LabeledRoute {
   label: string;

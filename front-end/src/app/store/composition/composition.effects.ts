@@ -101,8 +101,7 @@ export class CompositionEffects {
             catchError(() => EMPTY)
           )
         )
-      ),
-    { dispatch: false }
+      )
   );
 
   constructor(

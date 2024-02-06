@@ -15,3 +15,5 @@ export const currentlyViewedCompositionId = createSelector(
   feature,
   (state) => state.currentlyViewedCompositionId
 );
+
+export const timeline = createSelector(feature, (state) => state.timeline);
