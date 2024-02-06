@@ -1,5 +1,11 @@
 import { createActionGroup, props } from '@ngrx/store';
-import { CompositionDTO, CompositionDetailsDTO, CompositionFiltersDTO, NewDeviceDTO } from '../../../../generated-sources/openapi';
+import {
+  CompositionDTO,
+  CompositionDetailsDTO,
+  CompositionFiltersDTO,
+  DeviceDateStatusDTO,
+  NewDeviceDTO,
+} from '../../../../generated-sources/openapi';
 
 export const CompositionActions = createActionGroup({
   source: 'Country',
@@ -10,11 +16,15 @@ export const CompositionActions = createActionGroup({
     'Details Fetched': props<{ details: CompositionDetailsDTO }>(),
     'Create device': props<{ device: NewDeviceDTO }>(),
     'Device created': props<any>(),
-    'Link compositions': props<{ firstId: number, secondId: number }>(),
+    'Link compositions': props<{ firstId: number; secondId: number }>(),
     'Compositions linked': props<any>(),
-    'Unlink compositions': props<{ firstId: number, secondId: number }>(),
+    'Unlink compositions': props<{ firstId: number; secondId: number }>(),
     'Compositions unlinked': props<any>(),
     'Delete device': props<{ id: number }>(),
     'Device deleted': props<any>(),
+    'Get device status timeline': props<{ id: number }>(),
+    'Device status timeline fetched': props<{
+      timeline: DeviceDateStatusDTO[];
+    }>(),
   },
 });

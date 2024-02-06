@@ -29,7 +29,7 @@ export class CompositionEffects {
         CompositionActions.deviceCreated,
         CompositionActions.compositionsLinked,
         CompositionActions.compositionsUnlinked,
-        CompositionActions.deleteDevice,
+        CompositionActions.deleteDevice
       ),
       withLatestFrom(this.store.select(currentlyViewedCompositionId)),
       switchMap(([_, compositionId]) =>
@@ -66,28 +66,44 @@ export class CompositionEffects {
   );
 
   unlinkCompositions = createEffect(() =>
-  this.actions$.pipe(
-    ofType(CompositionActions.unlinkCompositions),
-    switchMap(({ firstId, secondId }) =>
-      this.compositionService.unlinkCompositions({ firstId, secondId }).pipe(
-        map(() => CompositionActions.compositionsUnlinked()),
-        catchError(() => EMPTY)
+    this.actions$.pipe(
+      ofType(CompositionActions.unlinkCompositions),
+      switchMap(({ firstId, secondId }) =>
+        this.compositionService.unlinkCompositions({ firstId, secondId }).pipe(
+          map(() => CompositionActions.compositionsUnlinked()),
+          catchError(() => EMPTY)
+        )
       )
     )
-  )
-);
+  );
 
-deleteDevice = createEffect(() =>
-this.actions$.pipe(
-  ofType(CompositionActions.deleteDevice),
-  switchMap(({ id }) =>
-    this.compositionService.deleteDevice(id).pipe(
-      map(() => CompositionActions.compositionsUnlinked()),
-      catchError(() => EMPTY)
+  deleteDevice = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CompositionActions.deleteDevice),
+      switchMap(({ id }) =>
+        this.compositionService.deleteDevice(id).pipe(
+          map(() => CompositionActions.compositionsUnlinked()),
+          catchError(() => EMPTY)
+        )
+      )
     )
-  )
-)
-);
+  );
+
+  getDeviceStatusTimeline = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(CompositionActions.getDeviceStatusTimeline),
+        switchMap(({ id }) =>
+          this.compositionService.readDeviceStatusTimeline(id).pipe(
+            map((timeline) =>
+              CompositionActions.deviceStatusTimelineFetched({ timeline })
+            ),
+            catchError(() => EMPTY)
+          )
+        )
+      ),
+    { dispatch: false }
+  );
 
   constructor(
     private actions$: Actions,

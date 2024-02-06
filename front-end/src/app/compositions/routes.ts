@@ -8,6 +8,7 @@ import { compositionReducer } from '../store/composition/composition.reducer';
 import { CompositionEffects } from '../store/composition/composition.effects';
 import { COMPOSITION_STATE } from '../store/state';
 import { CompositionDetailsComponent } from './composition-details/composition-details.component';
+import { DeviceDetailsComponent } from './device-details/device-details.component';
 
 export const COMPOSITIONS_ROUTES: Route[] = [
   {
@@ -20,6 +21,7 @@ export const COMPOSITIONS_ROUTES: Route[] = [
     children: [
       { path: '', component: CompositionsListComponent },
       { path: ':id', component: CompositionDetailsComponent },
+      { path: 'device-details/:deviceId', component: DeviceDetailsComponent },
     ],
   },
 ];

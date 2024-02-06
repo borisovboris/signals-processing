@@ -19,7 +19,7 @@
       class="example-viewport"
     >
       <div class="row-wrapper" *cdkVirtualFor="let device of details.devices">
-        <div class="row mat-elevation-z2">
+        <div class="row mat-elevation-z2" (click)="goToDevice(device.id)">
           <p>{{ device.name }}</p>
           <p>{{ device.creationAt }}</p>
           <p>{{ device.status.isOperational }}</p>

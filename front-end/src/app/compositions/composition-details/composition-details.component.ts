@@ -4,7 +4,7 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { CommonModule } from '@angular/common';
@@ -36,6 +36,7 @@ export class CompositionDetailsComponent implements OnInit {
   constructor(
     private readonly store: Store,
     private readonly route: ActivatedRoute,
+    private readonly router: Router,
     private readonly dialogService: DialogService,
     private readonly changeRef: ChangeDetectorRef
   ) {}
@@ -96,5 +97,9 @@ export class CompositionDetailsComponent implements OnInit {
 
   deleteDevice(id: number) {
     this.store.dispatch(CompositionActions.deleteDevice({ id }));
+  }
+
+  goToDevice(id: number) {
+    this.router.navigate(['compositions/device-details', id]);
   }
 }

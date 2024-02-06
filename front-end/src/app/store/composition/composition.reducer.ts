@@ -25,5 +25,11 @@ export const compositionReducer = createReducer(
       ...state,
       details,
     };
+  }),
+  on( CompositionActions.deviceStatusTimelineFetched, (state, { timeline }) => {
+    return {
+      ...state,
+      timeline,
+    };
   })
 );

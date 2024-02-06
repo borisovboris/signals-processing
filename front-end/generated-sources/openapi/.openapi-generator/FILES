@@ -17,6 +17,7 @@ model/compositionDetailsDTO.ts
 model/compositionFiltersDTO.ts
 model/countryDTO.ts
 model/deviceDTO.ts
+model/deviceDateStatusDTO.ts
 model/eventDTO.ts
 model/eventDetailsDTO.ts
 model/linkedCompositionsDTO.ts

@@ -1,7 +1,10 @@
 package com.signalsprocessing.engine.services;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.context.annotation.ComponentScan;
@@ -11,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.signalsprocessing.engine.models.Composition;
 import com.signalsprocessing.engine.models.Device;
 import com.signalsprocessing.engine.models.DeviceStatus;
+import com.signalsprocessing.engine.models.DeviceStatusRecord;
 import com.signalsprocessing.engine.models.LinkedComposition;
 import com.signalsprocessing.engine.models.LinkedCompositionId;
 
@@ -177,11 +181,29 @@ public class CompositionService {
     @Transactional
     public void deleteDevice(Long id) {
         TypedQuery<Device> query = entityManager.createQuery("SELECT d from Device d WHERE d.id = :id", Device.class)
-        .setParameter("id", id);
+                .setParameter("id", id);
 
         Device device = query.getSingleResult();
 
         entityManager.remove(device);
+    }
+
+    public List<DeviceDateStatusDTO> getDeviceStatusTimeline(Long id) {
+        LocalDate lastThirtyDays = LocalDate.now().minusDays(30);
+        Timestamp timeStamp = Timestamp.valueOf(lastThirtyDays.atStartOfDay());
+                
+        TypedQuery<DeviceDateStatusDTO> query = entityManager.createQuery(
+            "SELECT NEW DeviceDateStatusDTO(COUNT(dsr.id) as occurrences, cast(dsr.creationAt as date) as date) " +
+            "from DeviceStatusRecord dsr WHERE dsr.device.id = :id " +
+                    "AND dsr.creationAt > :lastThirtyDays " +
+                    "AND dsr.status.isOperational != true " +
+                    "GROUP BY cast(dsr.creationAt as date)",
+                    DeviceDateStatusDTO.class)
+            .setParameter("id", id)
+            .setParameter("lastThirtyDays", timeStamp);
+
+        List<DeviceDateStatusDTO> list = query.getResultList();
+        return list;
     }
 
     public record CompositionDTO(@NotNull long id, @NotNull String locationName, @NotNull String code,
@@ -216,4 +238,8 @@ public class CompositionService {
             @NotNull String statusName,
             @NotNull boolean operational, @NotNull boolean inMaintenance, @NotNull boolean broken) {
     }
+
+    public record DeviceDateStatusDTO(@NotNull Long occurrences, @NotNull Date date) {
+    }
+
 }
