@@ -93,26 +93,31 @@ VALUES
 
 INSERT INTO device_status(id, name, is_operational, is_broken, in_maintenance) 
 VALUES 
-(1, 'Sensor not working', false, true, false),
-(2, 'Sensor in maintenance', false, false, true),
-(3, 'Sensor in order', true, false, false),
-(4, 'Camera in order', false, false, true),
-(5, 'Motor in order', true, false, false),
-(6, 'Stairs motor in order', true, false, false);
+(1, 'Device not working', false, true, false),
+(2, 'Device in maintenance', false, false, true),
+(3, 'Device in order', true, false, false);
 ALTER SEQUENCE device_status_id_seq RESTART WITH 1000;
 
 INSERT INTO device (id, code, name, composition_id, status_id) 
 VALUES 
 (1, 'MOVEMENT_SENSOR', 'Movement sensor', 1, 3),
-(2, 'CAMERA', 'Camera', 1, 4),
-(3, 'MOTOR', 'Motor', 1, 5),
-(4, 'STAIRS_MOTOR', 'Stairs motor', 2, 6);
+(2, 'CAMERA', 'Camera', 1, 3),
+(3, 'MOTOR', 'Motor', 1, 3),
+(4, 'STAIRS_MOTOR', 'Stairs motor', 2, 1);
 ALTER SEQUENCE device_id_seq RESTART WITH 1000;
 
 INSERT INTO device_status_record(device_id, status_id) 
 VALUES 
 (1, 1),
 (1, 2);
+
+INSERT INTO device_status_record(device_id, status_id, creation_at) 
+VALUES 
+(4, 3, '2024-02-01 15:09:23.378352+03'),
+(4, 2, '2024-02-02 15:09:23.378352+03'),
+(4, 1, '2024-02-03 15:09:23.378352+03'),
+(4, 3, '2024-02-04 15:09:23.378352+03'),
+(4, 2, '2024-02-05 15:09:23.378352+03');
 
 INSERT INTO linked_composition(first_composition_id, second_composition_id) 
 VALUES 

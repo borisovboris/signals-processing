@@ -24,6 +24,6 @@ public class CompositionStatusRecord {
     @JoinColumn(name = "status_id", nullable = false)
     private CompositionStatus status;
 
-    @Column(insertable = false, updatable = false, nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(insertable = false, updatable = false, nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
     public Date creationAt;
 }

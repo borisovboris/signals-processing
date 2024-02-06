@@ -38,7 +38,7 @@ public class Device {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "device")
     private Set<DeviceStatusRecord> statusRecords;
 
-    @Column(insertable = false, updatable = false, nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(insertable = false, updatable = false, nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
     public Date creationAt;
 
     public String getCode() {
