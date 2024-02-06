@@ -15,8 +15,8 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { isDefined } from '../../../shared/utils';
-import { LabeledValue } from '../../../composition-details/link-composition-form/link-composition-form.component';
 import { MatOption } from '@angular/material/core';
+import { LabeledValue } from '../../composition-details/link-composition-form/link-composition-form.component';
 
 @Component({
   selector: 'app-composition-name-autocomplete',

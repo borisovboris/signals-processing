@@ -6,8 +6,8 @@ import { CompositionsComponent } from './compositions.component';
 import { CompositionsListComponent } from './compositions-list/compositions-list.component';
 import { compositionReducer } from '../store/composition/composition.reducer';
 import { CompositionEffects } from '../store/composition/composition.effects';
-import { CompositionDetailsComponent } from '../composition-details/composition-details.component';
 import { COMPOSITION_STATE } from '../store/state';
+import { CompositionDetailsComponent } from './composition-details/composition-details.component';
 
 export const COMPOSITIONS_ROUTES: Route[] = [
   {
@@ -19,7 +19,7 @@ export const COMPOSITIONS_ROUTES: Route[] = [
     ],
     children: [
       { path: '', component: CompositionsListComponent },
-      { path: 'details', component: CompositionDetailsComponent },
+      { path: ':id', component: CompositionDetailsComponent },
     ],
   },
 ];

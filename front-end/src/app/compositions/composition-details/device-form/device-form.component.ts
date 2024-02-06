@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
-import { MaterialModule } from '../../material/material.module';
 import {
   FormControl,
   FormGroup,
@@ -7,13 +6,11 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import {
-  DIALOG_DATA,
-  DialogConfig,
-} from '../../shared/services/dialog.service';
 import { Store } from '@ngrx/store';
-import { CompositionActions } from '../../store/composition/composition.actions';
-import { DialogReference } from '../../shared/services/dialog-reference';
+import { MaterialModule } from '../../../material/material.module';
+import { DialogReference } from '../../../shared/services/dialog-reference';
+import { DIALOG_DATA } from '../../../shared/services/dialog.service';
+import { CompositionActions } from '../../../store/composition/composition.actions';
 
 enum StatusCondition {
   OPERATIONAL = 'operational',

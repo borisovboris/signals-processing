@@ -6,20 +6,21 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { CompositionActions } from '../store/composition/composition.actions';
-import { details } from '../store/composition/composition.selectors';
-import { Observable, take } from 'rxjs';
+
 import { CommonModule } from '@angular/common';
-import { MaterialModule } from '../material/material.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { DialogService } from '../shared/services/dialog.service';
 import { DeviceFormComponent } from './device-form/device-form.component';
-import { isDefined } from '../shared/utils';
 import {
   LinkCompositionData,
   LinkCompositionFormComponent,
 } from './link-composition-form/link-composition-form.component';
-import { CompositionDetailsDTO } from '../../../generated-sources/openapi';
+import { MaterialModule } from '../../material/material.module';
+import { CompositionDetailsDTO } from '../../../../generated-sources/openapi';
+import { DialogService } from '../../shared/services/dialog.service';
+import { take } from 'rxjs';
+import { isDefined } from '../../shared/utils';
+import { CompositionActions } from '../../store/composition/composition.actions';
+import { details } from '../../store/composition/composition.selectors';
 
 @Component({
   selector: 'app-composition-details',
@@ -42,15 +43,13 @@ export class CompositionDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.route.queryParams.pipe(take(1)).subscribe((params) => {
-      this.compositionId = Number(params['id']);
+    this.compositionId = Number(this.route.snapshot.paramMap.get('id'));
 
-      if (isDefined(this.compositionId)) {
-        this.store.dispatch(
-          CompositionActions.getDetails({ id: this.compositionId })
-        );
-      }
-    });
+    if (isDefined(this.compositionId)) {
+      this.store.dispatch(
+        CompositionActions.getDetails({ id: this.compositionId })
+      );
+    }
 
     this.store.select(details).subscribe((details) => {
       this.details = details;

@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
-import { CompositionNameAutocompleteComponent } from '../../compositions/autocompletes/composition-name-autocomplete/composition-name-autocomplete.component';
-import { MaterialModule } from '../../material/material.module';
 import { Store } from '@ngrx/store';
-import { DIALOG_DATA } from '../../shared/services/dialog.service';
-import { DialogReference } from '../../shared/services/dialog-reference';
-import { CompositionsService } from '../../../../generated-sources/openapi';
 import { BehaviorSubject, map, take } from 'rxjs';
-import { CompositionActions } from '../../store/composition/composition.actions';
+import { CompositionNameAutocompleteComponent } from '../../autocompletes/composition-name-autocomplete/composition-name-autocomplete.component';
+import { MaterialModule } from '../../../material/material.module';
+import { DIALOG_DATA } from '../../../shared/services/dialog.service';
+import { DialogReference } from '../../../shared/services/dialog-reference';
+import { CompositionsService } from '../../../../../generated-sources/openapi';
+import { CompositionActions } from '../../../store/composition/composition.actions';
 
 export interface LinkCompositionData {
   compositionId: number;

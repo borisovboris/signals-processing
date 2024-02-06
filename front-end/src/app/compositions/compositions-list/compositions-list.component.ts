@@ -109,6 +109,6 @@ export class CompositionsListComponent implements AfterViewInit {
   }
 
   goToDetails(id: number) {
-    this.router.navigate([`details`], { relativeTo: this.route, queryParams: { id } });
+    this.router.navigate([`compositions`, id]);
   }
 }
