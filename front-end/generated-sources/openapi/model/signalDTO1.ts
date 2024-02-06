@@ -11,9 +11,7 @@
  */
 
 
-export interface SignalDTO { 
-    id: number;
-    value: number;
-    creationAt: string;
+export interface SignalDTO1 { 
+    id?: number;
 }
 

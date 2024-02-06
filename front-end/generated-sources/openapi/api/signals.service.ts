@@ -19,7 +19,7 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { SignalDTO } from '../model/signalDTO';
+import { SignalDTO1 } from '../model/signalDTO1';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -92,16 +92,16 @@ export class SignalsService {
     }
 
     /**
-     * @param signalDTO 
+     * @param signalDTO1 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createSignal(signalDTO: SignalDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<SignalDTO>;
-    public createSignal(signalDTO: SignalDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<SignalDTO>>;
-    public createSignal(signalDTO: SignalDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<SignalDTO>>;
-    public createSignal(signalDTO: SignalDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        if (signalDTO === null || signalDTO === undefined) {
-            throw new Error('Required parameter signalDTO was null or undefined when calling createSignal.');
+    public createSignal(signalDTO1: SignalDTO1, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<SignalDTO1>;
+    public createSignal(signalDTO1: SignalDTO1, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<SignalDTO1>>;
+    public createSignal(signalDTO1: SignalDTO1, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<SignalDTO1>>;
+    public createSignal(signalDTO1: SignalDTO1, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (signalDTO1 === null || signalDTO1 === undefined) {
+            throw new Error('Required parameter signalDTO1 was null or undefined when calling createSignal.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -145,10 +145,10 @@ export class SignalsService {
         }
 
         let localVarPath = `/create-signal`;
-        return this.httpClient.request<SignalDTO>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<SignalDTO1>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: signalDTO,
+                body: signalDTO1,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -162,9 +162,9 @@ export class SignalsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public readSignals(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<SignalDTO>;
-    public readSignals(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<SignalDTO>>;
-    public readSignals(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<SignalDTO>>;
+    public readSignals(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<SignalDTO1>;
+    public readSignals(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<SignalDTO1>>;
+    public readSignals(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<SignalDTO1>>;
     public readSignals(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
@@ -199,7 +199,7 @@ export class SignalsService {
         }
 
         let localVarPath = `/read-signals`;
-        return this.httpClient.request<SignalDTO>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<SignalDTO1>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

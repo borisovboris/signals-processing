@@ -1,6 +1,6 @@
 <div class="wrapper" *ngIf="compositions$ | async as compositions">
   <mat-card class="sidebar">
-    <h2>Filters:</h2>
+    <h2>Filters</h2>
     <app-city-name-chips-autocomplete
       (itemsUpdated)="onCityNameFilter($event)"
     ></app-city-name-chips-autocomplete>
@@ -11,7 +11,7 @@
 
   <mat-card class="list">
     <div class="titles">
-      <h2>Compositions:</h2>
+      <h2>Compositions</h2>
     </div>
     <div class="columns">
       <p>Code</p>

@@ -17,8 +17,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "signals")
 @RestController
 
+
+// TODO Remove this package
 public class SignalsController {
-    public record SignalDTO(long id) {
+    public record SignalDTO1(long id) {
     }
 
     private SignalsService service;
@@ -28,13 +30,13 @@ public class SignalsController {
     }
 
     @GetMapping("read-signals")
-    public SignalDTO readSignals() {
-        return new SignalDTO(1L);
+    public SignalDTO1 readSignals() {
+        return new SignalDTO1(1L);
     }
 
     @PostMapping("create-signal")
     @ResponseBody
-    public SignalDTO createSignal(@RequestBody SignalDTO signal) {
+    public SignalDTO1 createSignal(@RequestBody SignalDTO1 signal) {
         return signal;
     }
 }

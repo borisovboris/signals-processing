@@ -1,15 +1,18 @@
 <div class="wrapper" *ngIf="cities$ | async as cities">
-  <div class="titles">
-    <h1>{{ cities.country.name }}</h1>
-    <h2>Cities:</h2>
-  </div>
   <mat-card>
+    <div class="titles">
+      <h2>Cities in {{ cities.country.name }}</h2>
+    </div>
     <cdk-virtual-scroll-viewport
       CdkScrollable
       [itemSize]="60"
       class="example-viewport"
     >
-      <div class="row-wrapper" *cdkVirtualFor="let city of cities.cities" (click)="goToCity(city.id)">
+      <div
+        class="row-wrapper"
+        *cdkVirtualFor="let city of cities.cities"
+        (click)="goToCity(city.id)"
+      >
         <div class="row mat-elevation-z2">
           <p>{{ city.name }}</p>
         </div>

@@ -1,9 +1,8 @@
 <div class="wrapper" *ngIf="locations$ | async as locations">
-  <div class="titles">
-    <h1>{{ locations.city.name }}</h1>
-    <h2>Locations:</h2>
-  </div>
   <mat-card>
+    <div class="titles">
+      <h2>Locations in {{ locations.city.name }}</h2>
+    </div>
     <div class="columns">
       <p>Name</p>
       <p>Address</p>

@@ -10,7 +10,11 @@
       text-align: center;
       flex: 1;
       font-size: 20px;
+      font-weight: 500;
+      color: darkgray;
     }
+
+    margin: 10px 0;
   }
 }
 
@@ -47,7 +51,7 @@
       }
 
       &.not-operational {
-        background-color: map.get($warn, 200);
+        background-color: map.get($warn, 100);
       }
     }
   }

@@ -1,1 +1,36 @@
-<p>event-details works!</p>
+<div class="wrapper">
+  <ng-container *ngIf="details$ | async as details">
+    <mat-card class="event-details">
+      <h2>Event details</h2>
+      <p>Name: {{ details.event.typeName }}</p>
+      <p>Manually created: {{ details.event.manualInsert }}</p>
+    </mat-card>
+
+    <mat-card class="affected-devices">
+      <h2>Affected devices</h2>
+      <div class="columns">
+        <p>Name</p>
+        <p>Added on</p>
+        <p>Status</p>
+      </div>
+      <cdk-virtual-scroll-viewport
+        CdkScrollable
+        [itemSize]="60"
+        class="example-viewport"
+      >
+        <div class="row-wrapper" *cdkVirtualFor="let device of details.affectedDevices">
+          <div class="row mat-elevation-z2">
+            <p>{{ device.name }}</p>
+            <p>{{ device.creationAt }}</p>
+            <p>{{ device.status.isOperational }}</p>
+          </div>
+        </div>
+      </cdk-virtual-scroll-viewport>
+    </mat-card>
+
+    <mat-card class="signal">
+      <h2>Signal</h2>
+      <p>Value: {{ details.signal.value }}</p>
+    </mat-card>
+  </ng-container>
+</div>

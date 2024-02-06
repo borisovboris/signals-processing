@@ -16,8 +16,8 @@
 
   mat-card {
     @include card;
+    @include list-margin;
   }
-  
 }
 
 

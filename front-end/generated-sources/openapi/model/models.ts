@@ -12,4 +12,5 @@ export * from './locationDTO';
 export * from './locationsDTO';
 export * from './newDeviceDTO';
 export * from './signalDTO';
+export * from './signalDTO1';
 export * from './statusDTO';
