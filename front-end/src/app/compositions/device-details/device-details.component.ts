@@ -1,37 +1,32 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DestroyRef,
-  OnDestroy,
-  OnInit,
-  inject,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { CompositionActions } from '../../store/composition/composition.actions';
 import * as d3 from 'd3';
 import { DeviceDateStatusDTO } from '../../../../generated-sources/openapi';
 import { timeline } from '../../store/composition/composition.selectors';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { filter, take } from 'rxjs/operators';
+import { MaterialModule } from '../../material/material.module';
+import moment from 'moment';
 
 @Component({
   selector: 'app-device-details',
   standalone: true,
-  imports: [],
+  imports: [MaterialModule],
   templateUrl: './device-details.component.html',
   styleUrl: './device-details.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DeviceDetailsComponent implements OnInit, OnDestroy {
-  private destroyRef = inject(DestroyRef);
-
+export class DeviceDetailsComponent implements OnInit {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly store: Store
   ) {}
 
   ngOnInit(): void {
+    const id = Number(this.route.snapshot.paramMap.get('deviceId'));
+    this.store.dispatch(CompositionActions.getDeviceStatusTimeline({ id }));
+
     this.store
       .select(timeline)
       .pipe(
@@ -40,23 +35,46 @@ export class DeviceDetailsComponent implements OnInit, OnDestroy {
       )
       .subscribe((timeline) => {
         if (timeline) {
-          this.createChart(timeline);
+          const filledData = this.fillEmptyDates(timeline);
+          this.createChart(filledData);
         }
       });
+  }
 
-    const id = Number(this.route.snapshot.paramMap.get('deviceId'));
+  // Sets value 0 to any dates in the past 30 days from today,
+  // that do not have data.
+  fillEmptyDates(data: DeviceDateStatusDTO[]) {
+    const presentKeys = data.map((el) => el.date);
+    const filledData: DeviceDateStatusDTO[] = [];
 
-    this.store.dispatch(CompositionActions.getDeviceStatusTimeline({ id }));
+    for (let i = 29; i >= 0; i--) {
+      const key = moment().clone().subtract(i, 'days').format('YYYY-MM-DD');
+
+      if (!presentKeys.includes(key)) {
+        filledData.push({
+          date: key,
+          occurrences: 0,
+        });
+      } else {
+        const alreadyPresent = data.find(el => el.date === key);
+
+        if(alreadyPresent !== undefined) {
+          filledData.push(alreadyPresent);
+        }
+      }
+    }
+
+    return filledData;
   }
 
   createChart(data: DeviceDateStatusDTO[]) {
     const margin = { top: 30, right: 30, bottom: 70, left: 60 },
-      width = 460 - margin.left - margin.right,
-      height = 400 - margin.top - margin.bottom;
+      width = 860 - margin.left - margin.right,
+      height = 300 - margin.top - margin.bottom;
 
     // append the svg object to the body of the page
     const svg = d3
-      .select('#my_dataviz')
+      .select('#chart')
       .append('svg')
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom)
@@ -78,8 +96,8 @@ export class DeviceDetailsComponent implements OnInit, OnDestroy {
       .style('text-anchor', 'end');
 
     // Add Y axis
-    const y = d3.scaleLinear().domain([0, 5]).range([height, 0]);
-    const yAxis = d3.axisLeft(y).tickFormat(d3.format('d')).ticks(5);
+    const y = d3.scaleLinear().domain([0, this.getYExtremum(data)]).range([height, 0]);
+    const yAxis = d3.axisLeft(y).tickFormat(d3.format('d')).tickValues(d3.range(this.getYExtremum(data)+1));
 
     svg.append('g').call(yAxis);
 
@@ -95,7 +113,7 @@ export class DeviceDetailsComponent implements OnInit, OnDestroy {
       .attr('fill', '#e68080');
   }
 
-  ngOnDestroy(): void {
-    d3.select('#my_dataviz').selectAll('svg').remove();
+  getYExtremum(data: DeviceDateStatusDTO[]) {
+    return Math.max(0, ...data.map(el => el.occurrences));
   }
 }
