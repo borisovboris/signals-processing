@@ -1,22 +1,25 @@
 <div class="wrapper">
   <mat-card>
     <ng-container *ngIf="countries$ | async as countries">
-      <cdk-virtual-scroll-viewport
-        CdkScrollable
-        [itemSize]="60"
-        class="example-viewport"
-        (scrolledIndexChange)="onScroll()"
-      >
-        <div
-          class="row-wrapper"
-          *cdkVirtualFor="let country of countries"
-          (click)="goToDetails(country.id)"
+      <h2 class="titles">Countries</h2>
+      <div class="list-wrapper">
+        <cdk-virtual-scroll-viewport
+          CdkScrollable
+          [itemSize]="60"
+          class="example-viewport"
+          (scrolledIndexChange)="onScroll()"
         >
-          <div class="row mat-elevation-z2">
-            <p>{{ country.name }}</p>
+          <div
+            class="row-wrapper"
+            *cdkVirtualFor="let country of countries"
+            (click)="goToDetails(country.id)"
+          >
+            <div class="row mat-elevation-z2">
+              <p>{{ country.name }}</p>
+            </div>
           </div>
-        </div>
-      </cdk-virtual-scroll-viewport>
+        </cdk-virtual-scroll-viewport>
+      </div>
     </ng-container>
   </mat-card>
 </div>

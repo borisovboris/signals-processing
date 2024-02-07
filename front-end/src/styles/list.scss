@@ -19,7 +19,7 @@
 }
 
 @mixin list-margin() {
-  & > :not(.example-viewport) {
+  & > :not(.example-viewport, .list-wrapper) {
     margin-left: 45px;
     margin-right: 45px;
   }
