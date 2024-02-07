@@ -21,7 +21,7 @@
         <div class="row-wrapper" *cdkVirtualFor="let device of details.affectedDevices">
           <div class="row mat-elevation-z2">
             <p>{{ device.name }}</p>
-            <p>{{ device.creationAt }}</p>
+            <p>{{ device.creationAt | date }}</p>
             <p>{{ device.status.isOperational }}</p>
           </div>
         </div>

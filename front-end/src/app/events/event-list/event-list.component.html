@@ -8,6 +8,7 @@
       </div>
       <div class="columns">
         <p>Type</p>
+        <p>Added on</p>
         <p>Manual</p>
       </div>
       <ng-container *ngIf="events$ | async as events">
@@ -23,6 +24,7 @@
           >
             <div class="row mat-elevation-z2">
               <p>{{ event.typeName }}</p>
+              <p>{{ event.eventCreationAt | date }}</p>
               <p>{{ event.manualInsert }}</p>
             </div>
           </div>
