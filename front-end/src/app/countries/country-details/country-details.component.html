@@ -1,6 +1,11 @@
 <div class="wrapper" *ngIf="cities$ | async as cities">
   <mat-card>
-    <h2 class="titles">Cities in {{ cities.country.name }}</h2>
+    <div class="heading">
+      <h2>Cities in {{ cities.country.name }}</h2>
+      <button mat-raised-button color="accent">
+        Add city
+      </button>
+    </div>
     <div class="list-wrapper">
       <cdk-virtual-scroll-viewport
         CdkScrollable

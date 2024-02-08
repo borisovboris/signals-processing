@@ -1,35 +1,34 @@
 <div class="wrapper">
-  <mat-card class="sidebar">
-  </mat-card>
+  <mat-card class="sidebar"> </mat-card>
 
-    <mat-card class="list">
-      <div class="titles">
-        <h2>Events</h2>
-      </div>
-      <div class="columns">
-        <p>Type</p>
-        <p>Added on</p>
-        <p>Manual</p>
-      </div>
-      <ng-container *ngIf="events$ | async as events">
-        <cdk-virtual-scroll-viewport
-          CdkScrollable
-          [itemSize]="60"
-          class="example-viewport"
+  <mat-card class="list">
+    <div class="heading">
+      <h2>Events</h2>
+      <button mat-raised-button color="accent">Add manual event</button>
+    </div>
+    <div class="columns">
+      <p>Type</p>
+      <p>Added on</p>
+      <p>Manual</p>
+    </div>
+    <ng-container *ngIf="events$ | async as events">
+      <cdk-virtual-scroll-viewport
+        CdkScrollable
+        [itemSize]="60"
+        class="example-viewport"
+      >
+        <div
+          class="row-wrapper"
+          *cdkVirtualFor="let event of events"
+          (click)="goToDetails(event.id)"
         >
-          <div
-            class="row-wrapper"
-            *cdkVirtualFor="let event of events"
-            (click)="goToDetails(event.id)"
-          >
-            <div class="row mat-elevation-z2">
-              <p>{{ event.typeName }}</p>
-              <p>{{ event.eventCreationAt | date }}</p>
-              <p>{{ event.manualInsert }}</p>
-            </div>
+          <div class="row mat-elevation-z2">
+            <p>{{ event.typeName }}</p>
+            <p>{{ event.eventCreationAt | date }}</p>
+            <p>{{ event.manualInsert }}</p>
           </div>
-        </cdk-virtual-scroll-viewport>
-      </ng-container>
-    </mat-card>
-  </div>
-  
+        </div>
+      </cdk-virtual-scroll-viewport>
+    </ng-container>
+  </mat-card>
+</div>

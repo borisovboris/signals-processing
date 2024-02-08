@@ -15,9 +15,11 @@
   }
 
   mat-card {
-   @include card;
-   @include list-margin;
+    @include card;
+    @include list-margin;
+
+    .heading {
+      @include heading-with-button;
+    }
   }
 }
-
-

@@ -1,7 +1,12 @@
 <div class="wrapper">
   <mat-card>
     <ng-container *ngIf="countries$ | async as countries">
-      <h2 class="titles">Countries</h2>
+      <div class="heading">
+        <h2>Countries</h2>
+        <button mat-raised-button color="accent">
+          Add country
+        </button>
+      </div>
       <div class="list-wrapper">
         <cdk-virtual-scroll-viewport
           CdkScrollable
