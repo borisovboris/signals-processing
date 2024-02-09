@@ -18,7 +18,7 @@ import { Store } from '@ngrx/store';
 export class CountryEffects {
   loadCountries$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(CountryActions.getCountries),
+      ofType(CountryActions.getCountries, CountryActions.countryCreated),
       exhaustMap(() =>
         this.countriesService.readCountries().pipe(
           map((countries) => CountryActions.countriesFetched({ countries })),
@@ -45,30 +45,40 @@ export class CountryEffects {
     )
   );
 
-  loadCities = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(CountryActions.getCitiesOfCountry),
-        switchMap(({ countryId }) =>
-          this.countriesService.readCities(countryId).pipe(
-            map((cities) => CountryActions.citiesOfCountryFetched({ cities })),
-            catchError(() => EMPTY)
-          )
+  loadCities = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CountryActions.getCitiesOfCountry),
+      switchMap(({ countryId }) =>
+        this.countriesService.readCities(countryId).pipe(
+          map((cities) => CountryActions.citiesOfCountryFetched({ cities })),
+          catchError(() => EMPTY)
         )
-      ),
+      )
+    )
   );
 
-  loadLocations = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(CountryActions.getLocations),
-        switchMap(({ cityId }) =>
-          this.countriesService.readLocations(cityId).pipe(
-            map((locations) => CountryActions.locationsFetched({ locations })),
-            catchError(() => EMPTY)
-          )
+  loadLocations = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CountryActions.getLocations),
+      switchMap(({ cityId }) =>
+        this.countriesService.readLocations(cityId).pipe(
+          map((locations) => CountryActions.locationsFetched({ locations })),
+          catchError(() => EMPTY)
         )
-      ),
+      )
+    )
+  );
+
+  createCountry = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CountryActions.createCountry),
+      switchMap(({ name }) =>
+        this.countriesService.createCountry(name).pipe(
+          map(() => CountryActions.countryCreated()),
+          catchError(() => EMPTY)
+        )
+      )
+    )
   );
 
   constructor(

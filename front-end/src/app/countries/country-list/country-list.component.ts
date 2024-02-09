@@ -16,6 +16,8 @@ import {
 } from '@angular/cdk/scrolling';
 import { Subject, debounceTime } from 'rxjs';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { CountryFormComponent } from '../country-form/country-form.component';
+import { DialogService } from '../../shared/services/dialog.service';
 
 @Component({
   selector: 'app-country-list',
@@ -37,6 +39,7 @@ export class CountryListComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
+    private readonly dialogService: DialogService,
   ) {}
 
   ngOnInit() {
@@ -60,5 +63,9 @@ export class CountryListComponent implements OnInit {
 
   goToDetails(id: number) {
     this.router.navigate([`countries`, id]);
+  }
+
+  openCountryForm() {
+    this.dialogService.open(CountryFormComponent);
   }
 }

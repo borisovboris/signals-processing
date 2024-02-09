@@ -1,0 +1,22 @@
+<mat-card>
+  <h1>Add country</h1>
+  <form [formGroup]="countryForm" (ngSubmit)="createCountry()">
+    <mat-form-field class="example-full-width">
+      <mat-label>Country name</mat-label>
+      <input
+        formControlName="countryName"
+        matInput
+        [errorStateMatcher]="matcher"
+      />
+      <mat-error *ngIf="countryName?.hasError('countryExists')"
+        >Country already exists</mat-error
+      >
+    </mat-form-field>
+
+    <div class="actions">
+      <button mat-raised-button color="accent" [disabled]="countryForm.invalid">
+        Add
+      </button>
+    </div>
+  </form>
+</mat-card>

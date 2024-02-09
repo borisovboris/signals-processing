@@ -12,5 +12,7 @@ export const CountryActions = createActionGroup({
     'Cities Of Country Fetched': props<{ cities: CitiesDTO }>(),
     'Get Locations': props<{ cityId: number }>(),
     'Locations Fetched': props<{ locations: LocationsDTO }>(),
+    'Create country': props<{ name: string }>(),
+    'Country created': props<any>(),
   },
 });

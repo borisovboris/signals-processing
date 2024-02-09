@@ -21,4 +21,8 @@ public class Country {
 
     @OneToMany(mappedBy="country", cascade = CascadeType.ALL)
     public Set<City> cities;
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

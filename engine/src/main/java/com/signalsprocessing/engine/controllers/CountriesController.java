@@ -2,6 +2,8 @@ package com.signalsprocessing.engine.controllers;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -63,5 +65,16 @@ public class CountriesController {
     @ResponseBody
     public LocationsDTO readLocations(@PathVariable("id") Long id) {
         return service.getLocations(id);
+    }
+
+    @GetMapping("country-exists/{name}")
+    @ResponseBody
+    public boolean checkIfCountryExists(@PathVariable("name") String name) {
+        return service.checkIfCountryExists(name);
+    }
+
+    @PostMapping("create-country")
+    public void createCountry(@RequestBody String name) {
+        service.createCountry(name);
     }
 }

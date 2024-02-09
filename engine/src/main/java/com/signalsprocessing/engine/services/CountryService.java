@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.signalsprocessing.engine.models.City;
 import com.signalsprocessing.engine.models.Country;
@@ -67,9 +68,9 @@ public class CountryService {
                                 .getResultList()
                                 .stream()
                                 .map(entity -> new LocationDTO(entity.id, entity.code, entity.name, entity.address,
-                                entity.coordinates,
-                                entity.description, entity.creationAt, entity.isOperational,
-                                entity.compositions.size()))
+                                                entity.coordinates,
+                                                entity.description, entity.creationAt, entity.isOperational,
+                                                entity.compositions.size()))
                                 .toList();
 
                 return list;
@@ -100,6 +101,15 @@ public class CountryService {
                                 .toList();
 
                 return list;
+        }
+
+        public boolean checkIfCountryExists(String name) {
+                TypedQuery<Country> query = entityManager
+                                .createQuery("SELECT c from Country c WHERE lower(c.name) LIKE lower(:name)",
+                                                Country.class)
+                                .setParameter("name", name);
+
+                return !query.getResultList().isEmpty();
         }
 
         public CitiesDTO getCitiesOfCountry(long countryId) {
@@ -135,6 +145,14 @@ public class CountryService {
                                 .toList();
 
                 return new LocationsDTO(city, list);
+        }
+
+        @Transactional
+        public void createCountry(String name) {
+                Country country = new Country();
+                country.setName(name);
+
+                entityManager.merge(country);
         }
 
         public record CountryDTO(@NotNull long id, @NotNull String name) {
