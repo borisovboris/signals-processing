@@ -24,6 +24,7 @@ model/linkedCompositionsDTO.ts
 model/locationDTO.ts
 model/locationsDTO.ts
 model/models.ts
+model/newCityDTO.ts
 model/newDeviceDTO.ts
 model/signalDTO.ts
 model/signalDTO1.ts

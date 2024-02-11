@@ -8,6 +8,10 @@ export const initialState: CountryState = {
 
 export const countryReducer = createReducer(
   initialState,
+  on(CountryActions.getCitiesOfCountry, (state, { countryId }) => ({
+    ...state,
+    currentlyViewedCountryId: countryId,
+  })),
   on(CountryActions.countriesFetched, (state, { countries }) => ({
     ...state,
     countries,

@@ -11,6 +11,7 @@ export * from './eventDetailsDTO';
 export * from './linkedCompositionsDTO';
 export * from './locationDTO';
 export * from './locationsDTO';
+export * from './newCityDTO';
 export * from './newDeviceDTO';
 export * from './signalDTO';
 export * from './signalDTO1';

@@ -1,5 +1,5 @@
 import { createActionGroup, props } from '@ngrx/store';
-import { CitiesDTO, CountryDTO, LocationsDTO } from '../../../../generated-sources/openapi';
+import { CitiesDTO, CountryDTO, LocationsDTO, NewCityDTO } from '../../../../generated-sources/openapi';
 
 export const CountryActions = createActionGroup({
   source: 'Country',
@@ -14,5 +14,7 @@ export const CountryActions = createActionGroup({
     'Locations Fetched': props<{ locations: LocationsDTO }>(),
     'Create country': props<{ name: string }>(),
     'Country created': props<any>(),
+    'Create city': props<{ city: NewCityDTO }>(),
+    'City created': props<any>(),
   },
 });

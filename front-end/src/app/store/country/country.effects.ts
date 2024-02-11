@@ -8,10 +8,9 @@ import {
   catchError,
   withLatestFrom,
   switchMap,
-  tap,
 } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
-import { countries } from './country.selectors';
+import { countries, currentlyViewedCountryId } from './country.selectors';
 import { Store } from '@ngrx/store';
 
 @Injectable()
@@ -47,13 +46,14 @@ export class CountryEffects {
 
   loadCities = createEffect(() =>
     this.actions$.pipe(
-      ofType(CountryActions.getCitiesOfCountry),
-      switchMap(({ countryId }) =>
-        this.countriesService.readCities(countryId).pipe(
+      ofType(CountryActions.getCitiesOfCountry, CountryActions.cityCreated),
+      withLatestFrom(this.store.select(currentlyViewedCountryId)),
+      switchMap(([, countryId]) => {
+        return this.countriesService.readCities(countryId!).pipe(
           map((cities) => CountryActions.citiesOfCountryFetched({ cities })),
           catchError(() => EMPTY)
-        )
-      )
+        );
+      })
     )
   );
 
@@ -75,6 +75,18 @@ export class CountryEffects {
       switchMap(({ name }) =>
         this.countriesService.createCountry(name).pipe(
           map(() => CountryActions.countryCreated()),
+          catchError(() => EMPTY)
+        )
+      )
+    )
+  );
+
+  createCity = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CountryActions.createCity),
+      switchMap(({ city }) =>
+        this.countriesService.createCity(city).pipe(
+          map(() => CountryActions.cityCreated()),
           catchError(() => EMPTY)
         )
       )

@@ -1,0 +1,34 @@
+<mat-card>
+    <h1>Add city</h1>
+    <form [formGroup]="cityForm" (ngSubmit)="createCity()">
+      <mat-form-field class="example-full-width">
+        <mat-label>City name</mat-label>
+        <input
+          formControlName="cityName"
+          matInput
+          [errorStateMatcher]="matcher"
+        />
+        <mat-error *ngIf="cityName?.hasError('countryExists')"
+          >City name exists</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Postal code</mat-label>
+        <input
+          formControlName="postalCode"
+          matInput
+          [errorStateMatcher]="matcher"
+        />
+        <mat-error *ngIf="postalCode?.hasError('postalCodeExists')"
+          >Postal code exists</mat-error
+        >
+      </mat-form-field>
+  
+      <div class="actions">
+        <button mat-raised-button color="accent" [disabled]="cityForm.invalid || formPending">
+          Add
+        </button>
+      </div>
+    </form>
+  </mat-card>
+  

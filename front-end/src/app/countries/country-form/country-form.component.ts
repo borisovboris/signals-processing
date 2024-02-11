@@ -9,9 +9,7 @@ import {
   AsyncValidatorFn,
   FormControl,
   FormGroup,
-  FormGroupDirective,
   FormsModule,
-  NgForm,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -26,28 +24,10 @@ import {
 import { CountriesService } from '../../../../generated-sources/openapi';
 import { CommonModule } from '@angular/common';
 
-import { ErrorStateMatcher } from '@angular/material/core';
 import { Store } from '@ngrx/store';
 import { CountryActions } from '../../store/country/country.actions';
-import { isDefined } from '../../shared/utils';
+import { MyErrorStateMatcher, isDefined } from '../../shared/utils';
 import { DialogReference } from '../../shared/services/dialog-reference';
-
-// mat-input by default does not consider control errors until the the input
-// is focused out. This error state matcher ensures that errors are immediately shown
-// while the user is using the input.
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(
-    control: FormControl | null,
-    form: FormGroupDirective | NgForm | null
-  ): boolean {
-    const isSubmitted = form && form.submitted;
-    return !!(
-      control &&
-      control.invalid &&
-      (control.dirty || control.touched || isSubmitted)
-    );
-  }
-}
 
 @Component({
   selector: 'app-country-form',
@@ -77,6 +57,7 @@ export class CountryFormComponent {
   }
 
   dialogRef: DialogReference = this.injector.get(DialogReference);
+  matcher = new MyErrorStateMatcher();
 
   constructor(
     private readonly service: CountriesService,
@@ -84,8 +65,6 @@ export class CountryFormComponent {
     private readonly store: Store,
     private readonly injector: Injector
   ) {}
-
-  matcher = new MyErrorStateMatcher();
 
   readonly countryForm = new FormGroup({
     countryName: new FormControl<string>('', {
