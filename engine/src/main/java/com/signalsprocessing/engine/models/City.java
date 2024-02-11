@@ -15,8 +15,8 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(uniqueConstraints = { @UniqueConstraint(name = "UNIQUE_NAME", columnNames = { "country_id", "name" }),
-        @UniqueConstraint(name = "UNIQUE_POSTAL_CODE", columnNames = { "country_id", "postal_code" }) })
+@Table(uniqueConstraints = { @UniqueConstraint(name = "UNIQUE_CITY_NAME", columnNames = { "country_id", "name" }),
+        @UniqueConstraint(name = "UNIQUE_CITY_POSTAL_CODE", columnNames = { "country_id", "postal_code" }) })
 public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

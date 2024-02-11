@@ -59,7 +59,7 @@ export class CountryEffects {
 
   loadLocations = createEffect(() =>
     this.actions$.pipe(
-      ofType(CountryActions.getLocations),
+      ofType(CountryActions.getLocations, CountryActions.locationCreated),
       switchMap(({ cityId }) =>
         this.countriesService.readLocations(cityId).pipe(
           map((locations) => CountryActions.locationsFetched({ locations })),
@@ -87,6 +87,20 @@ export class CountryEffects {
       switchMap(({ city }) =>
         this.countriesService.createCity(city).pipe(
           map(() => CountryActions.cityCreated()),
+          catchError(() => EMPTY)
+        )
+      )
+    )
+  );
+
+  createLocation = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CountryActions.createLocation),
+      switchMap(({ location }) =>
+        this.countriesService.createLocation(location).pipe(
+          map(() =>
+            CountryActions.locationCreated({ cityId: location.cityId })
+          ),
           catchError(() => EMPTY)
         )
       )

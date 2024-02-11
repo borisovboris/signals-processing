@@ -15,7 +15,7 @@ import {
   ScrollingModule,
 } from '@angular/cdk/scrolling';
 import { Subject, debounceTime } from 'rxjs';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CountryFormComponent } from '../country-form/country-form.component';
 import { DialogService } from '../../shared/services/dialog.service';
 
@@ -38,7 +38,6 @@ export class CountryListComponent implements OnInit {
   constructor(
     private readonly store: Store<AppState>,
     private readonly router: Router,
-    private readonly route: ActivatedRoute,
     private readonly dialogService: DialogService,
   ) {}
 

@@ -26,6 +26,7 @@ model/locationsDTO.ts
 model/models.ts
 model/newCityDTO.ts
 model/newDeviceDTO.ts
+model/newLocationDTO.ts
 model/signalDTO.ts
 model/signalDTO1.ts
 model/statusDTO.ts

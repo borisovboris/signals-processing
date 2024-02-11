@@ -1,0 +1,47 @@
+<mat-card>
+    <h1>Add location</h1>
+    <form [formGroup]="locationForm" (ngSubmit)="createCity()">
+      <mat-form-field class="example-full-width">
+        <mat-label>Location name</mat-label>
+        <input
+          formControlName="locationName"
+          matInput
+          [errorStateMatcher]="matcher"
+        />
+        <mat-error *ngIf="locationName?.hasError('locationExists')"
+          >Location exists</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Address</mat-label>
+        <input
+          formControlName="address"
+          matInput
+          [errorStateMatcher]="matcher"
+        />
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Coordinates</mat-label>
+        <input
+          formControlName="coordinates"
+          matInput
+          [errorStateMatcher]="matcher"
+        />
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Description</mat-label>
+        <input
+          formControlName="description"
+          matInput
+          [errorStateMatcher]="matcher"
+        />
+      </mat-form-field>
+  
+      <div class="actions">
+        <button mat-raised-button color="accent" [disabled]="locationForm.invalid || formPending">
+          Add
+        </button>
+      </div>
+    </form>
+  </mat-card>
+  

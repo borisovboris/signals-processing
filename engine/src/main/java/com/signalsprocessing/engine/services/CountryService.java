@@ -34,13 +34,13 @@ public class CountryService {
                 return country;
         }
 
-        public CityDTO getCity(long id) {
+        public City getCity(long id) {
                 TypedQuery<City> query = entityManager
                                 .createQuery("SELECT ci from City ci WHERE ci.id = :id", City.class)
                                 .setParameter("id", id);
                 City city = query.getSingleResult();
 
-                return new CityDTO(city.id, city.name, city.postalCode);
+                return city;
         }
 
         public List<CityDTO> getCitiesLikeName(String name) {
@@ -115,7 +115,7 @@ public class CountryService {
         public boolean checkIfCityExists(Long countryId, String name) {
                 TypedQuery<Country> query = entityManager
                                 .createQuery("SELECT ci from City ci WHERE lower(ci.name) LIKE lower(:name) " +
-                                "AND ci.country.id = :countryId",
+                                                "AND ci.country.id = :countryId",
                                                 Country.class)
                                 .setParameter("name", name)
                                 .setParameter("countryId", countryId);
@@ -126,7 +126,7 @@ public class CountryService {
         public boolean checkIfPostalCodeExists(Long countryId, String postalCode) {
                 TypedQuery<Country> query = entityManager
                                 .createQuery("SELECT ci from City ci WHERE ci.postalCode = :postalCode " +
-                                "AND ci.country.id = :countryId",
+                                                "AND ci.country.id = :countryId",
                                                 Country.class)
                                 .setParameter("postalCode", postalCode)
                                 .setParameter("countryId", countryId);
@@ -135,7 +135,7 @@ public class CountryService {
         }
 
         public CitiesDTO getCitiesOfCountry(long countryId) {
-                Country country= getCountry(countryId);
+                Country country = getCountry(countryId);
                 CountryDTO countryDto = new CountryDTO(country.id, country.name);
 
                 TypedQuery<City> query = entityManager
@@ -152,7 +152,8 @@ public class CountryService {
         }
 
         public LocationsDTO getLocations(long cityId) {
-                CityDTO city = getCity(cityId);
+                City city = getCity(cityId);
+                CityDTO cityDto = new CityDTO(city.id, city.name, city.postalCode);
 
                 TypedQuery<Location> query = entityManager
                                 .createQuery("SELECT l from Location l WHERE l.city.id = :cityId", Location.class)
@@ -167,7 +168,7 @@ public class CountryService {
                                                 entity.compositions.size()))
                                 .toList();
 
-                return new LocationsDTO(city, list);
+                return new LocationsDTO(cityDto, list);
         }
 
         @Transactional
@@ -190,6 +191,32 @@ public class CountryService {
                 entityManager.merge(city);
         }
 
+        @Transactional
+        public boolean checkIfLocationNameExists(Long cityId, String name) {
+                TypedQuery<Location> query = entityManager
+                                .createQuery("SELECT l from Location l WHERE l.city.id = :cityId " +
+                                                "AND lower(l.name) LIKE lower(:name)",
+                                                Location.class)
+                                .setParameter("cityId", cityId)
+                                .setParameter("name", name);
+
+                return !query.getResultList().isEmpty();
+        }
+
+        @Transactional
+        public void createLocation(NewLocationDTO newLocation) {
+                Location location = new Location();
+                City city = getCity(newLocation.cityId);
+
+                location.setCity(city);
+                location.setCode(newLocation.name);
+                location.setName(newLocation.name);
+                location.setAddress(newLocation.address);
+                location.setCoordinates(newLocation.coordinates);
+
+                entityManager.merge(location);
+        }
+
         public record CountryDTO(@NotNull long id, @NotNull String name) {
         }
 
@@ -207,5 +234,10 @@ public class CountryService {
         public record LocationsDTO(@NotNull CityDTO city, @NotNull List<LocationDTO> locations) {
         }
 
-        public record NewCityDTO(@NotNull Long countryId, @NotNull String name, @NotNull String postalCode){}
+        public record NewCityDTO(@NotNull Long countryId, @NotNull String name, @NotNull String postalCode) {
+        }
+
+        public record NewLocationDTO(@NotNull Long cityId, @NotNull String name, @NotNull String address,
+                        String coordinates, String description) {
+        }
 }

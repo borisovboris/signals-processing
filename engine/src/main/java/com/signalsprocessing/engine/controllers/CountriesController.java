@@ -15,6 +15,7 @@ import com.signalsprocessing.engine.services.CountryService.CountryDTO;
 import com.signalsprocessing.engine.services.CountryService.LocationDTO;
 import com.signalsprocessing.engine.services.CountryService.LocationsDTO;
 import com.signalsprocessing.engine.services.CountryService.NewCityDTO;
+import com.signalsprocessing.engine.services.CountryService.NewLocationDTO;
 
 import java.util.List;
 
@@ -92,9 +93,22 @@ public class CountriesController {
         return service.checkIfPostalCodeExists(id, postalCode);
     }
 
+    @GetMapping("location-name-exists/{cityId}/{name}")
+    @ResponseBody
+    public boolean checkIfLocationNameExists(@PathVariable("cityId") Long id,
+            @PathVariable("name") String name) {
+        return service.checkIfLocationNameExists(id, name);
+    }
+
     @PostMapping("create-city")
     @ResponseBody
     public void createCity(@RequestBody NewCityDTO newCity) {
         service.createCity(newCity);
+    }
+
+    @PostMapping("create-location")
+    @ResponseBody
+    public void createLocation(@RequestBody NewLocationDTO newLocation) {
+        service.createLocation(newLocation);
     }
 }
