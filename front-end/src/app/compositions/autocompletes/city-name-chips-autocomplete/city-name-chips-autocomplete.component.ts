@@ -7,15 +7,15 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { AutocompleteComponent } from '../../../shared/autocomplete/autocomplete.component';
+import { AutocompleteChipsComponent } from '../../../shared/autocomplete-chips/autocomplete-chips.component';
 import { BehaviorSubject, map, take } from 'rxjs';
 import { CountriesService } from '../../../../../generated-sources/openapi';
-import { AutoComplete } from '../../../shared/autocomplete/autocomplete.model';
+import { AutoComplete } from '../../../shared/autocomplete-chips/autocomplete.model';
 
 @Component({
   selector: 'app-city-name-chips-autocomplete',
   standalone: true,
-  imports: [CommonModule, AutocompleteComponent],
+  imports: [CommonModule, AutocompleteChipsComponent],
   templateUrl: './city-name-chips-autocomplete.component.html',
   styleUrl: './city-name-chips-autocomplete.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -24,8 +24,8 @@ export class CityNameChipsAutocompleteComponent implements AutoComplete {
   cities$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   options$ = this.cities$.asObservable();
   @Output() itemsUpdated = new EventEmitter<string[]>();
-  @ViewChild(AutocompleteComponent)
-  autocomplete!: AutocompleteComponent;
+  @ViewChild(AutocompleteChipsComponent)
+  autocomplete!: AutocompleteChipsComponent;
 
   constructor(private readonly service: CountriesService) {}
 

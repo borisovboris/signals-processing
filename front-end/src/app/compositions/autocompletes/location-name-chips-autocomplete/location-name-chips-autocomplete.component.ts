@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { CountriesService } from '../../../../../generated-sources/openapi';
-import { AutoComplete } from '../../../shared/autocomplete/autocomplete.model';
+import { AutoComplete } from '../../../shared/autocomplete-chips/autocomplete.model';
 import { BehaviorSubject, map, take } from 'rxjs';
-import { AutocompleteComponent } from '../../../shared/autocomplete/autocomplete.component';
+import { AutocompleteChipsComponent } from '../../../shared/autocomplete-chips/autocomplete-chips.component';
 
 @Component({
   selector: 'app-location-name-chips-autocomplete',
   standalone: true,
-  imports: [AutocompleteComponent],
+  imports: [AutocompleteChipsComponent],
   templateUrl: './location-name-chips-autocomplete.component.html',
   styleUrl: './location-name-chips-autocomplete.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -16,8 +16,8 @@ export class LocationNameChipsAutocompleteComponent implements AutoComplete {
   locations$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   options$ = this.locations$.asObservable();
   @Output() itemsUpdated = new EventEmitter<string[]>();
-  @ViewChild(AutocompleteComponent)
-  autocomplete!: AutocompleteComponent;
+  @ViewChild(AutocompleteChipsComponent)
+  autocomplete!: AutocompleteChipsComponent;
   
   constructor(private readonly service: CountriesService) {}
 

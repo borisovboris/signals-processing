@@ -15,26 +15,23 @@ import { CommonModule } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import {
-  BehaviorSubject,
   Observable,
   Subject,
   debounceTime,
   filter,
-  map,
-  switchMap,
   takeUntil,
 } from 'rxjs';
 import { isDefined } from '../utils';
 
 @Component({
-  selector: 'app-autocomplete',
+  selector: 'app-autocomplete-chips',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, MaterialModule],
-  templateUrl: './autocomplete.component.html',
-  styleUrl: './autocomplete.component.scss',
+  templateUrl: './autocomplete-chips.component.html',
+  styleUrl: './autocomplete-chips.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AutocompleteComponent implements OnInit, OnDestroy {
+export class AutocompleteChipsComponent implements OnInit, OnDestroy {
   itemCtrl = new FormControl('');
   @Input() options$!: Observable<string[]>;
   @Input() placeholder: string = '';

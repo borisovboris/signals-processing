@@ -11,7 +11,7 @@ import { compositions } from '../../store/composition/composition.selectors';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../material/material.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { AutocompleteComponent } from '../../shared/autocomplete/autocomplete.component';
+import { AutocompleteChipsComponent } from '../../shared/autocomplete-chips/autocomplete-chips.component';
 import { CityNameChipsAutocompleteComponent } from '../autocompletes/city-name-chips-autocomplete/city-name-chips-autocomplete.component';
 import { LocationNameChipsAutocompleteComponent } from '../autocompletes/location-name-chips-autocomplete/location-name-chips-autocomplete.component';
 import { isDefined } from '../../shared/utils';
@@ -21,7 +21,7 @@ import { take } from 'rxjs';
   selector: 'app-compositions-list',
   standalone: true,
   imports: [
-    AutocompleteComponent,
+    AutocompleteChipsComponent,
     CityNameChipsAutocompleteComponent,
     LocationNameChipsAutocompleteComponent,
     CommonModule,
