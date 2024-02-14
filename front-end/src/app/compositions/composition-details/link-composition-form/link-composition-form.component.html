@@ -2,12 +2,12 @@
   <mat-card>
     <form [formGroup]="form">
     <h1>Link composition</h1>
-    <app-composition-name-autocomplete
-      [nameCtrl]="nameCtrl"
+    <app-single-autocomplete
+      [ctrl]="nameCtrl"
       [options$]="options$"
       (userTextInput)="onUserInput($event)"
       (optionChanged)="setOption($event)"
-    ></app-composition-name-autocomplete>
+    ></app-single-autocomplete>
     <div class="actions">
       <button
         mat-raised-button

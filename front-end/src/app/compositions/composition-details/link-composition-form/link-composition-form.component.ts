@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, map, take } from 'rxjs';
-import { CompositionNameAutocompleteComponent } from '../../autocompletes/composition-name-autocomplete/composition-name-autocomplete.component';
+import { SingleAutocompleteComponent } from '../../../shared/single-autocomplete/single-autocomplete.component';
 import { MaterialModule } from '../../../material/material.module';
 import { DIALOG_DATA } from '../../../shared/services/dialog.service';
 import { DialogReference } from '../../../shared/services/dialog-reference';
@@ -31,7 +31,7 @@ export interface LabeledValue<T> {
   standalone: true,
   imports: [
     CommonModule,
-    CompositionNameAutocompleteComponent,
+    SingleAutocompleteComponent,
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,

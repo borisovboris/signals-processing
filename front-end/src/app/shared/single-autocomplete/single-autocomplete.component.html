@@ -7,9 +7,9 @@
     aria-label="Number"
     matInput
     [matAutocomplete]="auto"
-    [formControl]="nameCtrl"
+    [formControl]="ctrl"
   />
-  <mat-error *ngIf="nameCtrl.hasError('notAnOption')">Select from the options</mat-error>
+  <mat-error *ngIf="ctrl.hasError('notAnOption')">Select from the options</mat-error>
   <mat-autocomplete
     autoActiveFirstOption
     #auto="matAutocomplete"

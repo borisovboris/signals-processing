@@ -10,7 +10,7 @@ import {
   ViewChild,
   inject,
 } from '@angular/core';
-import { MaterialModule } from '../../../material/material.module';
+import { MaterialModule } from '../../material/material.module';
 import { Observable, debounceTime, fromEvent } from 'rxjs';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -19,19 +19,19 @@ import {
   MatAutocompleteSelectedEvent,
 } from '@angular/material/autocomplete';
 import { MatOption } from '@angular/material/core';
-import { LabeledValue } from '../../composition-details/link-composition-form/link-composition-form.component';
+import { LabeledValue } from '../../compositions/composition-details/link-composition-form/link-composition-form.component';
 
 @Component({
-  selector: 'app-composition-name-autocomplete',
+  selector: 'app-single-autocomplete',
   standalone: true,
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],
-  templateUrl: './composition-name-autocomplete.component.html',
-  styleUrl: './composition-name-autocomplete.component.scss',
+  templateUrl: './single-autocomplete.component.html',
+  styleUrl: './single-autocomplete.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CompositionNameAutocompleteComponent {
+export class SingleAutocompleteComponent {
   private destroyRef = inject(DestroyRef);
-  @Input() nameCtrl!: FormControl<LabeledValue<number> | string | null>;
+  @Input() ctrl!: FormControl<LabeledValue<number> | string | null>;
   currentlySelectedOption?: MatOption<LabeledValue<number>>;
 
   @Input()
@@ -81,11 +81,11 @@ export class CompositionNameAutocompleteComponent {
 
   onClosed() {
     if (!this.currentlySelectedOption) {
-      this.nameCtrl.setErrors({ notAnOption: true });
+      this.ctrl.setErrors({ notAnOption: true });
     } else {
-      if (this.nameCtrl.hasError('notAnOption')) {
-        delete this.nameCtrl.errors?.['notAnOption'];
-        this.nameCtrl.updateValueAndValidity();
+      if (this.ctrl.hasError('notAnOption')) {
+        delete this.ctrl.errors?.['notAnOption'];
+        this.ctrl.updateValueAndValidity();
       }
     }
   }
