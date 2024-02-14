@@ -1,6 +1,7 @@
 <mat-form-field class="example-full-width">
   <mat-label>Composition</mat-label>
   <input
+    #input
     type="text"
     placeholder="Pick one"
     aria-label="Number"
@@ -8,11 +9,18 @@
     [matAutocomplete]="auto"
     [formControl]="nameCtrl"
   />
-  <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="selectOption($event)" [displayWith]="displayFn">
+  <mat-error *ngIf="nameCtrl.hasError('notAnOption')">Select from the options</mat-error>
+  <mat-autocomplete
+    autoActiveFirstOption
+    #auto="matAutocomplete"
+    (optionSelected)="selectOption($event)"
+    [displayWith]="displayFn"
+    (closed)="onClosed()"
+  >
     @for (option of options$ | async; track option.value) {
     <mat-option [value]="option">{{ option.label }}</mat-option>
     } @empty {
-      <mat-option disabled>No results</mat-option>
+    <mat-option disabled>No results</mat-option>
     }
   </mat-autocomplete>
 </mat-form-field>

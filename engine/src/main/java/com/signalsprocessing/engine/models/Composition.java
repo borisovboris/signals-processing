@@ -12,7 +12,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
+@Table(uniqueConstraints = { @UniqueConstraint(name = "UNIQUE_COMPOSITION_CODE", columnNames = { "code", "location_id" }) })
 @Entity
 public class Composition {
     @Id

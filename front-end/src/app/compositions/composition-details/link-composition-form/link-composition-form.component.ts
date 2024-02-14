@@ -8,6 +8,12 @@ import { DIALOG_DATA } from '../../../shared/services/dialog.service';
 import { DialogReference } from '../../../shared/services/dialog-reference';
 import { CompositionsService } from '../../../../../generated-sources/openapi';
 import { CompositionActions } from '../../../store/composition/composition.actions';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 
 export interface LinkCompositionData {
   compositionId: number;
@@ -23,18 +29,32 @@ export interface LabeledValue<T> {
 @Component({
   selector: 'app-link-composition-form',
   standalone: true,
-  imports: [CommonModule, CompositionNameAutocompleteComponent, MaterialModule],
+  imports: [
+    CommonModule,
+    CompositionNameAutocompleteComponent,
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './link-composition-form.component.html',
   styleUrl: './link-composition-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LinkCompositionFormComponent {
+
   dialogData: LinkCompositionData = this.injector.get(DIALOG_DATA);
   dialogRef: DialogReference = this.injector.get(DialogReference);
   compositionTypes$: BehaviorSubject<LabeledValue<number>[]> =
     new BehaviorSubject<LabeledValue<number>[]>([]);
   options$ = this.compositionTypes$.asObservable();
   optionId?: number;
+  nameCtrl: FormControl<LabeledValue<number> | string | null> = new FormControl(
+    '',
+  );
+
+  form = new FormGroup({
+    nameCtrl: this.nameCtrl,
+  });
 
   constructor(
     private readonly store: Store,

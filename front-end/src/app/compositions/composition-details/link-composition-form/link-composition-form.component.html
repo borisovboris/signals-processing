@@ -1,11 +1,23 @@
-<mat-card>
-  <h1>Link composition</h1>
-  <app-composition-name-autocomplete
-    [options$]="options$"
-    (userTextInput)="onUserInput($event)"
-    (optionChanged)="setOption($event)"
-  ></app-composition-name-autocomplete>
-  <div class="actions">
-    <button mat-raised-button color="accent" [disabled]="this.optionId === undefined" (click)="linkCompositions()">Link</button>
-  </div>
-</mat-card>
+
+  <mat-card>
+    <form [formGroup]="form">
+    <h1>Link composition</h1>
+    <app-composition-name-autocomplete
+      [nameCtrl]="nameCtrl"
+      [options$]="options$"
+      (userTextInput)="onUserInput($event)"
+      (optionChanged)="setOption($event)"
+    ></app-composition-name-autocomplete>
+    <div class="actions">
+      <button
+        mat-raised-button
+        color="accent"
+        [disabled]="form.invalid"
+        (click)="linkCompositions()"
+      >
+        Link
+      </button>
+    </div>
+  </form>
+  </mat-card>
+
