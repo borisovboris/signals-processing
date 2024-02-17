@@ -15,6 +15,8 @@ model/cityDTO.ts
 model/compositionDTO.ts
 model/compositionDetailsDTO.ts
 model/compositionFiltersDTO.ts
+model/compositionStatusDTO.ts
+model/compositionTypeDTO.ts
 model/countryDTO.ts
 model/deviceDTO.ts
 model/deviceDateStatusDTO.ts
@@ -24,7 +26,9 @@ model/linkedCompositionsDTO.ts
 model/locationDTO.ts
 model/locationsDTO.ts
 model/models.ts
+model/nameFilterDTO.ts
 model/newCityDTO.ts
+model/newCompositionDTO.ts
 model/newDeviceDTO.ts
 model/newLocationDTO.ts
 model/signalDTO.ts

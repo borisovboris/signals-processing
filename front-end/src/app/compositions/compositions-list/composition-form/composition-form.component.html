@@ -1,0 +1,54 @@
+<mat-card>
+  <form [formGroup]="form">
+    <h1>Add composition</h1>
+    <div formGroupName="nestedForm">
+      <mat-form-field class="example-full-width">
+        <mat-label>Code</mat-label>
+        <input formControlName="code" matInput />
+        <mat-error
+          *ngIf="codeExists()"
+          >Already exists for this location</mat-error
+        >
+      </mat-form-field>
+      <app-single-autocomplete
+        [label]="'Location'"
+        [ctrl]="locationCtrl"
+        [options$]="locationOptions$"
+        (userTextInput)="onLocationInput($event)"
+      ></app-single-autocomplete>
+    </div>
+
+    <app-single-autocomplete
+      [label]="'Type'"
+      [ctrl]="typeCtrl"
+      [options$]="typeOptions$"
+      (userTextInput)="onTypeInput($event)"
+    ></app-single-autocomplete>
+    <app-single-autocomplete
+      [label]="'Status'"
+      [ctrl]="statusCtrl"
+      [options$]="statusOptions$"
+      (userTextInput)="onStatusInput($event)"
+    ></app-single-autocomplete>
+    <mat-form-field class="example-full-width">
+      <mat-label>Coordinates</mat-label>
+      <input formControlName="coordinates" matInput />
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Description</mat-label>
+      <input formControlName="description" matInput />
+    </mat-form-field>
+
+    <div class="actions">
+      <button
+        type="button"
+        mat-raised-button
+        color="accent"
+        [disabled]="form.invalid || formPending === true"
+        (click)="createComposition()"
+      >
+        Add
+      </button>
+    </div>
+  </form>
+</mat-card>

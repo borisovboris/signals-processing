@@ -16,8 +16,10 @@ import com.signalsprocessing.engine.services.CountryService.LocationDTO;
 import com.signalsprocessing.engine.services.CountryService.LocationsDTO;
 import com.signalsprocessing.engine.services.CountryService.NewCityDTO;
 import com.signalsprocessing.engine.services.CountryService.NewLocationDTO;
+import com.signalsprocessing.engine.shared.NameFilterDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.MediaType;
 
@@ -57,16 +59,16 @@ public class CountriesController {
         return service.getCitiesLikeName(name);
     }
 
-    @GetMapping("read-locations-like-name/{name}")
+    @GetMapping("read-locations")
     @ResponseBody
-    public List<LocationDTO> readLocationsLikeName(@PathVariable("name") String name) {
-        return service.getLocationsLikeName(name);
+    public List<LocationDTO> readLocations(Optional<NameFilterDTO> filters) {
+        return service.getLocations(filters);
     }
 
-    @GetMapping("read-locations/{id}")
+    @GetMapping("read-locations-of-city/{id}")
     @ResponseBody
-    public LocationsDTO readLocations(@PathVariable("id") Long id) {
-        return service.getLocations(id);
+    public LocationsDTO readLocationsOfCity(@PathVariable("id") Long id) {
+        return service.getLocationsOfCity(id);
     }
 
     @GetMapping("country-exists/{name}")

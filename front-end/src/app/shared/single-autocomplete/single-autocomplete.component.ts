@@ -19,7 +19,7 @@ import {
   MatAutocompleteSelectedEvent,
 } from '@angular/material/autocomplete';
 import { MatOption } from '@angular/material/core';
-import { LabeledValue } from '../../compositions/composition-details/link-composition-form/link-composition-form.component';
+import { LabeledValue } from '../autocomplete-chips/autocomplete.model';
 
 @Component({
   selector: 'app-single-autocomplete',
@@ -32,12 +32,11 @@ import { LabeledValue } from '../../compositions/composition-details/link-compos
 export class SingleAutocompleteComponent {
   private destroyRef = inject(DestroyRef);
   @Input() ctrl!: FormControl<LabeledValue<number> | string | null>;
+  @Input() label!: string;
   currentlySelectedOption?: MatOption<LabeledValue<number>>;
 
   @Input()
   options$!: Observable<LabeledValue<number>[]>;
-  @Output()
-  optionChanged = new EventEmitter<number | undefined>();
   @Output()
   userTextInput = new EventEmitter<string>();
   @ViewChild('auto') autocomplete!: MatAutocomplete;
@@ -45,6 +44,7 @@ export class SingleAutocompleteComponent {
 
   ngOnInit() {
     this.userTextInput.emit('');
+    
   }
 
   ngAfterViewInit() {
@@ -58,14 +58,13 @@ export class SingleAutocompleteComponent {
         const target = (e as Event).target as HTMLInputElement;
         const value = target.value;
         this.userTextInput.emit(value);
-        this.optionChanged.emit(undefined);
       });
   }
 
   selectOption(event: MatAutocompleteSelectedEvent) {
+    this.userTextInput.emit(event.option.value.label);
+    
     this.currentlySelectedOption = event.option;
-    const labeledValue: LabeledValue<number> = event.option.value;
-    this.optionChanged.emit(labeledValue.value);
   }
 
   displayFn(data: LabeledValue<number>): string {
@@ -76,17 +75,6 @@ export class SingleAutocompleteComponent {
     if (this.currentlySelectedOption) {
       this.currentlySelectedOption.deselect(false);
       this.currentlySelectedOption = undefined;
-    }
-  }
-
-  onClosed() {
-    if (!this.currentlySelectedOption) {
-      this.ctrl.setErrors({ notAnOption: true });
-    } else {
-      if (this.ctrl.hasError('notAnOption')) {
-        delete this.ctrl.errors?.['notAnOption'];
-        this.ctrl.updateValueAndValidity();
-      }
     }
   }
 }

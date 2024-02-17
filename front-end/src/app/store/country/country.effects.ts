@@ -61,7 +61,7 @@ export class CountryEffects {
     this.actions$.pipe(
       ofType(CountryActions.getLocations, CountryActions.locationCreated),
       switchMap(({ cityId }) =>
-        this.countriesService.readLocations(cityId).pipe(
+        this.countriesService.readLocationsOfCity(cityId).pipe(
           map((locations) => CountryActions.locationsFetched({ locations })),
           catchError(() => EMPTY)
         )

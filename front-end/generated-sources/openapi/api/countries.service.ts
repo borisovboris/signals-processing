@@ -29,6 +29,8 @@ import { LocationDTO } from '../model/locationDTO';
 // @ts-ignore
 import { LocationsDTO } from '../model/locationsDTO';
 // @ts-ignore
+import { NameFilterDTO } from '../model/nameFilterDTO';
+// @ts-ignore
 import { NewCityDTO } from '../model/newCityDTO';
 // @ts-ignore
 import { NewLocationDTO } from '../model/newLocationDTO';
@@ -766,16 +768,19 @@ export class CountriesService {
     }
 
     /**
-     * @param id 
+     * @param filters 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public readLocations(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<LocationsDTO>;
-    public readLocations(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<LocationsDTO>>;
-    public readLocations(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<LocationsDTO>>;
-    public readLocations(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling readLocations.');
+    public readLocations(filters?: NameFilterDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<LocationDTO>>;
+    public readLocations(filters?: NameFilterDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<LocationDTO>>>;
+    public readLocations(filters?: NameFilterDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<LocationDTO>>>;
+    public readLocations(filters?: NameFilterDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (filters !== undefined && filters !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>filters, 'filters');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -809,10 +814,11 @@ export class CountriesService {
             }
         }
 
-        let localVarPath = `/read-locations/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
-        return this.httpClient.request<LocationsDTO>('get', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/read-locations`;
+        return this.httpClient.request<Array<LocationDTO>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -823,16 +829,16 @@ export class CountriesService {
     }
 
     /**
-     * @param name 
+     * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public readLocationsLikeName(name: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<LocationDTO>>;
-    public readLocationsLikeName(name: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<LocationDTO>>>;
-    public readLocationsLikeName(name: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<LocationDTO>>>;
-    public readLocationsLikeName(name: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        if (name === null || name === undefined) {
-            throw new Error('Required parameter name was null or undefined when calling readLocationsLikeName.');
+    public readLocationsOfCity(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<LocationsDTO>;
+    public readLocationsOfCity(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<LocationsDTO>>;
+    public readLocationsOfCity(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<LocationsDTO>>;
+    public readLocationsOfCity(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling readLocationsOfCity.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -866,8 +872,8 @@ export class CountriesService {
             }
         }
 
-        let localVarPath = `/read-locations-like-name/${this.configuration.encodeParam({name: "name", value: name, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<Array<LocationDTO>>('get', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/read-locations-of-city/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        return this.httpClient.request<LocationsDTO>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

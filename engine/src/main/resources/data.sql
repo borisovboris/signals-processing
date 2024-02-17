@@ -83,6 +83,7 @@ VALUES
 (1, 'REVOLVING_DOOR', 1, 50, 3),
 (2, 'ESCALATOR', 2, 50, 1),
 (3, 'FIRE_ALARM', 3, 50, 3);
+ALTER SEQUENCE composition_id_seq RESTART WITH 1000;
 
 INSERT INTO composition_status_record (composition_id, status_id) 
 VALUES 

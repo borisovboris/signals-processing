@@ -48,4 +48,28 @@ public class Composition {
 
     @Column(insertable = false, updatable = false, nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
     public Date creationAt;
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public void setCoordinates(String coordinates) {
+        this.coordinates = coordinates;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setType(CompositionType type) {
+        this.type = type;
+    }
+
+    public void setStatus(CompositionStatus status) {
+        this.status = status;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 }

@@ -1,12 +1,11 @@
-
-  <mat-card>
-    <form [formGroup]="form">
+<mat-card>
+  <form [formGroup]="form">
     <h1>Link composition</h1>
     <app-single-autocomplete
+      [label]="'Composition'"
       [ctrl]="nameCtrl"
       [options$]="options$"
       (userTextInput)="onUserInput($event)"
-      (optionChanged)="setOption($event)"
     ></app-single-autocomplete>
     <div class="actions">
       <button
@@ -19,5 +18,4 @@
       </button>
     </div>
   </form>
-  </mat-card>
-
+</mat-card>

@@ -10,7 +10,7 @@ import {
 import { AutocompleteChipsComponent } from '../../../shared/autocomplete-chips/autocomplete-chips.component';
 import { BehaviorSubject, map, take } from 'rxjs';
 import { CountriesService } from '../../../../../generated-sources/openapi';
-import { AutoComplete } from '../../../shared/autocomplete-chips/autocomplete.model';
+import { AutoCompleteChips } from '../../../shared/autocomplete-chips/autocomplete.model';
 
 @Component({
   selector: 'app-city-name-chips-autocomplete',
@@ -20,7 +20,7 @@ import { AutoComplete } from '../../../shared/autocomplete-chips/autocomplete.mo
   styleUrl: './city-name-chips-autocomplete.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CityNameChipsAutocompleteComponent implements AutoComplete {
+export class CityNameChipsAutocompleteComponent implements AutoCompleteChips {
   cities$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   options$ = this.cities$.asObservable();
   @Output() itemsUpdated = new EventEmitter<string[]>();

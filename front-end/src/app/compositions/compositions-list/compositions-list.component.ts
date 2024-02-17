@@ -16,6 +16,8 @@ import { CityNameChipsAutocompleteComponent } from '../autocompletes/city-name-c
 import { LocationNameChipsAutocompleteComponent } from '../autocompletes/location-name-chips-autocomplete/location-name-chips-autocomplete.component';
 import { isDefined } from '../../shared/utils';
 import { take } from 'rxjs';
+import { DialogService } from '../../shared/services/dialog.service';
+import { CompositionFormComponent } from './composition-form/composition-form.component';
 
 @Component({
   selector: 'app-compositions-list',
@@ -47,7 +49,8 @@ export class CompositionsListComponent implements AfterViewInit {
   constructor(
     private readonly store: Store,
     private readonly router: Router,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly dialogService: DialogService,
   ) {}
 
   ngOnInit(): void {
@@ -110,5 +113,9 @@ export class CompositionsListComponent implements AfterViewInit {
 
   goToDetails(id: number) {
     this.router.navigate([`compositions`, id]);
+  }
+
+  openCountryForm() {
+    this.dialogService.open(CompositionFormComponent);
   }
 }

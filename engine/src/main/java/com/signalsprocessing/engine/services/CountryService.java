@@ -1,17 +1,25 @@
 package com.signalsprocessing.engine.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.signalsprocessing.engine.models.City;
+import com.signalsprocessing.engine.models.Composition;
 import com.signalsprocessing.engine.models.Country;
 import com.signalsprocessing.engine.models.Location;
+import com.signalsprocessing.engine.shared.NameFilterDTO;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import jakarta.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -58,10 +66,23 @@ public class CountryService {
                 return list;
         }
 
-        public List<LocationDTO> getLocationsLikeName(String name) {
+        public List<LocationDTO> getLocations(Optional<NameFilterDTO> filters) {
+                CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+                CriteriaQuery<Location> criteriaQuery = cb.createQuery(Location.class);
+                Root<Location> root = criteriaQuery.from(Location.class);
+                CriteriaQuery<Location> initialQuery = criteriaQuery.select(root);
+
+                if (filters.isPresent()) {
+                        String name = filters.get().getName();
+
+                        if (name != null) {
+                                var locationName = root.get("name");
+                                initialQuery.where(cb.like(locationName.as(String.class), name + "%"));
+                        }
+                }
+
                 TypedQuery<Location> query = entityManager
-                                .createQuery("SELECT l from Location l WHERE l.name like :name", Location.class)
-                                .setParameter("name", "" + name + "%")
+                                .createQuery(initialQuery)
                                 .setMaxResults(CountryService.LIMIT);
 
                 List<LocationDTO> list = query
@@ -151,7 +172,7 @@ public class CountryService {
                 return new CitiesDTO(countryDto, list);
         }
 
-        public LocationsDTO getLocations(long cityId) {
+        public LocationsDTO getLocationsOfCity(long cityId) {
                 City city = getCity(cityId);
                 CityDTO cityDto = new CityDTO(city.id, city.name, city.postalCode);
 

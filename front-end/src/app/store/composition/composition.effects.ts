@@ -53,6 +53,18 @@ export class CompositionEffects {
     )
   );
 
+  createComposition = createEffect(() =>
+  this.actions$.pipe(
+    ofType(CompositionActions.createComposition),
+    switchMap(({ composition }) =>
+      this.compositionService.createComposition(composition).pipe(
+        map(() => CompositionActions.compositionCreated()),
+        catchError(() => EMPTY)
+      )
+    )
+  )
+);
+
   linkCompositions = createEffect(() =>
     this.actions$.pipe(
       ofType(CompositionActions.linkCompositions),

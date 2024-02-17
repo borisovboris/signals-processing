@@ -14,16 +14,12 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { LabeledValue, isNumericLabeledValue, labeledValueValidator } from '../../../shared/autocomplete-chips/autocomplete.model';
 
 export interface LinkCompositionData {
   compositionId: number;
   locationNames: string[];
   excludedCompositionCodes: string[];
-}
-
-export interface LabeledValue<T> {
-  label: string;
-  value: T;
 }
 
 @Component({
@@ -41,15 +37,13 @@ export interface LabeledValue<T> {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LinkCompositionFormComponent {
-
   dialogData: LinkCompositionData = this.injector.get(DIALOG_DATA);
   dialogRef: DialogReference = this.injector.get(DialogReference);
   compositionTypes$: BehaviorSubject<LabeledValue<number>[]> =
     new BehaviorSubject<LabeledValue<number>[]>([]);
   options$ = this.compositionTypes$.asObservable();
-  optionId?: number;
   nameCtrl: FormControl<LabeledValue<number> | string | null> = new FormControl(
-    '',
+    '', [labeledValueValidator]
   );
 
   form = new FormGroup({
@@ -79,16 +73,14 @@ export class LinkCompositionFormComponent {
       .subscribe((data) => this.compositionTypes$.next(data));
   }
 
-  setOption(option: number | undefined) {
-    this.optionId = option;
-  }
-
   linkCompositions() {
-    if (this.optionId !== undefined) {
+    const compositionName = this.form.get('nameCtrl')?.value;
+
+    if (isNumericLabeledValue(compositionName)) {
       this.store.dispatch(
         CompositionActions.linkCompositions({
           firstId: this.dialogData.compositionId,
-          secondId: this.optionId,
+          secondId: compositionName.value,
         })
       );
     }

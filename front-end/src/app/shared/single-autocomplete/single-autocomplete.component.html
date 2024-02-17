@@ -1,5 +1,5 @@
 <mat-form-field class="example-full-width">
-  <mat-label>Composition</mat-label>
+  <mat-label>{{ label }}</mat-label>
   <input
     #input
     type="text"
@@ -15,7 +15,6 @@
     #auto="matAutocomplete"
     (optionSelected)="selectOption($event)"
     [displayWith]="displayFn"
-    (closed)="onClosed()"
   >
     @for (option of options$ | async; track option.value) {
     <mat-option [value]="option">{{ option.label }}</mat-option>
