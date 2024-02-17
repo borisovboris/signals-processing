@@ -18,10 +18,10 @@ import com.signalsprocessing.engine.services.CompositionService.CompositionFilte
 import com.signalsprocessing.engine.services.CompositionService.CompositionStatusDTO;
 import com.signalsprocessing.engine.services.CompositionService.CompositionTypeDTO;
 import com.signalsprocessing.engine.services.CompositionService.DeviceDateStatusDTO;
+import com.signalsprocessing.engine.services.CompositionService.DeviceStatusDTO;
 import com.signalsprocessing.engine.services.CompositionService.LinkedCompositionsDTO;
 import com.signalsprocessing.engine.services.CompositionService.NewCompositionDTO;
 import com.signalsprocessing.engine.services.CompositionService.NewDeviceDTO;
-import com.signalsprocessing.engine.services.CountryService.LocationDTO;
 import com.signalsprocessing.engine.shared.NameFilterDTO;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -70,6 +70,24 @@ public class CompositionsController {
     @ResponseBody
     public boolean checkIfCompositionExists(@PathVariable("locationId") Long id, @PathVariable("code") String code) {
         return service.checkIfCompositionExists(id, code);
+    }
+
+    @GetMapping("device-name-exists/{compositionId}/{name}")
+    @ResponseBody
+    public boolean checkIfDeviceNameExists(@PathVariable("compositionId") Long id, @PathVariable("name") String name) {
+        return service.checkIfDeviceNameExists(id, name);
+    }
+
+    @GetMapping("device-code-exists/{compositionId}/{code}")
+    @ResponseBody
+    public boolean checkIfDeviceCodeExists(@PathVariable("compositionId") Long id, @PathVariable("code") String code) {
+        return service.checkIfDeviceCodeExists(id, code);
+    }
+
+    @GetMapping("read-device-statuses")
+    @ResponseBody
+    public List<DeviceStatusDTO> readDeviceStatuses(Optional<NameFilterDTO> filters) {
+        return service.getDeviceStatuses(filters);
     }
 
     @PostMapping("create-device")

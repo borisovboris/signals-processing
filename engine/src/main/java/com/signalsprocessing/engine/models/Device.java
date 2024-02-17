@@ -12,7 +12,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
+@Table(uniqueConstraints = { @UniqueConstraint(name = "UNIQUE_DEVICE_NAME", columnNames = { "composition_id", "name" }),
+        @UniqueConstraint(name = "UNIQUE_DEVICE_CODE", columnNames = { "composition_id", "code" }) })
 @Entity
 public class Device {
     @Id
@@ -25,8 +29,6 @@ public class Device {
     @Column(nullable = false, unique = true, length = 255)
     public String name;
 
-    // TODO: Figure out if each device should have its own status
-    // or use general statuses
     @ManyToOne(optional = false)
     @JoinColumn(name = "status_id")
     public DeviceStatus status;

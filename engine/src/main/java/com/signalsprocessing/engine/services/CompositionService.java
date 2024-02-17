@@ -18,7 +18,6 @@ import com.signalsprocessing.engine.models.DeviceStatus;
 import com.signalsprocessing.engine.models.LinkedComposition;
 import com.signalsprocessing.engine.models.LinkedCompositionId;
 import com.signalsprocessing.engine.models.Location;
-import com.signalsprocessing.engine.services.CountryService.LocationDTO;
 import com.signalsprocessing.engine.shared.NameFilterDTO;
 
 import jakarta.annotation.Nullable;
@@ -219,22 +218,67 @@ public class CompositionService {
     @Transactional
     public void createDevice(NewDeviceDTO newDevice) {
         Composition composition = entityManager.getReference(Composition.class, newDevice.compositionId);
-
-        DeviceStatus deviceStatus = new DeviceStatus();
-        deviceStatus.setName(newDevice.statusName);
-        deviceStatus.setOperational(newDevice.operational);
-        deviceStatus.setInMaintenance(newDevice.inMaintenance);
-        deviceStatus.setBroken(newDevice.broken);
-
-        entityManager.merge(deviceStatus);
+        DeviceStatus status = entityManager.getReference(DeviceStatus.class, newDevice.statusId);
 
         Device device = new Device();
         device.setCode(newDevice.deviceCode);
         device.setName(newDevice.deviceName);
-        device.setStatus(deviceStatus);
+        device.setStatus(status);
         device.setComposition(composition);
 
         entityManager.merge(device);
+    }
+
+    public List<DeviceStatusDTO> getDeviceStatuses(Optional<NameFilterDTO> filters) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<DeviceStatus> criteriaQuery = cb.createQuery(DeviceStatus.class);
+        Root<DeviceStatus> root = criteriaQuery.from(DeviceStatus.class);
+        CriteriaQuery<DeviceStatus> initialQuery = criteriaQuery.select(root);
+
+        if (filters.isPresent()) {
+            String name = filters.get().getName();
+
+            if (name != null) {
+                var deviceStatusName = root.get("name");
+                initialQuery.where(cb.like(deviceStatusName.as(String.class), name + "%"));
+            }
+        }
+
+        TypedQuery<DeviceStatus> query = entityManager
+                .createQuery(initialQuery)
+                .setMaxResults(CompositionService.LIMIT);
+
+        List<DeviceStatusDTO> list = query
+                .getResultList()
+                .stream()
+                .map(entity -> new DeviceStatusDTO(entity.id, entity.name))
+                .toList();
+
+        return list;
+    }
+
+    @Transactional
+    public boolean checkIfDeviceNameExists(Long compositionId, String name) {
+        TypedQuery<Device> query = entityManager
+                .createQuery("SELECT d from Device d WHERE d.composition.id = :compositionId " +
+                        "AND lower(d.name) LIKE lower(:name)",
+                        Device.class)
+                .setParameter("compositionId", compositionId)
+                .setParameter("name", name);
+
+        return !query.getResultList().isEmpty();
+    }
+
+    @Transactional
+    public boolean checkIfDeviceCodeExists(Long compositionId, String code) {
+        TypedQuery<Device> query = entityManager
+                .createQuery("SELECT d from Device d WHERE d.composition.id = :compositionId " +
+                        "AND lower(d.code) LIKE lower(:code)",
+                        Device.class)
+                .setParameter("compositionId", compositionId)
+                .setParameter("code", code);
+
+        return !query.getResultList().isEmpty();
     }
 
     @Transactional
@@ -341,8 +385,7 @@ public class CompositionService {
     }
 
     public record NewDeviceDTO(@NotNull long compositionId, @NotNull String deviceCode, @NotNull String deviceName,
-            @NotNull String statusName,
-            @NotNull boolean operational, @NotNull boolean inMaintenance, @NotNull boolean broken) {
+            @NotNull long statusId) {
     }
 
     public record DeviceDateStatusDTO(@NotNull Long occurrences, @NotNull Date date) {
@@ -352,6 +395,9 @@ public class CompositionService {
     }
 
     public record CompositionStatusDTO(@NotNull Long id, @NotNull String name) {
+    }
+
+    public record DeviceStatusDTO(@NotNull Long id, @NotNull String name) {
     }
 
     public record NewCompositionDTO(@NotNull String code, @NotNull Long locationId, @NotNull Long typeId,

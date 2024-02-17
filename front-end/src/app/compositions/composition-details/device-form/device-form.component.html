@@ -4,27 +4,23 @@
     <mat-form-field class="example-full-width">
       <mat-label>Device code</mat-label>
       <input formControlName="deviceCode" matInput />
+      <mat-error *ngIf="deviceCode.hasError('deviceCodeExists')"
+        >Code already taken</mat-error
+      >
     </mat-form-field>
     <mat-form-field class="example-full-width">
       <mat-label>Device name</mat-label>
       <input formControlName="deviceName" matInput />
+      <mat-error *ngIf="deviceName.hasError('deviceNameExists')"
+        >Name already taken</mat-error
+      >
     </mat-form-field>
-    <h3>Device status</h3>
-    <mat-form-field class="example-full-width">
-      <mat-label>Status name</mat-label>
-      <input formControlName="statusName" matInput />
-    </mat-form-field>
-    <mat-button-toggle-group formControlName="statusCondition">
-      <mat-button-toggle [checked]="true" [value]="StatusCondition.OPERATIONAL"
-        >Operational</mat-button-toggle
-      >
-      <mat-button-toggle [value]="StatusCondition.IN_MAINTENANCE"
-        >In maintenance</mat-button-toggle
-      >
-      <mat-button-toggle [value]="StatusCondition.BROKEN"
-        >Broken</mat-button-toggle
-      >
-    </mat-button-toggle-group>
+    <app-single-autocomplete
+      [label]="'Device status'"
+      [ctrl]="statusCtrl"
+      [options$]="statusOptions$"
+      (userTextInput)="onStatusInput($event)"
+    ></app-single-autocomplete>
 
     <div class="actions">
       <button mat-raised-button type="button" (click)="close()">Cancel</button>

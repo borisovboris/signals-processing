@@ -11,10 +11,8 @@
  */
 
 
-export interface NewDeviceDTO { 
-    compositionId: number;
-    deviceCode: string;
-    deviceName: string;
-    statusId: number;
+export interface DeviceStatusDTO { 
+    id: number;
+    name: string;
 }
 

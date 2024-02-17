@@ -8,6 +8,7 @@ export * from './compositionTypeDTO';
 export * from './countryDTO';
 export * from './deviceDTO';
 export * from './deviceDateStatusDTO';
+export * from './deviceStatusDTO';
 export * from './eventDTO';
 export * from './eventDetailsDTO';
 export * from './linkedCompositionsDTO';
