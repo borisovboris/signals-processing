@@ -10,7 +10,7 @@ import {
   switchMap,
 } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
-import { countries, currentlyViewedCountryId } from './country.selectors';
+import { countries, countriesOffset, currentlyViewedCountryId } from './country.selectors';
 import { Store } from '@ngrx/store';
 
 @Injectable()
@@ -18,28 +18,12 @@ export class CountryEffects {
   loadCountries$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CountryActions.getCountries, CountryActions.countryCreated),
-      exhaustMap(() =>
-        this.countriesService.readCountries().pipe(
+      withLatestFrom(this.store.select(countriesOffset)),
+      exhaustMap(([_, offset]) =>
+        this.countriesService.readCountries(offset).pipe(
           map((countries) => CountryActions.countriesFetched({ countries })),
           catchError(() => EMPTY)
         )
-      )
-    )
-  );
-
-  loadCountriesWithOffset = createEffect(() =>
-    this.actions$.pipe(
-      ofType(CountryActions.getCountriesWithOffset),
-      withLatestFrom(this.store.select(countries)),
-      switchMap(([_, countries]) =>
-        this.countriesService
-          .readCountriesWithOffset(countries[countries.length - 1].id!)
-          .pipe(
-            map((countries) =>
-              CountryActions.additionalCountriesFetched({ countries })
-            ),
-            catchError(() => EMPTY)
-          )
       )
     )
   );

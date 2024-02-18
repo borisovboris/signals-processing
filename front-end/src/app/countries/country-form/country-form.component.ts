@@ -82,7 +82,7 @@ export class CountryFormComponent {
 
     if (isDefined(name)) {
       this.store.dispatch(CountryActions.createCountry({ name }));
-      this.dialogRef.close();
+      this.dialogRef.close(true);
     }
   }
 }

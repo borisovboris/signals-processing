@@ -10,3 +10,5 @@ export const cities = createSelector(feature, (state) => state.cities);
 export const locations = createSelector(feature, (state) => state.locations);
 
 export const currentlyViewedCountryId = createSelector(feature, (state) => state.currentlyViewedCountryId);
+
+export const countriesOffset = createSelector(feature, (state) => state.countriesOffset);

@@ -9,6 +9,8 @@ import {
   LocationsDTO,
 } from '../../../generated-sources/openapi';
 
+export const INITIAL_OFFSET = 0;
+
 export const EVENT_STATE = 'eventState';
 export const COUNTRY_STATE = 'countryState';
 export const COMPOSITION_STATE = 'compositionState';
@@ -18,6 +20,7 @@ export interface CountryState {
   countries: CountryDTO[];
   cities?: CitiesDTO;
   locations?: LocationsDTO;
+  countriesOffset: number;
 }
 
 export interface CompositionState {

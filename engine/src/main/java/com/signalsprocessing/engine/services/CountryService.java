@@ -8,17 +8,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.signalsprocessing.engine.models.City;
-import com.signalsprocessing.engine.models.Composition;
 import com.signalsprocessing.engine.models.Country;
 import com.signalsprocessing.engine.models.Location;
 import com.signalsprocessing.engine.shared.NameFilterDTO;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.validation.constraints.NotNull;
 import java.util.Date;
@@ -97,9 +94,16 @@ public class CountryService {
                 return list;
         }
 
-        public List<CountryDTO> getCountries() {
+        public List<CountryDTO> getCountries(Optional<Integer> offset) {
+                int defaultOffset = 1;
+
+                if(offset.isPresent()) {
+                        defaultOffset = offset.get();
+                }
+                
                 TypedQuery<Country> query = entityManager
-                                .createQuery("SELECT c from Country c", Country.class)
+                                .createQuery("SELECT c from Country c ORDER BY c.name ASC", Country.class)
+                                .setFirstResult(defaultOffset)
                                 .setMaxResults(CountryService.LIMIT);
                 List<CountryDTO> list = query
                                 .getResultList()

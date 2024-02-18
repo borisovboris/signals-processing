@@ -1,9 +1,10 @@
 import { createReducer, on } from '@ngrx/store';
 import { CountryActions } from './country.actions';
-import { CountryState } from '../state';
+import { CountryState, INITIAL_OFFSET } from '../state';
 
 export const initialState: CountryState = {
   countries: [],
+  countriesOffset: INITIAL_OFFSET,
 };
 
 export const countryReducer = createReducer(
@@ -12,11 +13,16 @@ export const countryReducer = createReducer(
     ...state,
     currentlyViewedCountryId: countryId,
   })),
-  on(CountryActions.countriesFetched, (state, { countries }) => ({
+  on(CountryActions.getCountries, (state, { offset }) => ({
     ...state,
-    countries,
+    countriesOffset: offset,
   })),
-  on(CountryActions.additionalCountriesFetched, (state, { countries }) => {
+  on(CountryActions.countryCreated, (state) => ({
+    ...state,
+    countries: [],
+    countriesOffset: INITIAL_OFFSET,
+  })),
+  on(CountryActions.countriesFetched, (state, { countries }) => {
     const currentCountries = state.countries.map((country) => country.id);
     const countriesToAdd = countries.filter(
       (c) => !currentCountries.includes(c.id)
@@ -31,5 +37,5 @@ export const countryReducer = createReducer(
   }),
   on(CountryActions.locationsFetched, (state, { locations }) => {
     return { ...state, locations };
-  }),
+  })
 );

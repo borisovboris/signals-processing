@@ -5,7 +5,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../store/state';
+import { AppState, INITIAL_OFFSET } from '../../store/state';
 import { countries } from '../../store/country/country.selectors';
 import { CountryActions } from '../../store/country/country.actions';
 import { CommonModule } from '@angular/common';
@@ -14,7 +14,7 @@ import {
   CdkVirtualScrollViewport,
   ScrollingModule,
 } from '@angular/cdk/scrolling';
-import { Subject, debounceTime } from 'rxjs';
+import { Subject, debounceTime, filter, take } from 'rxjs';
 import { Router, RouterLink } from '@angular/router';
 import { CountryFormComponent } from '../country-form/country-form.component';
 import { DialogService } from '../../shared/services/dialog.service';
@@ -38,7 +38,7 @@ export class CountryListComponent implements OnInit {
   constructor(
     private readonly store: Store<AppState>,
     private readonly router: Router,
-    private readonly dialogService: DialogService,
+    private readonly dialogService: DialogService
   ) {}
 
   ngOnInit() {
@@ -55,7 +55,7 @@ export class CountryListComponent implements OnInit {
     const total = this.viewport.getDataLength();
 
     if (renderedEnd === total && renderedEnd > this.maxIndexReached) {
-      this.store.dispatch(CountryActions.getCountriesWithOffset());
+      this.store.dispatch(CountryActions.getCountries(total));
       this.maxIndexReached = renderedEnd;
     }
   }
@@ -65,6 +65,13 @@ export class CountryListComponent implements OnInit {
   }
 
   openCountryForm() {
-    this.dialogService.open(CountryFormComponent);
+    const dialogRef = this.dialogService.open(CountryFormComponent);
+    dialogRef
+      .afterClosed()
+      .pipe(
+        take(1),
+        filter((created) => created === true)
+      )
+      .subscribe(() => (this.maxIndexReached = INITIAL_OFFSET));
   }
 }
