@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { CompositionActions } from '../../store/composition/composition.actions';
@@ -8,20 +8,25 @@ import { timeline } from '../../store/composition/composition.selectors';
 import { filter, take } from 'rxjs/operators';
 import { MaterialModule } from '../../material/material.module';
 import moment from 'moment';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-device-details',
   standalone: true,
-  imports: [MaterialModule],
+  imports: [MaterialModule, CommonModule],
   templateUrl: './device-details.component.html',
   styleUrl: './device-details.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DeviceDetailsComponent implements OnInit {
+  dataAvailable = false;
+
   constructor(
     private readonly route: ActivatedRoute,
-    private readonly store: Store
+    private readonly store: Store,
+    private readonly changeRef: ChangeDetectorRef
   ) {}
+
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('deviceId'));
@@ -34,9 +39,12 @@ export class DeviceDetailsComponent implements OnInit {
         take(1)
       )
       .subscribe((timeline) => {
-        if (timeline) {
+
+        if (timeline && timeline.length > 0) {
+          this.dataAvailable = true;
           const filledData = this.fillEmptyDates(timeline);
           this.createChart(filledData);
+          this.changeRef.markForCheck();
         }
       });
   }
