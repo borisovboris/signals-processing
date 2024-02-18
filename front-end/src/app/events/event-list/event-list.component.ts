@@ -6,6 +6,8 @@ import { CommonModule } from '@angular/common';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MaterialModule } from '../../material/material.module';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DialogService } from '../../shared/services/dialog.service';
+import { EventFormComponent } from '../event-form/event-form.component';
 
 @Component({
   selector: 'app-event-list',
@@ -21,7 +23,8 @@ export class EventListComponent implements OnInit {
   constructor(
     private readonly store: Store,
     private readonly router: Router,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly dialogService: DialogService
   ) {}
 
   ngOnInit() {
@@ -30,5 +33,9 @@ export class EventListComponent implements OnInit {
 
   goToDetails(id: number) {
     this.router.navigate([`events`, id]);
+  }
+
+  openEventForm() {
+    this.dialogService.open(EventFormComponent);
   }
 }

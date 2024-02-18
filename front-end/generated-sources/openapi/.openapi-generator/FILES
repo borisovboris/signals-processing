@@ -31,6 +31,7 @@ model/nameFilterDTO.ts
 model/newCityDTO.ts
 model/newCompositionDTO.ts
 model/newDeviceDTO.ts
+model/newEventDTO.ts
 model/newLocationDTO.ts
 model/signalDTO.ts
 model/signalDTO1.ts

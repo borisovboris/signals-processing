@@ -18,4 +18,16 @@ public class EventDevice {
     @ManyToOne()
     @MapsId("deviceId")
     public Device device;
+
+    public void setId(EventDeviceId id) {
+        this.id = id;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    public void setDevice(Device device) {
+        this.device = device;
+    }
 }

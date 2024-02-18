@@ -18,6 +18,7 @@ export * from './nameFilterDTO';
 export * from './newCityDTO';
 export * from './newCompositionDTO';
 export * from './newDeviceDTO';
+export * from './newEventDTO';
 export * from './newLocationDTO';
 export * from './signalDTO';
 export * from './signalDTO1';

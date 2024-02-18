@@ -126,8 +126,8 @@ VALUES
 
 INSERT INTO event_type(id, name)
 VALUES
-(1, 'Start motor'),
-(2, 'Stop motor');
+(1, 'Start device'),
+(2, 'Stop device');
 
 INSERT INTO signal(id, device_id, value)
 VALUES

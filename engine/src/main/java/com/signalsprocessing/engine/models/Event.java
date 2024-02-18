@@ -9,8 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 @Entity
 public class Event {
@@ -22,8 +20,8 @@ public class Event {
     @JoinColumn(name = "type_id", nullable = false)
     public EventType type;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "signal_id", nullable = false)
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "signal_id", nullable = true)
     public Signal signal;
 
     @Column(columnDefinition = "boolean default false")
@@ -34,4 +32,12 @@ public class Event {
 
     @Column(insertable = false, updatable = false, nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
     public Date eventCreationAt;
+
+    public void setType(EventType type) {
+        this.type = type;
+    }
+
+    public void setManualInsert(boolean manualInsert) {
+        this.manualInsert = manualInsert;
+    }
 }
