@@ -2,7 +2,6 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -12,20 +11,23 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../material/material.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { AutocompleteChipsComponent } from '../../shared/autocomplete-chips/autocomplete-chips.component';
-import { CityNameChipsAutocompleteComponent } from '../autocompletes/city-name-chips-autocomplete/city-name-chips-autocomplete.component';
-import { LocationNameChipsAutocompleteComponent } from '../autocompletes/location-name-chips-autocomplete/location-name-chips-autocomplete.component';
 import { isDefined } from '../../shared/utils';
-import { take } from 'rxjs';
+import {
+  BehaviorSubject,
+  map,
+  take,
+} from 'rxjs';
 import { DialogService } from '../../shared/services/dialog.service';
 import { CompositionFormComponent } from './composition-form/composition-form.component';
+import { FormControl } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CountriesService } from '../../../../generated-sources/openapi';
 
 @Component({
   selector: 'app-compositions-list',
   standalone: true,
   imports: [
     AutocompleteChipsComponent,
-    CityNameChipsAutocompleteComponent,
-    LocationNameChipsAutocompleteComponent,
     CommonModule,
     MaterialModule,
     ScrollingModule,
@@ -35,12 +37,15 @@ import { CompositionFormComponent } from './composition-form/composition-form.co
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CompositionsListComponent implements AfterViewInit {
-  @ViewChild(CityNameChipsAutocompleteComponent)
-  cityNameAutoComplete!: CityNameChipsAutocompleteComponent;
-  @ViewChild(LocationNameChipsAutocompleteComponent)
-  locationNameAutoComplete!: LocationNameChipsAutocompleteComponent;
-  cityName?: string;
-  locationName?: string;
+  citiesCtrl = new FormControl<string[]>([], { nonNullable: true });
+  cityCtrl = new FormControl<string>('', { nonNullable: true });
+  cities$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+  cityOptions$ = this.cities$.asObservable();
+
+  locationsCtrl = new FormControl<string[]>([], { nonNullable: true });
+  locationCtrl = new FormControl<string>('', { nonNullable: true });
+  locations$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+  locationOptions$ = this.locations$.asObservable();
 
   compositions$ = this.store.select(compositions);
   cityNames: string[] = [];
@@ -51,47 +56,59 @@ export class CompositionsListComponent implements AfterViewInit {
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly dialogService: DialogService,
+    private readonly service: CountriesService
   ) {}
 
-  ngOnInit(): void {
-   
-  }
+  ngOnInit(): void {}
 
   getOperationalLabel(operational: boolean) {
     return operational ? 'Operational' : 'Not operational';
   }
 
-  onCityNameFilter(names: string[]) {
-    this.cityNames = names;
-    this.getCompositions();
+  handleCityInput(text: string) {
+    this.service
+      .readCitiesLikeName(text)
+      .pipe(
+        take(1),
+        map((cities) => cities.map((city) => city.name))
+      )
+      .subscribe((data) => this.cities$.next(data));
   }
 
-  onLocationNameFilter(names: string[]) {
-    this.locationNames = names;
-    this.getCompositions();
+  handleLocationInput(text: string) {
+    this.service
+      .readLocations({ name: text })
+      .pipe(
+        take(1),
+        map((locations) => locations.map((locations) => locations.name))
+      )
+      .subscribe((data) => this.locations$.next(data));
+  }
+
+  handleCityChipsChange() {
+      this.cities$.next([]);
+      this.getCompositions(this.getCityChips(), this.getLocationChips());
+  }
+
+  handleLocationChipsChange() {
+      this.locations$.next([]);
+      this.getCompositions(this.getCityChips(), this.getLocationChips());
   }
 
   setInitialCityAndCountryName(cityName: string, locationName: string) {
-    this.cityNameAutoComplete.setChips([cityName]);
-    this.locationNameAutoComplete.setChips([locationName]);
+    this.citiesCtrl.setValue([cityName]);
+    this.locationsCtrl.setValue([locationName]);
   }
 
   ngAfterViewInit() {
     this.route.queryParams.pipe(take(1)).subscribe((params) => {
-      this.cityName = params['cityName'];
-      this.locationName = params['locationName'];
+      const cityName = params['cityName'];
+      const locationName = params['locationName'];
 
-      if (isDefined(this.cityName) && isDefined(this.locationName)) {
-        this.setInitialCityAndCountryName(this.cityName, this.locationName);
+      if (isDefined(cityName) && isDefined(locationName)) {
+        this.setInitialCityAndCountryName(cityName, locationName);
 
-        this.store.dispatch(
-          CompositionActions.getCompositions({
-            filters: {
-              cityNames: [this.cityName],
-              locationNames: [this.locationName],
-            },
-          })
-        );
+        this.getCompositions([cityName], [locationName]);
 
         return;
       }
@@ -100,12 +117,20 @@ export class CompositionsListComponent implements AfterViewInit {
     });
   }
 
-  getCompositions() {
+  getCityChips() {
+    return this.citiesCtrl.value;
+  }
+
+  getLocationChips() {
+    return this.locationsCtrl.value;
+  }
+
+  getCompositions(cities: string[], locations: string[]) {
     this.store.dispatch(
       CompositionActions.getCompositions({
         filters: {
-          cityNames: this.cityNames,
-          locationNames: this.locationNames,
+          cityNames: cities,
+          locationNames: locations,
         },
       })
     );

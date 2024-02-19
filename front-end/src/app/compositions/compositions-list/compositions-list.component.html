@@ -1,12 +1,22 @@
 <div class="wrapper" *ngIf="compositions$ | async as compositions">
   <mat-card class="sidebar">
     <h2>Filters</h2>
-    <app-city-name-chips-autocomplete
-      (itemsUpdated)="onCityNameFilter($event)"
-    ></app-city-name-chips-autocomplete>
-    <app-location-name-chips-autocomplete
-      (itemsUpdated)="onLocationNameFilter($event)"
-    ></app-location-name-chips-autocomplete>
+    <app-autocomplete-chips
+      [options$]="locationOptions$"
+      label="Locations"
+      placeholder="Location..."
+      [itemsCtrl]="locationsCtrl"
+      (inputTextChanged)="handleLocationInput($event)"
+      (chipsChanged)="handleLocationChipsChange()"
+    ></app-autocomplete-chips>
+    <app-autocomplete-chips
+      [options$]="cityOptions$"
+      label="Cities"
+      placeholder="City..."
+      [itemsCtrl]="citiesCtrl"
+      (inputTextChanged)="handleCityInput($event)"
+      (chipsChanged)="handleCityChipsChange()"
+    ></app-autocomplete-chips>
   </mat-card>
 
   <mat-card class="list">
@@ -26,10 +36,7 @@
       [itemSize]="60"
       class="example-viewport"
     >
-      <div
-        class="row-wrapper"
-        *cdkVirtualFor="let composition of compositions"
-      >
+      <div class="row-wrapper" *cdkVirtualFor="let composition of compositions">
         <div
           class="row mat-elevation-z2"
           [class.not-operational]="!composition.status.isOperational"

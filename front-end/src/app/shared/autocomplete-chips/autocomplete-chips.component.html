@@ -1,6 +1,6 @@
 <mat-form-field class="example-chip-list">
   <mat-label>{{ label }}</mat-label>
-  <mat-chip-grid #chipGrid>
+  <mat-chip-grid #chipGrid [formControl]="itemsCtrl">
     @for (chip of chips; track chip) {
     <mat-chip-row (removed)="remove(chip)" class="mat-chip">
       {{ chip }}
@@ -12,10 +12,9 @@
   </mat-chip-grid>
   <input
     placeholder="{{ placeholder }}"
-    #textInput
-    [formControl]="itemCtrl"
     [matChipInputFor]="chipGrid"
     [matAutocomplete]="auto"
+    #textInput
   />
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
     @for (option of options$ | async; track option) {
@@ -24,5 +23,3 @@
     <mat-option disabled>No results</mat-option>
   </mat-autocomplete>
 </mat-form-field>
-
-{{itemCtrl.value }}

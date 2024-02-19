@@ -55,6 +55,8 @@ public class CountriesController {
         return service.getCitiesOfCountry(id);
     }
 
+    //TODO consider the case when name is an empty string
+    // Use RequestParameter or a DTO for filters instead
     @GetMapping("read-cities-like-name/{name}")
     @ResponseBody
     public List<CityDTO> readCitiesLikeName(@PathVariable("name") String name) {
