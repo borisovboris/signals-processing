@@ -43,24 +43,16 @@ public class CountriesController {
         return service.getCountries(offset);
     }
 
-    @GetMapping("read-countries-with-offset/{id}")
+    @GetMapping("read-cities-of-country/{id}")
     @ResponseBody
-    public List<CountryDTO> readCountriesWithOffset(@PathVariable("id") Long id) {
-        return service.getCountriesWithOffset(id);
-    }
-
-    @GetMapping("read-cities/{id}")
-    @ResponseBody
-    public CitiesDTO readCities(@PathVariable("id") Long id) {
+    public CitiesDTO readCitiesOfCountry(@PathVariable("id") Long id) {
         return service.getCitiesOfCountry(id);
     }
 
-    //TODO consider the case when name is an empty string
-    // Use RequestParameter or a DTO for filters instead
-    @GetMapping("read-cities-like-name/{name}")
+    @GetMapping("read-cities-like-name")
     @ResponseBody
-    public List<CityDTO> readCitiesLikeName(@PathVariable("name") String name) {
-        return service.getCitiesLikeName(name);
+    public List<CityDTO> readCitiesLikeName(NameFilterDTO filters) {
+        return service.getCitiesLikeName(filters);
     }
 
     @GetMapping("read-locations")

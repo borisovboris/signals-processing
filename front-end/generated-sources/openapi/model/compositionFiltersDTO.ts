@@ -12,9 +12,9 @@
 
 
 export interface CompositionFiltersDTO { 
-    cityNames?: Array<string>;
-    locationNames?: Array<string>;
-    excludedCompositionCodes?: Array<string>;
+    cities?: Array<number>;
+    locations?: Array<number>;
+    excludedCompositions?: Array<number>;
     code?: string;
 }
 

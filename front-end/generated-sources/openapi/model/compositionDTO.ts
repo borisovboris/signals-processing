@@ -15,6 +15,7 @@ import { StatusDTO } from './statusDTO';
 export interface CompositionDTO { 
     id: number;
     locationName: string;
+    locationId: number;
     code: string;
     devicesSize: number;
     status: StatusDTO;

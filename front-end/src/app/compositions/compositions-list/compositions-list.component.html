@@ -1,11 +1,13 @@
-<!-- <div class="wrapper" *ngIf="compositions$ | async as compositions">
+<div class="wrapper" *ngIf="compositions$ | async as compositions">
   <mat-card class="sidebar">
     <h2>Filters</h2>
-    <app-autocomplete-chips
+    <form [formGroup]="sidepanelForm">
+      <app-autocomplete-chips
       [options$]="locationOptions$"
       label="Locations"
       placeholder="Location..."
       [itemsCtrl]="locationsCtrl"
+      [textCtrl]="locationCtrl"
       (inputTextChanged)="handleLocationInput($event)"
       (chipsChanged)="handleLocationChipsChange()"
     ></app-autocomplete-chips>
@@ -14,9 +16,11 @@
       label="Cities"
       placeholder="City..."
       [itemsCtrl]="citiesCtrl"
+      [textCtrl]="cityCtrl"
       (inputTextChanged)="handleCityInput($event)"
       (chipsChanged)="handleCityChipsChange()"
     ></app-autocomplete-chips>
+    </form>
   </mat-card>
 
   <mat-card class="list">
@@ -49,4 +53,4 @@
       </div>
     </cdk-virtual-scroll-viewport>
   </mat-card>
-</div> -->
+</div>

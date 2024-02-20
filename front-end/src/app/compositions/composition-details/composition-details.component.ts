@@ -67,17 +67,17 @@ export class CompositionDetailsComponent implements OnInit {
       return;
     }
 
-    let relatedCompositionCodes = this.details.relatedCompositions.map(
-      (c) => c.code
+    let relatedCompositions = this.details.relatedCompositions.map(
+      (c) => c.id
     );
-    let currentCompositionCode = this.details.composition.code;
+    let currentComposition = this.details.composition.id;
 
     const data: LinkCompositionData = {
       compositionId: this.compositionId,
-      locationNames: [this.details.composition.locationName],
-      excludedCompositionCodes: [
-        currentCompositionCode,
-        ...relatedCompositionCodes,
+      locations: [this.details.composition.locationId],
+      excludedCompositions: [
+        currentComposition,
+        ...relatedCompositions,
       ],
     };
 

@@ -12,16 +12,13 @@ import { MaterialModule } from '../../material/material.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { AutocompleteChipsComponent } from '../../shared/autocomplete-chips/autocomplete-chips.component';
 import { isDefined } from '../../shared/utils';
-import {
-  BehaviorSubject,
-  map,
-  take,
-} from 'rxjs';
+import { BehaviorSubject, map, take } from 'rxjs';
 import { DialogService } from '../../shared/services/dialog.service';
 import { CompositionFormComponent } from './composition-form/composition-form.component';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CountriesService } from '../../../../generated-sources/openapi';
+import { LabeledValue } from '../../shared/autocomplete-chips/autocomplete.model';
 
 @Component({
   selector: 'app-compositions-list',
@@ -31,6 +28,7 @@ import { CountriesService } from '../../../../generated-sources/openapi';
     CommonModule,
     MaterialModule,
     ScrollingModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './compositions-list.component.html',
   styleUrl: './compositions-list.component.scss',
@@ -39,17 +37,28 @@ import { CountriesService } from '../../../../generated-sources/openapi';
 export class CompositionsListComponent implements AfterViewInit {
   citiesCtrl = new FormControl<string[]>([], { nonNullable: true });
   cityCtrl = new FormControl<string>('', { nonNullable: true });
-  cities$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+  cities$: BehaviorSubject<LabeledValue<number>[]> = new BehaviorSubject<
+    LabeledValue<number>[]
+  >([]);
   cityOptions$ = this.cities$.asObservable();
 
   locationsCtrl = new FormControl<string[]>([], { nonNullable: true });
   locationCtrl = new FormControl<string>('', { nonNullable: true });
-  locations$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+  locations$: BehaviorSubject<LabeledValue<number>[]> = new BehaviorSubject<
+    LabeledValue<number>[]
+  >([]);
   locationOptions$ = this.locations$.asObservable();
 
   compositions$ = this.store.select(compositions);
   cityNames: string[] = [];
   locationNames: string[] = [];
+
+  sidepanelForm = new FormGroup({
+    citiesCtrl: this.citiesCtrl,
+    cityCtrl: this.cityCtrl,
+    locationsCtrl: this.locationCtrl,
+    locationCtr: this.locationCtrl,
+  });
 
   constructor(
     private readonly store: Store,
@@ -67,10 +76,12 @@ export class CompositionsListComponent implements AfterViewInit {
 
   handleCityInput(text: string) {
     this.service
-      .readCitiesLikeName(text)
+      .readCitiesLikeName({ name: text })
       .pipe(
         take(1),
-        map((cities) => cities.map((city) => city.name))
+        map((cities) =>
+          cities.map((city) => ({ label: city.name, value: city.id }))
+        )
       )
       .subscribe((data) => this.cities$.next(data));
   }
@@ -80,19 +91,24 @@ export class CompositionsListComponent implements AfterViewInit {
       .readLocations({ name: text })
       .pipe(
         take(1),
-        map((locations) => locations.map((locations) => locations.name))
+        map((locations) =>
+          locations.map((location) => ({
+            label: location.name,
+            value: location.id,
+          }))
+        )
       )
       .subscribe((data) => this.locations$.next(data));
   }
 
   handleCityChipsChange() {
-      this.cities$.next([]);
-      this.getCompositions(this.getCityChips(), this.getLocationChips());
+    this.cities$.next([]);
+    this.getCompositions(this.getCityChips(), this.getLocationChips());
   }
 
   handleLocationChipsChange() {
-      this.locations$.next([]);
-      this.getCompositions(this.getCityChips(), this.getLocationChips());
+    this.locations$.next([]);
+    this.getCompositions(this.getCityChips(), this.getLocationChips());
   }
 
   setInitialCityAndCountryName(cityName: string, locationName: string) {
@@ -113,25 +129,23 @@ export class CompositionsListComponent implements AfterViewInit {
         return;
       }
 
-      this.store.dispatch(CompositionActions.getCompositions({}));
+      this.store.dispatch(CompositionActions.getCompositions());
     });
   }
 
   getCityChips() {
-    return this.citiesCtrl.value;
+    return this.citiesCtrl.value.map((v) => Number(v));
   }
 
   getLocationChips() {
-    return this.locationsCtrl.value;
+    return this.locationsCtrl.value.map((v) => Number(v));
   }
 
-  getCompositions(cities: string[], locations: string[]) {
+  getCompositions(cities: number[], locations: number[]) {
     this.store.dispatch(
       CompositionActions.getCompositions({
-        filters: {
-          cityNames: cities,
-          locationNames: locations,
-        },
+        cities,
+        locations,
       })
     );
   }

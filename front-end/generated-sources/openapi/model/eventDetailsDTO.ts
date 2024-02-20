@@ -16,7 +16,7 @@ import { SignalDTO } from './signalDTO';
 
 export interface EventDetailsDTO { 
     event: EventDTO;
-    signal: SignalDTO;
+    signal?: SignalDTO;
     affectedDevices: Array<DeviceDTO>;
 }
 

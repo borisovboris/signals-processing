@@ -42,7 +42,7 @@ public class CompositionsController {
     }
 
     @GetMapping("read-compositions")
-    public List<CompositionDTO> readCompositions(Optional<CompositionFiltersDTO> filters) {
+    public List<CompositionDTO> readCompositions(CompositionFiltersDTO filters) {
         return service.readCompositions(filters);
     }
 

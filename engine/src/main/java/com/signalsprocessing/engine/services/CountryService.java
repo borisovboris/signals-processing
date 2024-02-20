@@ -48,11 +48,25 @@ public class CountryService {
                 return city;
         }
 
-        public List<CityDTO> getCitiesLikeName(String name) {
+        public List<CityDTO> getCitiesLikeName(NameFilterDTO filters) {
+                CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+                CriteriaQuery<City> criteriaQuery = cb.createQuery(City.class);
+                Root<City> root = criteriaQuery.from(City.class);
+                CriteriaQuery<City> initialQuery = criteriaQuery.select(root);
+
+              
+                        String name = filters.getName();
+
+                        if (name != null) {
+                                var cityName = root.get("name");
+                                initialQuery.where(cb.like(cityName.as(String.class), name + "%"));
+                        }
+        
+
                 TypedQuery<City> query = entityManager
-                                .createQuery("SELECT ci from City ci WHERE ci.name like :name", City.class)
-                                .setParameter("name", "" + name + "%")
+                                .createQuery(initialQuery)
                                 .setMaxResults(CountryService.LIMIT);
+           
 
                 List<CityDTO> list = query
                                 .getResultList()
@@ -104,20 +118,6 @@ public class CountryService {
                 TypedQuery<Country> query = entityManager
                                 .createQuery("SELECT c from Country c ORDER BY c.name ASC", Country.class)
                                 .setFirstResult(defaultOffset)
-                                .setMaxResults(CountryService.LIMIT);
-                List<CountryDTO> list = query
-                                .getResultList()
-                                .stream()
-                                .map(entity -> new CountryDTO(entity.id, entity.name))
-                                .toList();
-
-                return list;
-        }
-
-        public List<CountryDTO> getCountriesWithOffset(long minId) {
-                TypedQuery<Country> query = entityManager
-                                .createQuery("SELECT c from Country c WHERE c.id > :minId", Country.class)
-                                .setParameter("minId", minId)
                                 .setMaxResults(CountryService.LIMIT);
                 List<CountryDTO> list = query
                                 .getResultList()

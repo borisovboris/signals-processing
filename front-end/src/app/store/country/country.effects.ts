@@ -33,7 +33,7 @@ export class CountryEffects {
       ofType(CountryActions.getCitiesOfCountry, CountryActions.cityCreated),
       withLatestFrom(this.store.select(currentlyViewedCountryId)),
       switchMap(([, countryId]) => {
-        return this.countriesService.readCities(countryId!).pipe(
+        return this.countriesService.readCitiesOfCountry(countryId!).pipe(
           map((cities) => CountryActions.citiesOfCountryFetched({ cities })),
           catchError(() => EMPTY)
         );

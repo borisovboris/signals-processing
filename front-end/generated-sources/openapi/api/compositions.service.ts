@@ -736,10 +736,13 @@ export class CompositionsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public readCompositions(filters?: CompositionFiltersDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<CompositionDTO>>;
-    public readCompositions(filters?: CompositionFiltersDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<CompositionDTO>>>;
-    public readCompositions(filters?: CompositionFiltersDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<CompositionDTO>>>;
-    public readCompositions(filters?: CompositionFiltersDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public readCompositions(filters: CompositionFiltersDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<CompositionDTO>>;
+    public readCompositions(filters: CompositionFiltersDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<CompositionDTO>>>;
+    public readCompositions(filters: CompositionFiltersDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<CompositionDTO>>>;
+    public readCompositions(filters: CompositionFiltersDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (filters === null || filters === undefined) {
+            throw new Error('Required parameter filters was null or undefined when calling readCompositions.');
+        }
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (filters !== undefined && filters !== null) {
