@@ -1,6 +1,7 @@
 package com.signalsprocessing.engine.models;
 
 import java.util.Date;
+import java.util.Optional;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,7 +23,7 @@ public class Event {
 
     @ManyToOne(optional = true)
     @JoinColumn(name = "signal_id", nullable = true)
-    public Signal signal;
+    private Signal signal;
 
     @Column(columnDefinition = "boolean default false")
     public boolean manualInsert = false;
@@ -39,5 +40,9 @@ public class Event {
 
     public void setManualInsert(boolean manualInsert) {
         this.manualInsert = manualInsert;
+    }
+
+    public Optional<Signal> getSignal() {
+        return Optional.ofNullable(this.signal);
     }
 }

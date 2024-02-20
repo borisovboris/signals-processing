@@ -7,9 +7,9 @@ import { EMPTY, catchError, map, switchMap } from 'rxjs';
 
 @Injectable()
 export class EventEffects {
-  loadLocations = createEffect(() =>
+  loadEvents = createEffect(() =>
     this.actions$.pipe(
-      ofType(EventActions.getEvents),
+      ofType(EventActions.getEvents, EventActions.eventCreated),
       switchMap(() =>
         this.eventsService.readEvents().pipe(
           map((events) => EventActions.eventsFetched({ events })),
@@ -20,16 +20,28 @@ export class EventEffects {
   );
 
   loadDetails = createEffect(() =>
-  this.actions$.pipe(
-    ofType(EventActions.getEventDetails),
-    switchMap(({ id }) =>
-      this.eventsService.readEventDetails(id).pipe(
-        map((details) => EventActions.eventDetailsFetched({ details })),
-        catchError(() => EMPTY)
+    this.actions$.pipe(
+      ofType(EventActions.getEventDetails),
+      switchMap(({ id }) =>
+        this.eventsService.readEventDetails(id).pipe(
+          map((details) => EventActions.eventDetailsFetched({ details })),
+          catchError(() => EMPTY)
+        )
       )
     )
-  )
-);
+  );
+
+  createEvent = createEffect(() =>
+    this.actions$.pipe(
+      ofType(EventActions.createEvent),
+      switchMap(({ event }) =>
+        this.eventsService.createEvent(event).pipe(
+          map((details) => EventActions.eventCreated()),
+          catchError(() => EMPTY)
+        )
+      )
+    )
+  );
 
   constructor(
     private actions$: Actions,

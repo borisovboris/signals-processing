@@ -17,9 +17,11 @@ import com.signalsprocessing.engine.services.CompositionService.CompositionDetai
 import com.signalsprocessing.engine.services.CompositionService.CompositionFiltersDTO;
 import com.signalsprocessing.engine.services.CompositionService.CompositionStatusDTO;
 import com.signalsprocessing.engine.services.CompositionService.CompositionTypeDTO;
+import com.signalsprocessing.engine.services.CompositionService.DeviceDTO;
 import com.signalsprocessing.engine.services.CompositionService.DeviceDateStatusDTO;
 import com.signalsprocessing.engine.services.CompositionService.DeviceStatusDTO;
 import com.signalsprocessing.engine.services.CompositionService.LinkedCompositionsDTO;
+import com.signalsprocessing.engine.services.CompositionService.NameFilterDTOs;
 import com.signalsprocessing.engine.services.CompositionService.NewCompositionDTO;
 import com.signalsprocessing.engine.services.CompositionService.NewDeviceDTO;
 import com.signalsprocessing.engine.shared.NameFilterDTO;
@@ -88,6 +90,12 @@ public class CompositionsController {
     @ResponseBody
     public List<DeviceStatusDTO> readDeviceStatuses(Optional<NameFilterDTO> filters) {
         return service.getDeviceStatuses(filters);
+    }
+
+    @GetMapping("read-devices")
+    @ResponseBody
+    public List<DeviceDTO> readDevices(NameFilterDTOs filters) {
+        return service.getDevices(filters);
     }
 
     @PostMapping("create-device")

@@ -1,24 +1,29 @@
 <mat-form-field class="example-chip-list">
-  <mat-label>{{ label }}</mat-label>
-  <mat-chip-grid #chipGrid [formControl]="itemsCtrl">
-    @for (chip of chips; track chip) {
-    <mat-chip-row (removed)="remove(chip)" class="mat-chip">
-      {{ chip }}
+  <mat-chip-listbox #chipGrid [formControl]="itemsCtrl" multiple>
+    @for (id of itemsCtrl.value; track id) {
+    <mat-chip-option (removed)="remove(id)" [selectable]="false">
+      {{ getChipLabel(id) }}
       <button matChipRemove>
         <mat-icon>cancel</mat-icon>
       </button>
-    </mat-chip-row>
+    </mat-chip-option>
     }
-  </mat-chip-grid>
+  </mat-chip-listbox>
+
   <input
-    placeholder="{{ placeholder }}"
-    [matChipInputFor]="chipGrid"
+    matInput
+    placeholder="{{ getInputPlaceholder() }}"
     [matAutocomplete]="auto"
     #textInput
+    [formControl]="textCtrl"
   />
+  <mat-error *ngIf="textCtrl.hasError('chipsRequired')"
+    >At least one option required</mat-error
+  >
+
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-    @for (option of options$ | async; track option) {
-    <mat-option [value]="option">{{ option }}</mat-option>
+    @for (option of options$ | async; track option.value) {
+    <mat-option [value]="option.value">{{ option.label }}</mat-option>
     }
     <mat-option disabled>No results</mat-option>
   </mat-autocomplete>

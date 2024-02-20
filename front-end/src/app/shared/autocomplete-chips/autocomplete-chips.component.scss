@@ -2,9 +2,9 @@
 @import "./colors";
 
 mat-form-field {
-    width: 100%;
+  width: 100%;
 }
 
-mat-chip-row.mat-chip {
- background-color: map.get($primary, 500);
+.example-chip-list mat-chip-option {
+  background-color: map.get($primary, 500);
 }

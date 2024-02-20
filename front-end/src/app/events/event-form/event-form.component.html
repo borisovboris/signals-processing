@@ -1,1 +1,33 @@
-<p>event-form works!</p>
+<mat-card>
+  <h1>Add manual event</h1>
+  <form [formGroup]="eventForm">
+    <app-single-autocomplete
+      [label]="'Event type'"
+      [ctrl]="eventTypeCtrl"
+      [options$]="typeOptions$"
+      (userTextInput)="onEventTypeInput($event)"
+    ></app-single-autocomplete>
+    <app-autocomplete-chips
+      [required]="true"
+      [options$]="deviceOptions$"
+      label="Devices"
+      placeholder="Device..."
+      [itemsCtrl]="devicesCtrl"
+      [textCtrl]="deviceTextCtrl"
+      (inputTextChanged)="handleDeviceInput($event)"
+      (chipsChanged)="handleDeviceChipsChange()"
+    ></app-autocomplete-chips>
+
+    <div class="actions">
+      <button
+        type="button"
+        mat-raised-button
+        color="accent"
+        [disabled]="eventForm.invalid"
+        (click)="createEvent()"
+      >
+        Add
+      </button>
+    </div>
+  </form>
+</mat-card>

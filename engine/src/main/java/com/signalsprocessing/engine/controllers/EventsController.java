@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.signalsprocessing.engine.services.CountryService.NewCityDTO;
 import com.signalsprocessing.engine.services.EventService;
 import com.signalsprocessing.engine.services.EventService.EventDTO;
 import com.signalsprocessing.engine.services.EventService.EventDetailsDTO;
+import com.signalsprocessing.engine.services.EventService.EventTypeDTO;
+import com.signalsprocessing.engine.services.EventService.NameFilterDTOs;
 import com.signalsprocessing.engine.services.EventService.NewEventDTO;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,6 +38,11 @@ public class EventsController {
     @GetMapping("read-event-details/{id}")
     public EventDetailsDTO readEventDetails(@PathVariable("id") Long id) {
         return service.getEventDetails(id);
+    }
+
+    @GetMapping("event-types")
+    public List<EventTypeDTO> readEventTypes(NameFilterDTOs filters) {
+        return service.getEventTypes(filters);
     }
 
     @PostMapping("create-event")

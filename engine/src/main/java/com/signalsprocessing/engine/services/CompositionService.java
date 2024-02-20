@@ -356,6 +356,32 @@ public class CompositionService {
         return list;
     }
 
+    public List<DeviceDTO> getDevices(NameFilterDTOs filters) {
+         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Device> criteriaQuery = cb.createQuery(Device.class);
+        Root<Device> root = criteriaQuery.from(Device.class);
+        CriteriaQuery<Device> initialQuery = criteriaQuery.select(root);
+
+        Optional<String> name = filters.name;
+
+        if (name.isPresent()) {
+            var deviceName = root.get("name");
+            initialQuery.where(cb.like(deviceName.as(String.class), name.get() + "%"));
+        }
+
+        TypedQuery<Device> query = entityManager
+                .createQuery(initialQuery)
+                .setMaxResults(CompositionService.LIMIT);
+
+        List<DeviceDTO> list = query
+                .getResultList()
+                .stream()
+                .map(entity -> mapDevice(entity))
+                .toList();
+
+        return list;
+    }
+
     public record CompositionDTO(@NotNull long id, @NotNull String locationName, @NotNull String code,
             @NotNull int devicesSize,
             @NotNull StatusDTO status) {
@@ -404,4 +430,6 @@ public class CompositionService {
             @NotNull Long statusId,
             @Nullable String coordinates, @Nullable String description) {
     }
+
+    public record NameFilterDTOs(Optional<String> name) {}
 }
