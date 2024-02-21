@@ -24,7 +24,14 @@
         <div
           class="row mat-elevation-z2"
           [class.not-operational]="!location.isOperational"
-          (click)="goToLocationCompositions(locations.city.name, location.name)"
+          (click)="
+            goToLocationCompositions(
+              locations.city.id,
+              locations.city.name,
+              location.id,
+              location.name
+            )
+          "
         >
           <p>{{ location.name }}</p>
           <p>{{ location.address }}</p>

@@ -3,23 +3,25 @@
     <h2>Filters</h2>
     <form [formGroup]="sidepanelForm">
       <app-autocomplete-chips
-      [options$]="locationOptions$"
-      label="Locations"
-      placeholder="Location..."
-      [itemsCtrl]="locationsCtrl"
-      [textCtrl]="locationCtrl"
-      (inputTextChanged)="handleLocationInput($event)"
-      (chipsChanged)="handleLocationChipsChange()"
-    ></app-autocomplete-chips>
-    <app-autocomplete-chips
-      [options$]="cityOptions$"
-      label="Cities"
-      placeholder="City..."
-      [itemsCtrl]="citiesCtrl"
-      [textCtrl]="cityCtrl"
-      (inputTextChanged)="handleCityInput($event)"
-      (chipsChanged)="handleCityChipsChange()"
-    ></app-autocomplete-chips>
+        #locationChips
+        [options$]="locationOptions$"
+        label="Locations"
+        placeholder="Location..."
+        [itemsCtrl]="locationsCtrl"
+        [textCtrl]="locationCtrl"
+        (inputTextChanged)="handleLocationInput($event)"
+        (chipsChanged)="handleLocationChipsChange()"
+      ></app-autocomplete-chips>
+      <app-autocomplete-chips
+        #cityChips
+        [options$]="cityOptions$"
+        label="Cities"
+        placeholder="City..."
+        [itemsCtrl]="citiesCtrl"
+        [textCtrl]="cityCtrl"
+        (inputTextChanged)="handleCityInput($event)"
+        (chipsChanged)="handleCityChipsChange()"
+      ></app-autocomplete-chips>
     </form>
   </mat-card>
 

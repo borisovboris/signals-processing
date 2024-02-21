@@ -13,11 +13,7 @@ import {
 } from '@angular/core';
 import { MaterialModule } from '../../material/material.module';
 import { CommonModule } from '@angular/common';
-import {
-  FormControl,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Observable, debounceTime, fromEvent } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -51,9 +47,9 @@ export class AutocompleteChipsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    fromEvent(this.textInput.nativeElement, 'input') .pipe(
-      debounceTime(300),
-      takeUntilDestroyed(this.destroyRef)).subscribe((e) => {
+    fromEvent(this.textInput.nativeElement, 'input')
+      .pipe(debounceTime(300), takeUntilDestroyed(this.destroyRef))
+      .subscribe((e) => {
         const event = e as Event;
         const target = event.target as HTMLInputElement;
 
@@ -64,29 +60,29 @@ export class AutocompleteChipsComponent implements OnInit, AfterViewInit {
   remove(id: string): void {
     const numberId = Number(id);
 
-    const found = this.chips.findIndex(el => el.value === numberId);
+    const found = this.chips.findIndex((el) => el.value === numberId);
 
     if (found !== -1) {
       this.chips.splice(found, 1);
 
-      this.itemsCtrl.setValue(this.chips.map(el => String(el.value)));
+      this.itemsCtrl.setValue(this.chips.map((el) => String(el.value)));
       this.chipsChanged.emit();
     }
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
     const value = event.option.value as number;
-    const label = event.option.viewValue as string
+    const label = event.option.viewValue as string;
 
-    const found = this.chips.findIndex(el => el.value === value);
+    const found = this.chips.findIndex((el) => el.value === value);
 
     if (found === -1) {
-      this.chips.push({ value, label});
-      
-      this.itemsCtrl.setValue(this.chips.map(el => String(el.value)));
+      this.chips.push({ value, label });
+
+      this.itemsCtrl.setValue(this.chips.map((el) => String(el.value)));
       this.chipsChanged.emit();
 
-      if(this.required) {
+      if (this.required) {
         this.itemsCtrl.updateValueAndValidity();
       }
     }
@@ -97,7 +93,11 @@ export class AutocompleteChipsComponent implements OnInit, AfterViewInit {
   getChipLabel(id: string): string {
     const numberId = Number(id);
 
-      return this.chips.find(c => c.value === numberId)?.label ?? 'Empty';
+    return this.chips.find((c) => c.value === numberId)?.label ?? 'Empty';
+  }
+
+  setChips(chips: LabeledValue<number>[]) {
+    this.chips = chips;
   }
 
   getInputPlaceholder(): string {

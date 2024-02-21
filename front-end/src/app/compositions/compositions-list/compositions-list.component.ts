@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -35,6 +36,9 @@ import { LabeledValue } from '../../shared/autocomplete-chips/autocomplete.model
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CompositionsListComponent implements AfterViewInit {
+  @ViewChild('cityChips') cityChips!: AutocompleteChipsComponent;
+  @ViewChild('locationChips') locationChips!: AutocompleteChipsComponent;
+
   citiesCtrl = new FormControl<string[]>([], { nonNullable: true });
   cityCtrl = new FormControl<string>('', { nonNullable: true });
   cities$: BehaviorSubject<LabeledValue<number>[]> = new BehaviorSubject<
@@ -111,20 +115,35 @@ export class CompositionsListComponent implements AfterViewInit {
     this.getCompositions(this.getCityChips(), this.getLocationChips());
   }
 
-  setInitialCityAndCountryName(cityName: string, locationName: string) {
-    this.citiesCtrl.setValue([cityName]);
-    this.locationsCtrl.setValue([locationName]);
+  setInitialCityAndCountryName(
+    cityId: string,
+    cityName: string,
+    locationId: string,
+    locationName: string
+  ) {
+    this.citiesCtrl.setValue([cityId]);
+    this.locationsCtrl.setValue([locationId]);
+
+    this.cityChips.setChips([{ label: cityName, value: Number(cityId) }]);
+    this.locationChips.setChips([{ label: locationName, value: Number(locationId) }]);
   }
 
   ngAfterViewInit() {
     this.route.queryParams.pipe(take(1)).subscribe((params) => {
-      const cityName = params['cityName'];
-      const locationName = params['locationName'];
+      const cityId = params['cityId'] as string | undefined;
+      const cityName = params['cityName'] as string | undefined;
+      const locationId = params['locationId'] as string | undefined;
+      const locationName = params['locationName'] as string | undefined;
 
-      if (isDefined(cityName) && isDefined(locationName)) {
-        this.setInitialCityAndCountryName(cityName, locationName);
+      if (cityId && cityName && locationId && locationName) {
+        this.setInitialCityAndCountryName(
+          cityId,
+          cityName,
+          locationId,
+          locationName
+        );
 
-        this.getCompositions([cityName], [locationName]);
+        this.getCompositions([Number(cityId)], [Number(locationId)]);
 
         return;
       }

@@ -38,10 +38,10 @@ export class CityDetailsComponent {
     return operational ? 'Operational' : 'Not operational';
   }
 
-  goToLocationCompositions(cityName: string, locationName: string) {
+  goToLocationCompositions(cityId: number, cityName: string, locationId: number, locationName: string) {
     this.router.navigate([`/compositions`], {
       relativeTo: this.route,
-      queryParams: { cityName, locationName },
+      queryParams: { cityId, cityName, locationId, locationName},
     });
   }
 

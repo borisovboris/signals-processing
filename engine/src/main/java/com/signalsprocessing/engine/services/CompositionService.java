@@ -2,6 +2,7 @@ package com.signalsprocessing.engine.services;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -47,6 +48,8 @@ public class CompositionService {
                 // This is the query that selects all rows from the table
                 CriteriaQuery<Composition> initialQuery = criteriaQuery.select(root);
 
+                List<Predicate> predicates = new ArrayList<>();
+
                 List<Long> cities = filters.cities();
                 List<Long> locations = filters.locations();
                 List<Long> excludedCompositions = filters.excludedCompositions();
@@ -54,22 +57,30 @@ public class CompositionService {
 
                 if (cities != null) {
                         var cityId = root.get("location").get("city").get("id");
-                        initialQuery.where(cityId.in(cities));
+                        predicates.add(cityId.in(cities));
                 }
 
                 if (locations != null) {
                         var locationId = root.get("location").get("id");
-                        initialQuery.where(locationId.in(locations));
+                        predicates.add(locationId.in(locations));
                 }
 
-                if (code != null && excludedCompositions != null) {
+                if (code != null) {
                         var compositionCode = root.get("code");
-                        var compositionId = root.get("id");
                         Predicate codeIsLike = cb.like(compositionCode.as(String.class), code + "%");
+
+                        predicates.add(codeIsLike);
+                }
+
+                if (excludedCompositions != null) {
+                        var compositionId = root.get("id");
                         Predicate codeIsNotIn = compositionId.in(excludedCompositions).not();
 
-                        initialQuery.where(cb.and(codeIsLike, codeIsNotIn));
+                        predicates.add(codeIsNotIn);
                 }
+
+                Predicate finalCriteria = cb.and(predicates.toArray(new Predicate[0]));
+                initialQuery.where(finalCriteria);
 
                 TypedQuery<Composition> query = entityManager
                                 .createQuery(initialQuery)
