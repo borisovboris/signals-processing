@@ -11,6 +11,7 @@ export * from './deviceDateStatusDTO';
 export * from './deviceStatusDTO';
 export * from './eventDTO';
 export * from './eventDetailsDTO';
+export * from './eventFiltersDTO';
 export * from './eventTypeDTO';
 export * from './linkedCompositionsDTO';
 export * from './locationDTO';

@@ -4,6 +4,7 @@ import { EventActions } from './event.actions';
 
 export const initialState: EventState = {
   events: [],
+  filters: {},
 };
 
 export const eventReducer = createReducer(
@@ -13,5 +14,6 @@ export const eventReducer = createReducer(
   }),
   on(EventActions.eventDetailsFetched, (state, { details }) => {
     return { ...state, details };
-  })
+  }),
+  on(EventActions.getEvents, (state, { filters }) => ({ ...state, filters }))
 );

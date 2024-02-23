@@ -23,6 +23,8 @@ import { EventDTO } from '../model/eventDTO';
 // @ts-ignore
 import { EventDetailsDTO } from '../model/eventDetailsDTO';
 // @ts-ignore
+import { EventFiltersDTO } from '../model/eventFiltersDTO';
+// @ts-ignore
 import { EventTypeDTO } from '../model/eventTypeDTO';
 // @ts-ignore
 import { NameFilterDTOs } from '../model/nameFilterDTOs';
@@ -287,13 +289,23 @@ export class EventsService {
     }
 
     /**
+     * @param filters 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public readEvents(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<EventDTO>>;
-    public readEvents(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<EventDTO>>>;
-    public readEvents(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<EventDTO>>>;
-    public readEvents(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public readEvents(filters: EventFiltersDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<EventDTO>>;
+    public readEvents(filters: EventFiltersDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<EventDTO>>>;
+    public readEvents(filters: EventFiltersDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<EventDTO>>>;
+    public readEvents(filters: EventFiltersDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (filters === null || filters === undefined) {
+            throw new Error('Required parameter filters was null or undefined when calling readEvents.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (filters !== undefined && filters !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>filters, 'filters');
+        }
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -330,6 +342,7 @@ export class EventsService {
         return this.httpClient.request<Array<EventDTO>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

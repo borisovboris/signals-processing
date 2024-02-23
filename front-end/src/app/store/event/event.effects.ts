@@ -3,15 +3,17 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { EventsService } from '../../../../generated-sources/openapi';
 import { EventActions } from './event.actions';
-import { EMPTY, catchError, map, switchMap } from 'rxjs';
+import { EMPTY, catchError, map, switchMap, withLatestFrom } from 'rxjs';
+import { eventFilters } from './event.selectors';
 
 @Injectable()
 export class EventEffects {
   loadEvents = createEffect(() =>
     this.actions$.pipe(
       ofType(EventActions.getEvents, EventActions.eventCreated),
-      switchMap(() =>
-        this.eventsService.readEvents().pipe(
+      withLatestFrom(this.store.select(eventFilters)),
+      switchMap(([_, filters]) =>
+        this.eventsService.readEvents(filters).pipe(
           map((events) => EventActions.eventsFetched({ events })),
           catchError(() => EMPTY)
         )

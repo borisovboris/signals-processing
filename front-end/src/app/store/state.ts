@@ -6,6 +6,7 @@ import {
   DeviceDateStatusDTO,
   EventDTO,
   EventDetailsDTO,
+  EventFiltersDTO,
   LocationsDTO,
 } from '../../../generated-sources/openapi';
 
@@ -33,6 +34,7 @@ export interface CompositionState {
 export interface EventState {
   events: EventDTO[];
   details?: EventDetailsDTO;
+  filters: EventFiltersDTO;
 }
 
 export interface AppState {

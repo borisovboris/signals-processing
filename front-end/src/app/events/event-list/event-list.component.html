@@ -1,10 +1,65 @@
 <div class="wrapper">
-  <mat-card class="sidebar"> </mat-card>
+  <mat-card class="sidebar">
+    <mat-form-field>
+      <mat-label>Date range</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input
+          readonly
+          [formControl]="startDateCtrl"
+          matStartDate
+          placeholder="Start date"
+          (dateChange)="getEvents()"
+        />
+        <input
+          readonly
+          [formControl]="endDateCtrl"
+          matEndDate
+          placeholder="End date"
+          (dateChange)="getEvents()"
+        />
+      </mat-date-range-input>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker-toggle matSuffix (click)="clearDates()" [disabled]="clearDisabled()">
+        <mat-icon matDatepickerToggleIcon>clear</mat-icon>
+      </mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+
+    <mat-button-toggle-group
+      (change)="getEvents()"
+      [formControl]="manualInsertCtrl"
+    >
+      <mat-button-toggle [checked]="true" [value]="ManualInsert.ANY">{{
+        ManualInsert.ANY
+      }}</mat-button-toggle>
+      <mat-button-toggle [value]="ManualInsert.MANUAL">{{
+        ManualInsert.MANUAL
+      }}</mat-button-toggle>
+      <mat-button-toggle [value]="ManualInsert.NOT_MANUAL">{{
+        ManualInsert.NOT_MANUAL
+      }}</mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <app-autocomplete-chips
+      [options$]="typeOptions$"
+      label="Types"
+      placeholder="Type..."
+      [itemsCtrl]="typesCtrl"
+      [textCtrl]="typeCtrl"
+      (inputTextChanged)="handleTypeInput($event)"
+      (chipsChanged)="handleTypeChipsChange()"
+    ></app-autocomplete-chips>
+  </mat-card>
 
   <mat-card class="list">
     <div class="heading">
       <h2>Events</h2>
-      <button mat-raised-button color="accent" (click)="openEventForm()">Add manual event</button>
+      <button mat-raised-button color="accent" (click)="openEventForm()">
+        Add manual event
+      </button>
     </div>
     <div class="columns">
       <p>Type</p>

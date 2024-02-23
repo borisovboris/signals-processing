@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.signalsprocessing.engine.services.EventService;
 import com.signalsprocessing.engine.services.EventService.EventDTO;
 import com.signalsprocessing.engine.services.EventService.EventDetailsDTO;
+import com.signalsprocessing.engine.services.EventService.EventFiltersDTO;
 import com.signalsprocessing.engine.services.EventService.EventTypeDTO;
 import com.signalsprocessing.engine.services.EventService.NameFilterDTOs;
 import com.signalsprocessing.engine.services.EventService.NewEventDTO;
@@ -31,8 +32,8 @@ public class EventsController {
     }
 
     @GetMapping("read-events")
-    public List<EventDTO> readEvents() {
-        return service.getEvents();
+    public List<EventDTO> readEvents(EventFiltersDTO filters) {
+        return service.getEvents(filters);
     }
 
     @GetMapping("read-event-details/{id}")

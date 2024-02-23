@@ -1,6 +1,6 @@
 package com.signalsprocessing.engine.models;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import jakarta.persistence.Column;
@@ -29,10 +29,10 @@ public class Event {
     public boolean manualInsert = false;
 
     @Column(insertable = false, updatable = false, nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
-    public Date creationAt;
+    public LocalDate creationAt;
 
     @Column(insertable = false, updatable = false, nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
-    public Date eventCreationAt;
+    public LocalDate eventCreationAt;
 
     public void setType(EventType type) {
         this.type = type;

@@ -11,6 +11,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 @NgModule({
   declarations: [],
@@ -27,6 +28,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatAutocompleteModule,
     MatChipsModule,
     MatButtonToggleModule,
+    MatDatepickerModule,
   ],
   exports: [
     MatTabsModule,
@@ -40,6 +42,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatAutocompleteModule,
     MatChipsModule,
     MatButtonToggleModule,
+    MatDatepickerModule
   ],
 })
 export class MaterialModule {}
