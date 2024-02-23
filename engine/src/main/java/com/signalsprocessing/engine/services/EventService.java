@@ -18,6 +18,8 @@ import com.signalsprocessing.engine.models.EventDeviceId;
 import com.signalsprocessing.engine.models.EventType;
 import com.signalsprocessing.engine.models.Signal;
 import com.signalsprocessing.engine.services.CompositionService.DeviceDTO;
+import com.signalsprocessing.engine.shared.FilterUtility;
+import com.signalsprocessing.engine.shared.NameFilterDTO;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
@@ -97,18 +99,15 @@ public class EventService {
         return new EventDetailsDTO(eventDto, signal, eventDevices);
     }
 
-    public List<EventTypeDTO> getEventTypes(NameFilterDTOs filters) {
+    public List<EventTypeDTO> getEventTypes(NameFilterDTO filters) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<EventType> criteriaQuery = cb.createQuery(EventType.class);
         Root<EventType> root = criteriaQuery.from(EventType.class);
         CriteriaQuery<EventType> initialQuery = criteriaQuery.select(root);
 
-        Optional<String> name = filters.name;
-
-        if (name.isPresent()) {
-            var eventTypeName = root.get("name");
-            initialQuery.where(cb.like(eventTypeName.as(String.class), name.get() + "%"));
-        }
+        Predicate[] filterPredicates = FilterUtility.getFilterPredicates(filters, cb, root);
+        Predicate finalCriteria = cb.and(filterPredicates);
+        initialQuery.where(finalCriteria);
 
         TypedQuery<EventType> query = entityManager
                 .createQuery(initialQuery)
@@ -174,9 +173,6 @@ public class EventService {
     }
 
     public record EventTypeDTO(@NotNull long id, @NotNull String name) {
-    }
-
-    public record NameFilterDTOs(Optional<String> name) {
     }
 
     public record EventFiltersDTO(Optional<List<Long>> eventTypeIds,

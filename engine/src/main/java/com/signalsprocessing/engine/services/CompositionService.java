@@ -1,5 +1,8 @@
 package com.signalsprocessing.engine.services;
 
+import com.signalsprocessing.engine.shared.FilterUtility;
+import com.signalsprocessing.engine.shared.NameFilterDTO;
+
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -18,7 +21,6 @@ import com.signalsprocessing.engine.models.DeviceStatus;
 import com.signalsprocessing.engine.models.LinkedComposition;
 import com.signalsprocessing.engine.models.LinkedCompositionId;
 import com.signalsprocessing.engine.models.Location;
-import com.signalsprocessing.engine.shared.NameFilterDTO;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
@@ -121,19 +123,15 @@ public class CompositionService {
                 return composition;
         }
 
-        public List<CompositionTypeDTO> getCompositionTypes(Optional<NameFilterDTO> filters) {
+        public List<CompositionTypeDTO> getCompositionTypes(NameFilterDTO filters) {
                 CriteriaBuilder cb = entityManager.getCriteriaBuilder();
                 CriteriaQuery<CompositionType> criteriaQuery = cb.createQuery(CompositionType.class);
                 Root<CompositionType> root = criteriaQuery.from(CompositionType.class);
                 CriteriaQuery<CompositionType> initialQuery = criteriaQuery.select(root);
 
-                if (filters.isPresent()) {
-                        String name = filters.get().getName();
-
-                        if (name != null) {
-                                var compositionName = root.get("name");
-                                initialQuery.where(cb.like(compositionName.as(String.class), name + "%"));
-                        }
+                if (filters.getName().isPresent()) {
+                        var compositionName = root.get("name");
+                        initialQuery.where(cb.like(compositionName.as(String.class), filters.getName().get() + "%"));
                 }
 
                 TypedQuery<CompositionType> query = entityManager
@@ -149,19 +147,16 @@ public class CompositionService {
                 return list;
         }
 
-        public List<CompositionStatusDTO> getCompositionStatuses(Optional<NameFilterDTO> filters) {
+        public List<CompositionStatusDTO> getCompositionStatuses(NameFilterDTO filters) {
                 CriteriaBuilder cb = entityManager.getCriteriaBuilder();
                 CriteriaQuery<CompositionStatus> criteriaQuery = cb.createQuery(CompositionStatus.class);
                 Root<CompositionStatus> root = criteriaQuery.from(CompositionStatus.class);
                 CriteriaQuery<CompositionStatus> initialQuery = criteriaQuery.select(root);
 
-                if (filters.isPresent()) {
-                        String name = filters.get().getName();
-
-                        if (name != null) {
-                                var compositionStatusName = root.get("name");
-                                initialQuery.where(cb.like(compositionStatusName.as(String.class), name + "%"));
-                        }
+                if (filters.getName().isPresent()) {
+                        var compositionStatusName = root.get("name");
+                        initialQuery.where(
+                                        cb.like(compositionStatusName.as(String.class), filters.getName().get() + "%"));
                 }
 
                 TypedQuery<CompositionStatus> query = entityManager
@@ -239,19 +234,15 @@ public class CompositionService {
                 entityManager.merge(device);
         }
 
-        public List<DeviceStatusDTO> getDeviceStatuses(Optional<NameFilterDTO> filters) {
+        public List<DeviceStatusDTO> getDeviceStatuses(NameFilterDTO filters) {
                 CriteriaBuilder cb = entityManager.getCriteriaBuilder();
                 CriteriaQuery<DeviceStatus> criteriaQuery = cb.createQuery(DeviceStatus.class);
                 Root<DeviceStatus> root = criteriaQuery.from(DeviceStatus.class);
                 CriteriaQuery<DeviceStatus> initialQuery = criteriaQuery.select(root);
 
-                if (filters.isPresent()) {
-                        String name = filters.get().getName();
-
-                        if (name != null) {
-                                var deviceStatusName = root.get("name");
-                                initialQuery.where(cb.like(deviceStatusName.as(String.class), name + "%"));
-                        }
+                if (filters.getName().isPresent()) {
+                        var deviceStatusName = root.get("name");
+                        initialQuery.where(cb.like(deviceStatusName.as(String.class), filters.getName().get() + "%"));
                 }
 
                 TypedQuery<DeviceStatus> query = entityManager
@@ -370,18 +361,15 @@ public class CompositionService {
                 return list;
         }
 
-        public List<DeviceDTO> getDevices(NameFilterDTOs filters) {
+        public List<DeviceDTO> getDevices(NameFilterDTO filters) {
                 CriteriaBuilder cb = entityManager.getCriteriaBuilder();
                 CriteriaQuery<Device> criteriaQuery = cb.createQuery(Device.class);
                 Root<Device> root = criteriaQuery.from(Device.class);
                 CriteriaQuery<Device> initialQuery = criteriaQuery.select(root);
 
-                Optional<String> name = filters.name;
-
-                if (name.isPresent()) {
-                        var deviceName = root.get("name");
-                        initialQuery.where(cb.like(deviceName.as(String.class), name.get() + "%"));
-                }
+                Predicate[] filterPredicates = FilterUtility.getFilterPredicates(filters, cb, root);
+                Predicate finalCriteria = cb.and(filterPredicates);
+                initialQuery.where(finalCriteria);
 
                 TypedQuery<Device> query = entityManager
                                 .createQuery(initialQuery)
@@ -396,7 +384,8 @@ public class CompositionService {
                 return list;
         }
 
-        public record CompositionDTO(@NotNull long id, @NotNull String locationName, @NotNull Long locationId, @NotNull String code,
+        public record CompositionDTO(@NotNull long id, @NotNull String locationName, @NotNull Long locationId,
+                        @NotNull String code,
                         @NotNull int devicesSize,
                         @NotNull StatusDTO status) {
         }
@@ -443,8 +432,5 @@ public class CompositionService {
         public record NewCompositionDTO(@NotNull String code, @NotNull Long locationId, @NotNull Long typeId,
                         @NotNull Long statusId,
                         @Nullable String coordinates, @Nullable String description) {
-        }
-
-        public record NameFilterDTOs(Optional<String> name) {
         }
 }

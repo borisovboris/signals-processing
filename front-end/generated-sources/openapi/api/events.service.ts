@@ -27,7 +27,7 @@ import { EventFiltersDTO } from '../model/eventFiltersDTO';
 // @ts-ignore
 import { EventTypeDTO } from '../model/eventTypeDTO';
 // @ts-ignore
-import { NameFilterDTOs } from '../model/nameFilterDTOs';
+import { NameFilterDTO } from '../model/nameFilterDTO';
 // @ts-ignore
 import { NewEventDTO } from '../model/newEventDTO';
 
@@ -229,10 +229,10 @@ export class EventsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public readEventTypes(filters: NameFilterDTOs, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<EventTypeDTO>>;
-    public readEventTypes(filters: NameFilterDTOs, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<EventTypeDTO>>>;
-    public readEventTypes(filters: NameFilterDTOs, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<EventTypeDTO>>>;
-    public readEventTypes(filters: NameFilterDTOs, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public readEventTypes(filters: NameFilterDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<EventTypeDTO>>;
+    public readEventTypes(filters: NameFilterDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<EventTypeDTO>>>;
+    public readEventTypes(filters: NameFilterDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<EventTypeDTO>>>;
+    public readEventTypes(filters: NameFilterDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (filters === null || filters === undefined) {
             throw new Error('Required parameter filters was null or undefined when calling readEventTypes.');
         }

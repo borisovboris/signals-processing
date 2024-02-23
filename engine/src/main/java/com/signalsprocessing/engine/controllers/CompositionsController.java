@@ -21,7 +21,6 @@ import com.signalsprocessing.engine.services.CompositionService.DeviceDTO;
 import com.signalsprocessing.engine.services.CompositionService.DeviceDateStatusDTO;
 import com.signalsprocessing.engine.services.CompositionService.DeviceStatusDTO;
 import com.signalsprocessing.engine.services.CompositionService.LinkedCompositionsDTO;
-import com.signalsprocessing.engine.services.CompositionService.NameFilterDTOs;
 import com.signalsprocessing.engine.services.CompositionService.NewCompositionDTO;
 import com.signalsprocessing.engine.services.CompositionService.NewDeviceDTO;
 import com.signalsprocessing.engine.shared.NameFilterDTO;
@@ -58,13 +57,13 @@ public class CompositionsController {
 
     @GetMapping("read-composition-statuses")
     @ResponseBody
-    public List<CompositionStatusDTO> readCompositionStatuses(Optional<NameFilterDTO> filters) {
+    public List<CompositionStatusDTO> readCompositionStatuses(NameFilterDTO filters) {
         return service.getCompositionStatuses(filters);
     }
 
     @GetMapping("read-composition-types")
     @ResponseBody
-    public List<CompositionTypeDTO> readCompositionTypes(Optional<NameFilterDTO> filters) {
+    public List<CompositionTypeDTO> readCompositionTypes(NameFilterDTO filters) {
         return service.getCompositionTypes(filters);
     }
 
@@ -88,13 +87,13 @@ public class CompositionsController {
 
     @GetMapping("read-device-statuses")
     @ResponseBody
-    public List<DeviceStatusDTO> readDeviceStatuses(Optional<NameFilterDTO> filters) {
+    public List<DeviceStatusDTO> readDeviceStatuses(NameFilterDTO filters) {
         return service.getDeviceStatuses(filters);
     }
 
     @GetMapping("read-devices")
     @ResponseBody
-    public List<DeviceDTO> readDevices(NameFilterDTOs filters) {
+    public List<DeviceDTO> readDevices(NameFilterDTO filters) {
         return service.getDevices(filters);
     }
 

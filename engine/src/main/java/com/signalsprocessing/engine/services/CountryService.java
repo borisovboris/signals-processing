@@ -10,12 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.signalsprocessing.engine.models.City;
 import com.signalsprocessing.engine.models.Country;
 import com.signalsprocessing.engine.models.Location;
+import com.signalsprocessing.engine.shared.FilterUtility;
 import com.signalsprocessing.engine.shared.NameFilterDTO;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.validation.constraints.NotNull;
 
@@ -55,19 +57,13 @@ public class CountryService {
                 Root<City> root = criteriaQuery.from(City.class);
                 CriteriaQuery<City> initialQuery = criteriaQuery.select(root);
 
-              
-                        String name = filters.getName();
-
-                        if (name != null) {
-                                var cityName = root.get("name");
-                                initialQuery.where(cb.like(cityName.as(String.class), name + "%"));
-                        }
-        
+                Predicate[] filterPredicates = FilterUtility.getFilterPredicates(filters, cb, root);
+                Predicate finalCriteria = cb.and(filterPredicates);
+                initialQuery.where(finalCriteria);
 
                 TypedQuery<City> query = entityManager
                                 .createQuery(initialQuery)
                                 .setMaxResults(CountryService.LIMIT);
-           
 
                 List<CityDTO> list = query
                                 .getResultList()
@@ -78,20 +74,15 @@ public class CountryService {
                 return list;
         }
 
-        public List<LocationDTO> getLocations(Optional<NameFilterDTO> filters) {
+        public List<LocationDTO> getLocations(NameFilterDTO filters) {
                 CriteriaBuilder cb = entityManager.getCriteriaBuilder();
                 CriteriaQuery<Location> criteriaQuery = cb.createQuery(Location.class);
                 Root<Location> root = criteriaQuery.from(Location.class);
                 CriteriaQuery<Location> initialQuery = criteriaQuery.select(root);
 
-                if (filters.isPresent()) {
-                        String name = filters.get().getName();
-
-                        if (name != null) {
-                                var locationName = root.get("name");
-                                initialQuery.where(cb.like(locationName.as(String.class), name + "%"));
-                        }
-                }
+                Predicate[] filterPredicates = FilterUtility.getFilterPredicates(filters, cb, root);
+                Predicate finalCriteria = cb.and(filterPredicates);
+                initialQuery.where(finalCriteria);
 
                 TypedQuery<Location> query = entityManager
                                 .createQuery(initialQuery)
@@ -112,10 +103,10 @@ public class CountryService {
         public List<CountryDTO> getCountries(Optional<Integer> offset) {
                 int defaultOffset = 1;
 
-                if(offset.isPresent()) {
+                if (offset.isPresent()) {
                         defaultOffset = offset.get();
                 }
-                
+
                 TypedQuery<Country> query = entityManager
                                 .createQuery("SELECT c from Country c ORDER BY c.name ASC", Country.class)
                                 .setFirstResult(defaultOffset)

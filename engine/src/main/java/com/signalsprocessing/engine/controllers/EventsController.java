@@ -16,8 +16,8 @@ import com.signalsprocessing.engine.services.EventService.EventDTO;
 import com.signalsprocessing.engine.services.EventService.EventDetailsDTO;
 import com.signalsprocessing.engine.services.EventService.EventFiltersDTO;
 import com.signalsprocessing.engine.services.EventService.EventTypeDTO;
-import com.signalsprocessing.engine.services.EventService.NameFilterDTOs;
 import com.signalsprocessing.engine.services.EventService.NewEventDTO;
+import com.signalsprocessing.engine.shared.NameFilterDTO;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -42,7 +42,7 @@ public class EventsController {
     }
 
     @GetMapping("event-types")
-    public List<EventTypeDTO> readEventTypes(NameFilterDTOs filters) {
+    public List<EventTypeDTO> readEventTypes(NameFilterDTO filters) {
         return service.getEventTypes(filters);
     }
 

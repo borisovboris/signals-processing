@@ -16,15 +16,27 @@
     [matAutocomplete]="auto"
     #textInput
     [formControl]="textCtrl"
+    (focus)="notifyAboutTextChange()"
   />
   <mat-error *ngIf="textCtrl.hasError('chipsRequired')"
     >At least one option required</mat-error
   >
 
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-    @for (option of options$ | async; track option.value) {
+    @if(options !== undefined) {
+        @if(options.length > 0) {
+          @for (option of options; track option.value) {
+            <mat-option [value]="option.value">{{ option.label }}</mat-option>
+            }
+        } @else {
+          <mat-option disabled>No results</mat-option>
+        }
+    } @else {
+      <mat-option disabled>Loading...</mat-option>
+    }
+    <!-- @for (option of options$ | async; track option.value) {
     <mat-option [value]="option.value">{{ option.label }}</mat-option>
     }
-    <mat-option disabled>No results</mat-option>
+      <mat-option disabled>No results</mat-option> -->
   </mat-autocomplete>
 </mat-form-field>

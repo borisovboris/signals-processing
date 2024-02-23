@@ -80,7 +80,10 @@ export class CompositionsListComponent implements AfterViewInit {
 
   handleCityInput(text: string) {
     this.service
-      .readCitiesLikeName({ name: text })
+      .readCitiesLikeName({
+        name: text,
+        exludedItemIds: this.getSelectedCities(),
+      })
       .pipe(
         take(1),
         map((cities) =>
@@ -92,7 +95,10 @@ export class CompositionsListComponent implements AfterViewInit {
 
   handleLocationInput(text: string) {
     this.service
-      .readLocations({ name: text })
+      .readLocations({
+        name: text,
+        exludedItemIds: this.getSelectedLocations(),
+      })
       .pipe(
         take(1),
         map((locations) =>
@@ -107,12 +113,12 @@ export class CompositionsListComponent implements AfterViewInit {
 
   handleCityChipsChange() {
     this.cities$.next([]);
-    this.getCompositions(this.getCityChips(), this.getLocationChips());
+    this.getCompositions(this.getSelectedCities(), this.getSelectedLocations());
   }
 
   handleLocationChipsChange() {
     this.locations$.next([]);
-    this.getCompositions(this.getCityChips(), this.getLocationChips());
+    this.getCompositions(this.getSelectedCities(), this.getSelectedLocations());
   }
 
   setInitialCityAndCountryName(
@@ -125,7 +131,9 @@ export class CompositionsListComponent implements AfterViewInit {
     this.locationsCtrl.setValue([locationId]);
 
     this.cityChips.setChips([{ label: cityName, value: Number(cityId) }]);
-    this.locationChips.setChips([{ label: locationName, value: Number(locationId) }]);
+    this.locationChips.setChips([
+      { label: locationName, value: Number(locationId) },
+    ]);
   }
 
   ngAfterViewInit() {
@@ -152,11 +160,11 @@ export class CompositionsListComponent implements AfterViewInit {
     });
   }
 
-  getCityChips() {
+  getSelectedCities() {
     return this.citiesCtrl.value.map((v) => Number(v));
   }
 
-  getLocationChips() {
+  getSelectedLocations() {
     return this.locationsCtrl.value.map((v) => Number(v));
   }
 

@@ -30,7 +30,6 @@ model/locationDTO.ts
 model/locationsDTO.ts
 model/models.ts
 model/nameFilterDTO.ts
-model/nameFilterDTOs.ts
 model/newCityDTO.ts
 model/newCompositionDTO.ts
 model/newDeviceDTO.ts

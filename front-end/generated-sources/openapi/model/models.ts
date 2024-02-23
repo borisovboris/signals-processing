@@ -17,7 +17,6 @@ export * from './linkedCompositionsDTO';
 export * from './locationDTO';
 export * from './locationsDTO';
 export * from './nameFilterDTO';
-export * from './nameFilterDTOs';
 export * from './newCityDTO';
 export * from './newCompositionDTO';
 export * from './newDeviceDTO';

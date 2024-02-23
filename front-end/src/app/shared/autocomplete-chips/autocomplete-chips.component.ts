@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   DestroyRef,
   ElementRef,
@@ -28,9 +29,11 @@ import { LabeledValue } from './autocomplete.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AutocompleteChipsComponent implements OnInit, AfterViewInit {
+  destroyedRef = inject(DestroyRef);
   @Input() required = false;
   @Input() itemsCtrl!: FormControl<string[]>;
   @Input() options$!: Observable<LabeledValue<number>[]>;
+  options?: LabeledValue<number>[] = undefined;
   @Input() placeholder: string = '';
   @Input() label: string = '';
   @Output() inputTextChanged = new EventEmitter<string>();
@@ -42,18 +45,21 @@ export class AutocompleteChipsComponent implements OnInit, AfterViewInit {
 
   @ViewChild('textInput') textInput!: ElementRef;
 
-  ngOnInit() {
-    this.inputTextChanged.emit('');
+  constructor(private readonly changeRef: ChangeDetectorRef) {}
+
+  ngOnInit(): void {
+      this.options$.pipe(takeUntilDestroyed(this.destroyedRef)).subscribe((options) => {
+        this.options = options;
+        this.changeRef.markForCheck();
+      });
   }
 
   ngAfterViewInit() {
     fromEvent(this.textInput.nativeElement, 'input')
       .pipe(debounceTime(300), takeUntilDestroyed(this.destroyRef))
       .subscribe((e) => {
-        const event = e as Event;
-        const target = event.target as HTMLInputElement;
-
-        this.inputTextChanged.emit(target.value);
+      
+        this.notifyAboutTextChange();
       });
   }
 
@@ -98,9 +104,15 @@ export class AutocompleteChipsComponent implements OnInit, AfterViewInit {
 
   setChips(chips: LabeledValue<number>[]) {
     this.chips = chips;
+    this.changeRef.markForCheck();
   }
 
   getInputPlaceholder(): string {
     return this.itemsCtrl.value.length === 0 ? this.placeholder : '';
+  }
+
+  notifyAboutTextChange() {
+    this.options = undefined;
+    this.inputTextChanged.emit(this.textInput.nativeElement.value);
   }
 }

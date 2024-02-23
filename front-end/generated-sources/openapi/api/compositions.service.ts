@@ -39,8 +39,6 @@ import { LinkedCompositionsDTO } from '../model/linkedCompositionsDTO';
 // @ts-ignore
 import { NameFilterDTO } from '../model/nameFilterDTO';
 // @ts-ignore
-import { NameFilterDTOs } from '../model/nameFilterDTOs';
-// @ts-ignore
 import { NewCompositionDTO } from '../model/newCompositionDTO';
 // @ts-ignore
 import { NewDeviceDTO } from '../model/newDeviceDTO';
@@ -614,10 +612,13 @@ export class CompositionsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public readCompositionStatuses(filters?: NameFilterDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<CompositionStatusDTO>>;
-    public readCompositionStatuses(filters?: NameFilterDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<CompositionStatusDTO>>>;
-    public readCompositionStatuses(filters?: NameFilterDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<CompositionStatusDTO>>>;
-    public readCompositionStatuses(filters?: NameFilterDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public readCompositionStatuses(filters: NameFilterDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<CompositionStatusDTO>>;
+    public readCompositionStatuses(filters: NameFilterDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<CompositionStatusDTO>>>;
+    public readCompositionStatuses(filters: NameFilterDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<CompositionStatusDTO>>>;
+    public readCompositionStatuses(filters: NameFilterDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (filters === null || filters === undefined) {
+            throw new Error('Required parameter filters was null or undefined when calling readCompositionStatuses.');
+        }
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (filters !== undefined && filters !== null) {
@@ -675,10 +676,13 @@ export class CompositionsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public readCompositionTypes(filters?: NameFilterDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<CompositionTypeDTO>>;
-    public readCompositionTypes(filters?: NameFilterDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<CompositionTypeDTO>>>;
-    public readCompositionTypes(filters?: NameFilterDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<CompositionTypeDTO>>>;
-    public readCompositionTypes(filters?: NameFilterDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public readCompositionTypes(filters: NameFilterDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<CompositionTypeDTO>>;
+    public readCompositionTypes(filters: NameFilterDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<CompositionTypeDTO>>>;
+    public readCompositionTypes(filters: NameFilterDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<CompositionTypeDTO>>>;
+    public readCompositionTypes(filters: NameFilterDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (filters === null || filters === undefined) {
+            throw new Error('Required parameter filters was null or undefined when calling readCompositionTypes.');
+        }
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (filters !== undefined && filters !== null) {
@@ -857,10 +861,13 @@ export class CompositionsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public readDeviceStatuses(filters?: NameFilterDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<DeviceStatusDTO>>;
-    public readDeviceStatuses(filters?: NameFilterDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<DeviceStatusDTO>>>;
-    public readDeviceStatuses(filters?: NameFilterDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<DeviceStatusDTO>>>;
-    public readDeviceStatuses(filters?: NameFilterDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public readDeviceStatuses(filters: NameFilterDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<DeviceStatusDTO>>;
+    public readDeviceStatuses(filters: NameFilterDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<DeviceStatusDTO>>>;
+    public readDeviceStatuses(filters: NameFilterDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<DeviceStatusDTO>>>;
+    public readDeviceStatuses(filters: NameFilterDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (filters === null || filters === undefined) {
+            throw new Error('Required parameter filters was null or undefined when calling readDeviceStatuses.');
+        }
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (filters !== undefined && filters !== null) {
@@ -918,10 +925,10 @@ export class CompositionsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public readDevices(filters: NameFilterDTOs, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<DeviceDTO>>;
-    public readDevices(filters: NameFilterDTOs, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<DeviceDTO>>>;
-    public readDevices(filters: NameFilterDTOs, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<DeviceDTO>>>;
-    public readDevices(filters: NameFilterDTOs, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public readDevices(filters: NameFilterDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<DeviceDTO>>;
+    public readDevices(filters: NameFilterDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<DeviceDTO>>>;
+    public readDevices(filters: NameFilterDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<DeviceDTO>>>;
+    public readDevices(filters: NameFilterDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (filters === null || filters === undefined) {
             throw new Error('Required parameter filters was null or undefined when calling readDevices.');
         }

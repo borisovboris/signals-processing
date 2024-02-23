@@ -94,7 +94,7 @@ export class EventFormComponent {
 
   handleDeviceInput(text: string) {
     this.compositionService
-      .readDevices({ name: text })
+      .readDevices({ name: text, exludedItemIds: this.getSelectedDevices() })
       .pipe(
         take(1),
         map((devices) =>
@@ -108,14 +108,18 @@ export class EventFormComponent {
     this.devices$.next([]);
   }
 
+  getSelectedDevices() {
+    return this.devicesCtrl.value.map((d) => Number(d));
+  }
+
   createEvent() {
     const eventValue = this.eventTypeCtrl.value;
-    const devices = this.devicesCtrl.value;
+    const deviceIds = this.getSelectedDevices();
 
     if (isNumericLabeledValue(eventValue)) {
       const event = {
         eventTypeId: eventValue.value,
-        deviceIds: devices.map((d) => Number(d)),
+        deviceIds,
       };
       this.store.dispatch(EventActions.createEvent({ event }));
     }

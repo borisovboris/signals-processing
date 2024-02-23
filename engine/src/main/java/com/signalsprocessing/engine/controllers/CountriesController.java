@@ -57,7 +57,7 @@ public class CountriesController {
 
     @GetMapping("read-locations")
     @ResponseBody
-    public List<LocationDTO> readLocations(Optional<NameFilterDTO> filters) {
+    public List<LocationDTO> readLocations(NameFilterDTO filters) {
         return service.getLocations(filters);
     }
 

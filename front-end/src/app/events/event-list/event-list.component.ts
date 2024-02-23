@@ -75,8 +75,10 @@ export class EventListComponent implements OnInit {
   }
 
   handleTypeInput(text: string) {
+    const eventTypeIds = this.getEventTypeIds();
+
     this.eventService
-      .readEventTypes({ name: text })
+      .readEventTypes({ name: text, exludedItemIds: eventTypeIds })
       .pipe(
         map((types) => types.map((c) => ({ label: c.name, value: c.id }))),
         take(1)
@@ -85,7 +87,6 @@ export class EventListComponent implements OnInit {
   }
 
   handleTypeChipsChange() {
-    this.types$.next([]);
     this.getEvents();
   }
 
@@ -99,8 +100,12 @@ export class EventListComponent implements OnInit {
     return this.startDateCtrl.value === null && this.endDateCtrl.value === null;
   }
 
+  getEventTypeIds() {
+    return this.typesCtrl.value.map((t) => Number(t));
+  }
+
   getEvents() {
-    const eventTypeIds = this.typesCtrl.value.map((t) => Number(t));
+    const eventTypeIds = this.getEventTypeIds();
     const startDate =
       this.startDateCtrl.value === null
         ? undefined

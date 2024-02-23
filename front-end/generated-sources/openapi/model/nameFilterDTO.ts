@@ -13,5 +13,6 @@
 
 export interface NameFilterDTO { 
     name?: string;
+    exludedItemIds?: Array<number>;
 }
 
