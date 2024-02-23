@@ -1,7 +1,6 @@
 package com.signalsprocessing.engine.services;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -168,7 +167,7 @@ public class EventService {
             @NotNull List<DeviceDTO> affectedDevices) {
     }
 
-    public record SignalDTO(@NotNull long id, @NotNull BigDecimal value, @NotNull Date creationAt) {
+    public record SignalDTO(@NotNull long id, @NotNull BigDecimal value, @NotNull LocalDate creationAt) {
     }
 
     public record NewEventDTO(@NotNull long eventTypeId, @NotNull List<Long> deviceIds) {

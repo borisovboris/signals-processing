@@ -3,7 +3,6 @@ package com.signalsprocessing.engine.services;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -419,7 +418,7 @@ public class CompositionService {
         }
 
         public record DeviceDTO(@NotNull long id, @NotNull String name,
-                        @NotNull StatusDTO status, @NotNull Date creationAt) {
+                        @NotNull StatusDTO status, @NotNull LocalDate creationAt) {
         }
 
         public record LinkedCompositionsDTO(@NotNull long firstId, @NotNull long secondId) {
@@ -429,7 +428,7 @@ public class CompositionService {
                         @NotNull long statusId) {
         }
 
-        public record DeviceDateStatusDTO(@NotNull Long occurrences, @NotNull Date date) {
+        public record DeviceDateStatusDTO(@NotNull Long occurrences, @NotNull LocalDate date) {
         }
 
         public record CompositionTypeDTO(@NotNull Long id, @NotNull String name) {

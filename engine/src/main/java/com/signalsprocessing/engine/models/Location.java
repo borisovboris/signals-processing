@@ -1,6 +1,6 @@
 package com.signalsprocessing.engine.models;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -42,7 +42,7 @@ public class Location {
     public String description;
 
     @Column(insertable = false, updatable = false, nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
-    public Date creationAt;
+    public LocalDate creationAt;
 
     @Column(columnDefinition = "boolean default true")
     public boolean isOperational;

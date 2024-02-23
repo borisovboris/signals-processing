@@ -18,7 +18,8 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import jakarta.validation.constraints.NotNull;
-import java.util.Date;
+
+import java.time.LocalDate;
 
 @Component
 @ComponentScan
@@ -252,7 +253,7 @@ public class CountryService {
         }
 
         public record LocationDTO(@NotNull long id, @NotNull String code, @NotNull String name, @NotNull String address,
-                        String coordinates, String description, @NotNull Date creationAt,
+                        String coordinates, String description, @NotNull LocalDate creationAt,
                         @NotNull boolean isOperational, @NotNull int compositionsSize) {
         }
 

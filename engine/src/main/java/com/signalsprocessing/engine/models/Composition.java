@@ -1,6 +1,6 @@
 package com.signalsprocessing.engine.models;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -47,7 +47,7 @@ public class Composition {
     public Set<Device> devices;
 
     @Column(insertable = false, updatable = false, nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
-    public Date creationAt;
+    public LocalDate creationAt;
 
     public void setCode(String code) {
         this.code = code;

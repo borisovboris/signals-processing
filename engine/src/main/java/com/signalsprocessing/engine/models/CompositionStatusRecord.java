@@ -1,6 +1,6 @@
 package com.signalsprocessing.engine.models;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,5 +25,5 @@ public class CompositionStatusRecord {
     private CompositionStatus status;
 
     @Column(insertable = false, updatable = false, nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
-    public Date creationAt;
+    public LocalDate creationAt;
 }
