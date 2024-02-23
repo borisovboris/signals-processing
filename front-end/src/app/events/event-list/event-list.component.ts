@@ -1,15 +1,25 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  OnInit,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { EventActions } from '../../store/event/event.actions';
 import { events } from '../../store/event/event.selectors';
 import { CommonModule } from '@angular/common';
-import { ScrollingModule } from '@angular/cdk/scrolling';
+import {
+  CdkVirtualScrollViewport,
+  ScrollingModule,
+} from '@angular/cdk/scrolling';
 import { MaterialModule } from '../../material/material.module';
 import { Router } from '@angular/router';
 import { DialogService } from '../../shared/services/dialog.service';
 import { EventFormComponent } from '../event-form/event-form.component';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { BehaviorSubject, map, take } from 'rxjs';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { BehaviorSubject, debounceTime, filter, map, take } from 'rxjs';
 import { LabeledValue } from '../../shared/autocomplete-chips/autocomplete.model';
 import { AutocompleteChipsComponent } from '../../shared/autocomplete-chips/autocomplete-chips.component';
 import {
@@ -17,6 +27,8 @@ import {
   EventsService,
 } from '../../../../generated-sources/openapi';
 import moment from 'moment';
+import { BatchList } from '../../shared/batch-list';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 export enum ManualInsert {
   ANY = 'Any',
@@ -38,7 +50,11 @@ export enum ManualInsert {
   styleUrl: './event-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EventListComponent implements OnInit {
+export class EventListComponent extends BatchList implements OnInit {
+  destroyRef = inject(DestroyRef);
+  @ViewChild(CdkVirtualScrollViewport)
+  viewport!: CdkVirtualScrollViewport;
+
   ManualInsert = ManualInsert;
   typesCtrl = new FormControl<string[]>([], { nonNullable: true });
   typeCtrl = new FormControl<string>('', { nonNullable: true });
@@ -55,15 +71,29 @@ export class EventListComponent implements OnInit {
 
   events$ = this.store.select(events);
 
+  form = new FormGroup({
+    typesCtrl: this.typesCtrl,
+    endDateCtrl: this.endDateCtrl,
+    startDateCtrl: this.startDateCtrl,
+    manualInsertCtrl: this.manualInsertCtrl,
+  });
+
   constructor(
     private readonly store: Store,
     private readonly router: Router,
     private readonly dialogService: DialogService,
     private readonly eventService: EventsService
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit() {
-    this.store.dispatch(EventActions.getEvents());
+    this.refetchEvents();
+    this.scrolled$.pipe(debounceTime(300)).subscribe(() => this.getOffset());
+
+    this.form.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef), debounceTime(300))
+      .subscribe(() => this.refetchEvents());
   }
 
   goToDetails(id: number) {
@@ -71,7 +101,16 @@ export class EventListComponent implements OnInit {
   }
 
   openEventForm() {
-    this.dialogService.open(EventFormComponent);
+    this.dialogService
+      .open(EventFormComponent)
+      .afterClosed()
+      .pipe(
+        take(1),
+        filter((created) => created === true)
+      )
+      .subscribe((_) => {
+        this.refetchEvents();
+      });
   }
 
   handleTypeInput(text: string) {
@@ -86,14 +125,15 @@ export class EventListComponent implements OnInit {
       .subscribe((data) => this.types$.next(data));
   }
 
-  handleTypeChipsChange() {
+  refetchEvents() {
+    this.offset = 0;
+    this.store.dispatch(EventActions.resetEvents());
     this.getEvents();
   }
 
   clearDates() {
     this.startDateCtrl.reset();
     this.endDateCtrl.reset();
-    this.getEvents();
   }
 
   clearDisabled() {
@@ -102,6 +142,10 @@ export class EventListComponent implements OnInit {
 
   getEventTypeIds() {
     return this.typesCtrl.value.map((t) => Number(t));
+  }
+
+  getNewBatch() {
+    this.getEvents();
   }
 
   getEvents() {
@@ -123,6 +167,7 @@ export class EventListComponent implements OnInit {
       startDate,
       endDate,
       manuallyInserted,
+      offset: this.offset,
     };
 
     this.store.dispatch(EventActions.getEvents(filters));

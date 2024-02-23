@@ -11,6 +11,7 @@ export const EventActions = createActionGroup({
   events: {
     'Get Events': (filters: EventFiltersDTO = {}) => ({ filters }),
     'Events fetched': props<{ events: EventDTO[] }>(),
+    'Reset events': props<any>(),
     'Get event details': props<{ id: number }>(),
     'Event details fetched': props<{ details: EventDetailsDTO }>(),
     'Create event': props<{ event: NewEventDTO }>(),

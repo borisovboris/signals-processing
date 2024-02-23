@@ -8,30 +8,29 @@
           [formControl]="startDateCtrl"
           matStartDate
           placeholder="Start date"
-          (dateChange)="getEvents()"
         />
         <input
           readonly
           [formControl]="endDateCtrl"
           matEndDate
           placeholder="End date"
-          (dateChange)="getEvents()"
         />
       </mat-date-range-input>
       <mat-datepicker-toggle
         matIconSuffix
         [for]="picker"
       ></mat-datepicker-toggle>
-      <mat-datepicker-toggle matSuffix (click)="clearDates()" [disabled]="clearDisabled()">
+      <mat-datepicker-toggle
+        matSuffix
+        (click)="clearDates()"
+        [disabled]="clearDisabled()"
+      >
         <mat-icon matDatepickerToggleIcon>clear</mat-icon>
       </mat-datepicker-toggle>
       <mat-date-range-picker #picker></mat-date-range-picker>
     </mat-form-field>
 
-    <mat-button-toggle-group
-      (change)="getEvents()"
-      [formControl]="manualInsertCtrl"
-    >
+    <mat-button-toggle-group [formControl]="manualInsertCtrl">
       <mat-button-toggle [checked]="true" [value]="ManualInsert.ANY">{{
         ManualInsert.ANY
       }}</mat-button-toggle>
@@ -50,7 +49,7 @@
       [itemsCtrl]="typesCtrl"
       [textCtrl]="typeCtrl"
       (inputTextChanged)="handleTypeInput($event)"
-      (chipsChanged)="handleTypeChipsChange()"
+      (chipsChanged)="refetchEvents()"
     ></app-autocomplete-chips>
   </mat-card>
 
@@ -66,24 +65,28 @@
       <p>Added on</p>
       <p>Manual</p>
     </div>
+
     <ng-container *ngIf="events$ | async as events">
-      <cdk-virtual-scroll-viewport
-        CdkScrollable
-        [itemSize]="60"
-        class="example-viewport"
-      >
-        <div
-          class="row-wrapper"
-          *cdkVirtualFor="let event of events"
-          (click)="goToDetails(event.id)"
+      <div class="list-wrapper">
+        <cdk-virtual-scroll-viewport
+          CdkScrollable
+          [itemSize]="60"
+          class="example-viewport"
+          (scrolledIndexChange)="onScroll()"
         >
-          <div class="row mat-elevation-z2">
-            <p>{{ event.typeName }}</p>
-            <p>{{ event.eventCreationAt | date }}</p>
-            <p>{{ event.manualInsert }}</p>
+          <div
+            class="row-wrapper"
+            *cdkVirtualFor="let event of events"
+            (click)="goToDetails(event.id)"
+          >
+            <div class="row mat-elevation-z2">
+              <p>{{ event.typeName }}</p>
+              <p>{{ event.eventCreationAt | date }}</p>
+              <p>{{ event.manualInsert }}</p>
+            </div>
           </div>
-        </div>
-      </cdk-virtual-scroll-viewport>
+        </cdk-virtual-scroll-viewport>
+      </div>
     </ng-container>
   </mat-card>
 </div>

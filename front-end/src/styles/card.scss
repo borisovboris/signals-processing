@@ -10,7 +10,6 @@
 }
 
 @mixin vertical-order() {
-  padding: 0 15vw;
   height: 100%;
   display: flex;
   flex-direction: column;

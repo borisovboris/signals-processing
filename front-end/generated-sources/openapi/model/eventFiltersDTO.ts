@@ -12,6 +12,7 @@
 
 
 export interface EventFiltersDTO { 
+    offset?: number;
     eventTypeIds?: Array<number>;
     startDate?: string;
     endDate?: string;

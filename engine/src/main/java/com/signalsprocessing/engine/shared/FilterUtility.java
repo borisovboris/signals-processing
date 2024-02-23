@@ -2,6 +2,7 @@ package com.signalsprocessing.engine.shared;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Predicate;
@@ -23,5 +24,13 @@ public abstract class FilterUtility {
         }
 
         return predicates.toArray(new Predicate[0]);
+    }
+
+    public static Integer getOffset(Optional<Integer> offset) {
+        if (offset.isPresent()) {
+            return offset.get();
+        }
+
+        return 0;
     }
 }

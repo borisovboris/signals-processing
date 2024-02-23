@@ -122,8 +122,8 @@ export class EventFormComponent {
         deviceIds,
       };
       this.store.dispatch(EventActions.createEvent({ event }));
-    }
 
-    this.dialogRef.close();
+      this.dialogRef.close(true);
+    }
   }
 }

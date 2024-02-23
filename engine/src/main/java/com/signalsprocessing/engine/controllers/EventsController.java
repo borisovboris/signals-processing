@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.signalsprocessing.engine.services.EventFiltersDTO;
 import com.signalsprocessing.engine.services.EventService;
 import com.signalsprocessing.engine.services.EventService.EventDTO;
 import com.signalsprocessing.engine.services.EventService.EventDetailsDTO;
-import com.signalsprocessing.engine.services.EventService.EventFiltersDTO;
 import com.signalsprocessing.engine.services.EventService.EventTypeDTO;
 import com.signalsprocessing.engine.services.EventService.NewEventDTO;
 import com.signalsprocessing.engine.shared.NameFilterDTO;

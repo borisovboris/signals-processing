@@ -18,6 +18,7 @@ import { Subject, debounceTime, filter, take } from 'rxjs';
 import { Router, RouterLink } from '@angular/router';
 import { CountryFormComponent } from '../country-form/country-form.component';
 import { DialogService } from '../../shared/services/dialog.service';
+import { BatchList } from '../../shared/batch-list';
 
 @Component({
   selector: 'app-country-list',
@@ -27,11 +28,9 @@ import { DialogService } from '../../shared/services/dialog.service';
   styleUrl: './country-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CountryListComponent implements OnInit {
+export class CountryListComponent  extends BatchList implements OnInit{
   @ViewChild(CdkVirtualScrollViewport)
   viewport!: CdkVirtualScrollViewport;
-  private scrolled$ = new Subject<void>();
-  maxIndexReached = 0;
 
   countries$ = this.store.select(countries);
 
@@ -39,25 +38,17 @@ export class CountryListComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly router: Router,
     private readonly dialogService: DialogService
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit() {
     this.store.dispatch(CountryActions.getCountries());
-    this.scrolled$.pipe(debounceTime(300)).subscribe(() => this.getNewBatch());
-  }
-
-  onScroll() {
-    this.scrolled$.next();
+    this.scrolled$.pipe(debounceTime(300)).subscribe(() => this.getOffset());
   }
 
   getNewBatch() {
-    const renderedEnd = this.viewport.getRenderedRange().end;
-    const total = this.viewport.getDataLength();
-
-    if (renderedEnd === total && renderedEnd > this.maxIndexReached) {
-      this.store.dispatch(CountryActions.getCountries(total));
-      this.maxIndexReached = renderedEnd;
-    }
+    this.store.dispatch(CountryActions.getCountries(this.offset));
   }
 
   goToDetails(id: number) {
@@ -72,6 +63,6 @@ export class CountryListComponent implements OnInit {
         take(1),
         filter((created) => created === true)
       )
-      .subscribe(() => (this.maxIndexReached = INITIAL_OFFSET));
+      .subscribe(() => (this.offset = INITIAL_OFFSET));
   }
 }

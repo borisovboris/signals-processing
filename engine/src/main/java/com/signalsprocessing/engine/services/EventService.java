@@ -49,34 +49,38 @@ public class EventService {
 
         List<Predicate> predicates = new ArrayList<>();
 
-        if (filters.eventTypeIds.isPresent()) {
+        if (filters.getEventTypeIds().isPresent()) {
             var eventTypeId = root.get("type").get("id");
-            Predicate eventTypeInIds = eventTypeId.in(filters.eventTypeIds.get());
+            Predicate eventTypeInIds = eventTypeId.in(filters.getEventTypeIds().get());
             predicates.add(eventTypeInIds);
         }
 
-        if (filters.startDate.isPresent()) {
+        if (filters.getStartDate().isPresent()) {
             var eventCreationDate = root.get("eventCreationAt").as(java.time.LocalDate.class);
-            Predicate eventAfterDate = cb.greaterThanOrEqualTo(eventCreationDate, cb.literal(filters.startDate.get()));
+            Predicate eventAfterDate = cb.greaterThanOrEqualTo(eventCreationDate,
+                    cb.literal(filters.getStartDate().get()));
             predicates.add(eventAfterDate);
         }
 
-        if (filters.endDate.isPresent()) {
+        if (filters.getEndDate().isPresent()) {
             var eventCreationDate = root.get("eventCreationAt").as(java.time.LocalDate.class);
-            Predicate eventBeforeDate = cb.lessThanOrEqualTo(eventCreationDate, cb.literal(filters.endDate.get()));
+            Predicate eventBeforeDate = cb.lessThanOrEqualTo(eventCreationDate, cb.literal(filters.getEndDate().get()));
             predicates.add(eventBeforeDate);
         }
 
-        if (filters.manuallyInserted.isPresent()) {
+        if (filters.getManuallyInserted().isPresent()) {
             var eventInsertion = root.get("manualInsert").as(Boolean.class);
-            Predicate isManualInsert = cb.equal(eventInsertion, cb.literal(filters.manuallyInserted.get()));
+            Predicate isManualInsert = cb.equal(eventInsertion, cb.literal(filters.getManuallyInserted().get()));
             predicates.add(isManualInsert);
         }
 
         Predicate finalCriteria = cb.and(predicates.toArray(new Predicate[0]));
         initialQuery.where(finalCriteria);
 
+        Integer offset = FilterUtility.getOffset(filters.getOffset());
+
         TypedQuery<Event> query = entityManager.createQuery(initialQuery)
+                .setFirstResult(offset)
                 .setMaxResults(LIMIT);
         List<EventDTO> events = query.getResultList().stream().map(e -> mapEvent(e)).toList();
 
@@ -173,10 +177,5 @@ public class EventService {
     }
 
     public record EventTypeDTO(@NotNull long id, @NotNull String name) {
-    }
-
-    public record EventFiltersDTO(Optional<List<Long>> eventTypeIds,
-            @DateTimeFormat(pattern = "dd-MM-yyyy") Optional<LocalDate> startDate,
-            @DateTimeFormat(pattern = "dd-MM-yyyy") Optional<LocalDate> endDate, Optional<Boolean> manuallyInserted) {
     }
 }

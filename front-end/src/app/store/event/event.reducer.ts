@@ -9,11 +9,13 @@ export const initialState: EventState = {
 
 export const eventReducer = createReducer(
   initialState,
-  on(EventActions.eventsFetched, (state, { events }) => {
-    return { ...state, events };
-  }),
   on(EventActions.eventDetailsFetched, (state, { details }) => {
     return { ...state, details };
   }),
-  on(EventActions.getEvents, (state, { filters }) => ({ ...state, filters }))
+  on(EventActions.resetEvents, EventActions.eventCreated, (state) => ({ ...state, events: [] })),
+  on(EventActions.getEvents, (state, { filters }) => ({ ...state, filters })),
+  on(EventActions.eventsFetched, (state, { events }) => ({
+    ...state,
+    events: [...state.events.slice(), ...events],
+  }))
 );

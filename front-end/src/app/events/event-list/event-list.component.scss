@@ -11,10 +11,6 @@
   display: flex;
   flex-direction: row;
 
-  .example-viewport {
-    min-height: 100%;
-  }
-
   .sidebar {
     flex: 2;
     @include card;
@@ -38,6 +34,7 @@
     flex: 6;
     @include card;
     @include list-margin;
+    @include vertical-order;
 
     .heading {
       @include heading-with-button;
