@@ -21,6 +21,8 @@ import { Observable }                                        from 'rxjs';
 // @ts-ignore
 import { CitiesDTO } from '../model/citiesDTO';
 // @ts-ignore
+import { CitiesFiltersDTO } from '../model/citiesFiltersDTO';
+// @ts-ignore
 import { CityDTO } from '../model/cityDTO';
 // @ts-ignore
 import { CountryDTO } from '../model/countryDTO';
@@ -608,16 +610,22 @@ export class CountriesService {
     }
 
     /**
-     * @param id 
+     * @param filters 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public readCitiesOfCountry(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CitiesDTO>;
-    public readCitiesOfCountry(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CitiesDTO>>;
-    public readCitiesOfCountry(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CitiesDTO>>;
-    public readCitiesOfCountry(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling readCitiesOfCountry.');
+    public readCitiesOfCountry(filters: CitiesFiltersDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CitiesDTO>;
+    public readCitiesOfCountry(filters: CitiesFiltersDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CitiesDTO>>;
+    public readCitiesOfCountry(filters: CitiesFiltersDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CitiesDTO>>;
+    public readCitiesOfCountry(filters: CitiesFiltersDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (filters === null || filters === undefined) {
+            throw new Error('Required parameter filters was null or undefined when calling readCitiesOfCountry.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (filters !== undefined && filters !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>filters, 'filters');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -651,10 +659,11 @@ export class CountriesService {
             }
         }
 
-        let localVarPath = `/read-cities-of-country/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        let localVarPath = `/read-cities-of-country`;
         return this.httpClient.request<CitiesDTO>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

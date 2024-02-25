@@ -109,7 +109,7 @@ export class EventListComponent extends BatchList implements OnInit {
         filter((created) => created === true)
       )
       .subscribe((_) => {
-        this.refetchEvents();
+        this.offset = 0;
       });
   }
 

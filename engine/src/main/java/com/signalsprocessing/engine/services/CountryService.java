@@ -12,7 +12,9 @@ import com.signalsprocessing.engine.models.Country;
 import com.signalsprocessing.engine.models.Location;
 import com.signalsprocessing.engine.shared.FilterUtility;
 import com.signalsprocessing.engine.shared.NameFilterDTO;
+import com.signalsprocessing.engine.shared.OffsetConstraint;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -151,14 +153,18 @@ public class CountryService {
                 return !query.getResultList().isEmpty();
         }
 
-        public CitiesDTO getCitiesOfCountry(long countryId) {
+        public CitiesDTO getCitiesOfCountry(CitiesFiltersDTO filters) {
+                Long countryId = filters.getCountryId();
                 Country country = getCountry(countryId);
                 CountryDTO countryDto = new CountryDTO(country.id, country.name);
+                Integer offset = FilterUtility.getOffset(filters.getOffset());
 
                 TypedQuery<City> query = entityManager
                                 .createQuery("SELECT c from City c WHERE c.country.id = :countryId", City.class)
                                 .setParameter("countryId", countryId)
+                                .setFirstResult(offset)
                                 .setMaxResults(CountryService.LIMIT);
+
                 List<CityDTO> list = query
                                 .getResultList()
                                 .stream()
@@ -256,5 +262,18 @@ public class CountryService {
 
         public record NewLocationDTO(@NotNull Long cityId, @NotNull String name, @NotNull String address,
                         String coordinates, String description) {
+        }
+
+        public class CitiesFiltersDTO extends OffsetConstraint{
+                private Long countryId;
+
+                public CitiesFiltersDTO(Long countryId, @Nullable Integer offset) {
+                        super(offset);
+                        this.countryId = countryId;
+                }
+
+                public Long getCountryId() {
+                        return countryId;
+                }
         }
 }

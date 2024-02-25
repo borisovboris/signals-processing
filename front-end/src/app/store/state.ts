@@ -1,5 +1,6 @@
 import {
   CitiesDTO,
+  CitiesFiltersDTO,
   CompositionDTO,
   CompositionDetailsDTO,
   CountryDTO,
@@ -17,11 +18,11 @@ export const COUNTRY_STATE = 'countryState';
 export const COMPOSITION_STATE = 'compositionState';
 
 export interface CountryState {
-  currentlyViewedCountryId?: number;
   countries: CountryDTO[];
   cities?: CitiesDTO;
   locations?: LocationsDTO;
   countriesOffset: number;
+  cityFilters: CitiesFiltersDTO;
 }
 
 export interface CompositionState {

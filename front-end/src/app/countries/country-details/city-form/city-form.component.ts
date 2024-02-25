@@ -127,7 +127,7 @@ export class CityFormComponent {
       };
 
       this.store.dispatch(CountryActions.createCity({ city }));
-      this.dialogRef.close();
+      this.dialogRef.close(true);
     }
   }
 }

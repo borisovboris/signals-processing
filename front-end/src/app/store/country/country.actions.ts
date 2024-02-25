@@ -1,6 +1,7 @@
 import { createActionGroup, props } from '@ngrx/store';
 import {
   CitiesDTO,
+  CitiesFiltersDTO,
   CountryDTO,
   LocationsDTO,
   NewCityDTO,
@@ -13,7 +14,7 @@ export const CountryActions = createActionGroup({
   events: {
     'Get Countries': (offset: number =  INITIAL_OFFSET ) => ({ offset }),
     'Countries Fetched': props<{ countries: CountryDTO[] }>(),
-    'Get Cities Of Country': props<{ countryId: number }>(),
+    'Get Cities Of Country': (filters: CitiesFiltersDTO = {}) => ({ filters }),
     'Cities Of Country Fetched': props<{ cities: CitiesDTO }>(),
     'Get Locations': props<{ cityId: number }>(),
     'Locations Fetched': props<{ locations: LocationsDTO }>(),

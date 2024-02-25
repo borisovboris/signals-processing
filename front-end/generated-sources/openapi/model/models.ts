@@ -1,4 +1,5 @@
 export * from './citiesDTO';
+export * from './citiesFiltersDTO';
 export * from './cityDTO';
 export * from './compositionDTO';
 export * from './compositionDetailsDTO';

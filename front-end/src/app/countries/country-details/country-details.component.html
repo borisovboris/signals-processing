@@ -11,6 +11,7 @@
         CdkScrollable
         [itemSize]="60"
         class="example-viewport"
+        (scrolledIndexChange)="onScroll()"
       >
         <div
           class="row-wrapper"

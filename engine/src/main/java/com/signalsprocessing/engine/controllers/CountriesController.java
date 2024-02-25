@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.signalsprocessing.engine.services.CountryService;
 import com.signalsprocessing.engine.services.CountryService.CitiesDTO;
+import com.signalsprocessing.engine.services.CountryService.CitiesFiltersDTO;
 import com.signalsprocessing.engine.services.CountryService.CityDTO;
 import com.signalsprocessing.engine.services.CountryService.CountryDTO;
 import com.signalsprocessing.engine.services.CountryService.LocationDTO;
@@ -43,10 +44,10 @@ public class CountriesController {
         return service.getCountries(offset);
     }
 
-    @GetMapping("read-cities-of-country/{id}")
+    @GetMapping("read-cities-of-country")
     @ResponseBody
-    public CitiesDTO readCitiesOfCountry(@PathVariable("id") Long id) {
-        return service.getCitiesOfCountry(id);
+    public CitiesDTO readCitiesOfCountry(CitiesFiltersDTO filters) {
+        return service.getCitiesOfCountry(filters);
     }
 
     @GetMapping("read-cities-like-name")

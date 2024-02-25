@@ -56,6 +56,33 @@ VALUES
 (681, 'Vraca', 11000);
 INSERT INTO city (id, country_id, name, postal_code) VALUES (1700, 681, 'Sofia', 1000);
 
+/** Dummy data**/
+INSERT INTO city (country_id, name, postal_code) 
+VALUES 
+(681, 'Lovch1', 55001),
+(681, 'Plodiv1', 20001),
+(681, 'Stra Zagora1', 300),
+(681, 'Vana1', 4020),
+(681, 'Buras1', 5020),
+(681, 'Basko1', 6020),
+(681, 'Troyn1', 7020),
+(681, 'Plen1', 8020),
+(681, 'Monana1', 9200),
+(681, 'Vidn1', 10020),
+(681, 'Vrca1', 110200),
+(681, 'Loech1', 525001),
+(681, 'Plvdiv1', 200201),
+(681, 'Stra Zagor2a1', 3200),
+(681, 'Vaa1', 402),
+(681, 'Bugas1', 520),
+(681, 'Bnsko1', 620),
+(681, 'Tryan1', 720),
+(681, 'Plven1', 820),
+(681, 'Mntana1', 933300),
+(681, 'Vdin1', 10200),
+(681, 'Vaca1', 10);
+/** **/
+
 INSERT INTO location (city_id, code, name, address, coordinates, description, is_operational) 
 VALUES
 (1700, 'BLOK_59_A', 'Blok 59 A', 'ul. "Professor Kiril Popov"', '42.64292808523189, 23.338815289344673', 'A place so majestic, you''d be lucky to live there', true),

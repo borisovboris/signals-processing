@@ -10,8 +10,9 @@ import {
   switchMap,
 } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
-import { countries, countriesOffset, currentlyViewedCountryId } from './country.selectors';
+import { cityFilters, countriesOffset } from './country.selectors';
 import { Store } from '@ngrx/store';
+import { ROUTER_NAVIGATION } from '@ngrx/router-store';
 
 @Injectable()
 export class CountryEffects {
@@ -31,9 +32,9 @@ export class CountryEffects {
   loadCities = createEffect(() =>
     this.actions$.pipe(
       ofType(CountryActions.getCitiesOfCountry, CountryActions.cityCreated),
-      withLatestFrom(this.store.select(currentlyViewedCountryId)),
-      switchMap(([, countryId]) => {
-        return this.countriesService.readCitiesOfCountry(countryId!).pipe(
+      withLatestFrom(this.store.select(cityFilters)),
+      switchMap(([, filters]) => {
+        return this.countriesService.readCitiesOfCountry(filters).pipe(
           map((cities) => CountryActions.citiesOfCountryFetched({ cities })),
           catchError(() => EMPTY)
         );

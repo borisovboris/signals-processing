@@ -11,6 +11,7 @@ encoder.ts
 git_push.sh
 index.ts
 model/citiesDTO.ts
+model/citiesFiltersDTO.ts
 model/cityDTO.ts
 model/compositionDTO.ts
 model/compositionDetailsDTO.ts
