@@ -26,7 +26,19 @@
               device.status.isOperational ? "Operational" : "Not operational"
             }}
           </p>
-          <p (click)="deleteDevice(device.id)">Delete</p>
+          <div class="action-buttons">
+            <button mat-icon-button matTooltip="Edit" color="primary">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              matTooltip="Delete"
+              color="warn"
+              (click)="deleteDevice($event, device.id)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
         </div>
       </div>
     </cdk-virtual-scroll-viewport>
@@ -68,7 +80,16 @@
                 : "Not operational"
             }}
           </p>
-          <p (click)="unlinkCompositions(composition.id)">Unlink</p>
+          <div class="action-buttons">
+            <button
+              mat-icon-button
+              matTooltip="Unlink device"
+              color="warn"
+              (click)="unlinkCompositions(composition.id)"
+            >
+              <mat-icon>phonelink_off</mat-icon>
+            </button>
+          </div>
         </div>
       </div>
     </cdk-virtual-scroll-viewport>

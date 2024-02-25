@@ -67,18 +67,13 @@ export class CompositionDetailsComponent implements OnInit {
       return;
     }
 
-    let relatedCompositions = this.details.relatedCompositions.map(
-      (c) => c.id
-    );
+    let relatedCompositions = this.details.relatedCompositions.map((c) => c.id);
     let currentComposition = this.details.composition.id;
 
     const data: LinkCompositionData = {
       compositionId: this.compositionId,
       locations: [this.details.composition.locationId],
-      excludedCompositions: [
-        currentComposition,
-        ...relatedCompositions,
-      ],
+      excludedCompositions: [currentComposition, ...relatedCompositions],
     };
 
     this.dialogService.open(LinkCompositionFormComponent, { data });
@@ -95,7 +90,8 @@ export class CompositionDetailsComponent implements OnInit {
     }
   }
 
-  deleteDevice(id: number) {
+  deleteDevice(event: Event, id: number) {
+    event.stopPropagation();
     this.store.dispatch(CompositionActions.deleteDevice({ id }));
   }
 
