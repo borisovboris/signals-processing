@@ -21,7 +21,11 @@
         <div class="row mat-elevation-z2" (click)="goToDevice(device.id)">
           <p>{{ device.name }}</p>
           <p>{{ device.creationAt | date }}</p>
-          <p>{{ device.status.isOperational }}</p>
+          <p>
+            {{
+              device.status.isOperational ? "Operational" : "Not operational"
+            }}
+          </p>
           <p (click)="deleteDevice(device.id)">Delete</p>
         </div>
       </div>
@@ -57,7 +61,13 @@
         <div class="row mat-elevation-z2">
           <p>{{ composition.code }}</p>
           <p>{{ composition.devicesSize }}</p>
-          <p>{{ composition.status.isOperational }}</p>
+          <p>
+            {{
+              composition.status.isOperational
+                ? "Operational"
+                : "Not operational"
+            }}
+          </p>
           <p (click)="unlinkCompositions(composition.id)">Unlink</p>
         </div>
       </div>

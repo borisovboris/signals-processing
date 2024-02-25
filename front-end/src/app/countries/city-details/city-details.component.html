@@ -35,7 +35,7 @@
         >
           <p>{{ location.name }}</p>
           <p>{{ location.address }}</p>
-          <p>{{ getOperationalLabel(location.isOperational) }}</p>
+          <p>{{ location.isOperational ? 'Operational' : 'Not operational' }}</p>
           <p>{{ location.compositionsSize }}</p>
         </div>
       </div>

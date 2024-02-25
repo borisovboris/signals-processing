@@ -85,7 +85,7 @@
             <div class="row mat-elevation-z2" @fadeIn>
               <p>{{ event.typeName }}</p>
               <p>{{ event.eventCreationAt | date }}</p>
-              <p>{{ event.manualInsert }}</p>
+              <p>{{ event.manualInsert ? 'Yes' : 'No' }}</p>
             </div>
           </div>
         </cdk-virtual-scroll-viewport>

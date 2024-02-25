@@ -22,7 +22,7 @@
           <div class="row mat-elevation-z2">
             <p>{{ device.name }}</p>
             <p>{{ device.creationAt | date }}</p>
-            <p>{{ device.status.isOperational }}</p>
+            <p>{{ device.status.isOperational ? 'Operational' : 'Not operational' }}</p>
           </div>
         </div>
       </cdk-virtual-scroll-viewport>

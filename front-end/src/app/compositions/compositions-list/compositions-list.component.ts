@@ -76,10 +76,6 @@ export class CompositionsListComponent implements AfterViewInit {
 
   ngOnInit(): void {}
 
-  getOperationalLabel(operational: boolean) {
-    return operational ? 'Operational' : 'Not operational';
-  }
-
   handleCityInput(text: string) {
     this.service
       .readCitiesLikeName({

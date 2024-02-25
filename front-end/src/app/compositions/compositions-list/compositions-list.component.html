@@ -51,7 +51,7 @@
         >
           <p>{{ composition.code }}</p>
           <p>{{ composition.devicesSize }}</p>
-          <p>{{ getOperationalLabel(composition.status.isOperational) }}</p>
+          <p>{{ composition.status.isOperational ? 'Operational' : 'Not operational' }}</p>
         </div>
       </div>
     </cdk-virtual-scroll-viewport>
