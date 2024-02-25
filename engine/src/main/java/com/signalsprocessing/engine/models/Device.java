@@ -40,6 +40,12 @@ public class Device {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "device")
     private Set<DeviceStatusRecord> statusRecords;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "device")
+    private Set<EventDevice> events;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "device")
+    private Set<Signal> signals;
+
     @Column(insertable = false, updatable = false, nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
     public LocalDate creationAt;
 
