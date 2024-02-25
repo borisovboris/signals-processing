@@ -17,16 +17,18 @@
     margin-right: 15px;
     padding: 30px 20px;
 
-    mat-button-toggle-group {
-      align-self: flex-start;
-    }
+    > div {
+      mat-button-toggle-group {
+        align-self: flex-start;
+      }
 
-    > * {
-      margin-bottom: 24px;
-    }
+      > * {
+        margin-bottom: 24px;
+      }
 
-    mat-datepicker-toggle {
-      display: inline-block !important;
+      mat-datepicker-toggle {
+        display: inline-block !important;
+      }
     }
   }
 

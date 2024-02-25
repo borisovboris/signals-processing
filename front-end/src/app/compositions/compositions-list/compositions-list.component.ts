@@ -20,6 +20,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CountriesService } from '../../../../generated-sources/openapi';
 import { LabeledValue } from '../../shared/autocomplete-chips/autocomplete.model';
+import { fadeIn } from '../../shared/animations';
 
 @Component({
   selector: 'app-compositions-list',
@@ -31,6 +32,7 @@ import { LabeledValue } from '../../shared/autocomplete-chips/autocomplete.model
     ScrollingModule,
     ReactiveFormsModule,
   ],
+  animations: [fadeIn],
   templateUrl: './compositions-list.component.html',
   styleUrl: './compositions-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

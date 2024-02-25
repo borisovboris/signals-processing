@@ -1,7 +1,7 @@
 <div class="wrapper" *ngIf="compositions$ | async as compositions">
   <mat-card class="sidebar">
     <h2>Filters</h2>
-    <form [formGroup]="sidepanelForm">
+    <form [formGroup]="sidepanelForm" @fadeIn>
       <app-autocomplete-chips
         #locationChips
         [options$]="locationOptions$"
@@ -41,6 +41,7 @@
       CdkScrollable
       [itemSize]="60"
       class="example-viewport"
+      @fadeIn
     >
       <div class="row-wrapper" *cdkVirtualFor="let composition of compositions">
         <div
