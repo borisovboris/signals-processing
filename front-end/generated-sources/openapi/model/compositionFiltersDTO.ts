@@ -12,6 +12,7 @@
 
 
 export interface CompositionFiltersDTO { 
+    offset?: number;
     cities?: Array<number>;
     locations?: Array<number>;
     excludedCompositions?: Array<number>;

@@ -14,6 +14,7 @@ export const CompositionActions = createActionGroup({
   events: {
     'Get Compositions': (filters: CompositionFiltersDTO = {}) => ({ filters }),
     'Compositions Fetched': props<{ compositions: CompositionDTO[] }>(),
+    'Reset compositions': props<any>(),
     'Get Details': props<{ id: number }>(),
     'Details Fetched': props<{ details: CompositionDetailsDTO }>(),
     'Create device': props<{ device: BaseDeviceDTO }>(),

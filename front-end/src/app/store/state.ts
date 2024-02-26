@@ -3,6 +3,7 @@ import {
   CitiesFiltersDTO,
   CompositionDTO,
   CompositionDetailsDTO,
+  CompositionFiltersDTO,
   CountryDTO,
   DeviceDateStatusDTO,
   EventDTO,
@@ -30,6 +31,7 @@ export interface CompositionState {
   details?: CompositionDetailsDTO;
   currentlyViewedCompositionId?: number;
   timeline?: DeviceDateStatusDTO[];
+  filters: CompositionFiltersDTO;
 }
 
 export interface EventState {

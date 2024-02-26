@@ -10,10 +10,9 @@ import { CompositionActions } from '../../store/composition/composition.actions'
 import { compositions } from '../../store/composition/composition.selectors';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../material/material.module';
-import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { AutocompleteChipsComponent } from '../../shared/autocomplete-chips/autocomplete-chips.component';
-import { isDefined } from '../../shared/utils';
-import { BehaviorSubject, map, take } from 'rxjs';
+import { BehaviorSubject, debounceTime, map, take } from 'rxjs';
 import { DialogService } from '../../shared/services/dialog.service';
 import { CompositionFormComponent } from './composition-form/composition-form.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -21,6 +20,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CountriesService } from '../../../../generated-sources/openapi';
 import { LabeledValue } from '../../shared/autocomplete-chips/autocomplete.model';
 import { fadeIn } from '../../shared/animations';
+import { BatchList } from '../../shared/batch-list';
 
 @Component({
   selector: 'app-compositions-list',
@@ -37,7 +37,10 @@ import { fadeIn } from '../../shared/animations';
   styleUrl: './compositions-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CompositionsListComponent implements AfterViewInit {
+export class CompositionsListComponent extends BatchList implements AfterViewInit {
+  @ViewChild(CdkVirtualScrollViewport)
+  viewport!: CdkVirtualScrollViewport;
+  
   @ViewChild('cityChips') cityChips!: AutocompleteChipsComponent;
   @ViewChild('locationChips') locationChips!: AutocompleteChipsComponent;
 
@@ -72,9 +75,13 @@ export class CompositionsListComponent implements AfterViewInit {
     private readonly route: ActivatedRoute,
     private readonly dialogService: DialogService,
     private readonly service: CountriesService
-  ) {}
+  ) {
+    super();
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.scrolled$.pipe(debounceTime(300)).subscribe(() => this.getOffset());
+  }
 
   handleCityInput(text: string) {
     this.service
@@ -110,13 +117,18 @@ export class CompositionsListComponent implements AfterViewInit {
   }
 
   handleCityChipsChange() {
-    this.cities$.next([]);
+    this.resetCompositions();
     this.getCompositions(this.getSelectedCities(), this.getSelectedLocations());
   }
 
   handleLocationChipsChange() {
-    this.locations$.next([]);
+    this.resetCompositions();
     this.getCompositions(this.getSelectedCities(), this.getSelectedLocations());
+  }
+
+  resetCompositions() {
+    this.offset = 0;
+    this.store.dispatch(CompositionActions.resetCompositions());
   }
 
   setInitialCityAndCountryName(
@@ -166,11 +178,16 @@ export class CompositionsListComponent implements AfterViewInit {
     return this.locationsCtrl.value.map((v) => Number(v));
   }
 
+  getNewBatch() {
+    this.getCompositions(this.getSelectedCities(), this.getSelectedLocations());
+  }
+
   getCompositions(cities: number[], locations: number[]) {
     this.store.dispatch(
       CompositionActions.getCompositions({
         cities,
         locations,
+        offset: this.offset,
       })
     );
   }

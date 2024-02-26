@@ -4,14 +4,15 @@ import { CompositionsService } from '../../../../generated-sources/openapi';
 import { Store } from '@ngrx/store';
 import { EMPTY, catchError, map, switchMap, withLatestFrom } from 'rxjs';
 import { CompositionActions } from './composition.actions';
-import { currentlyViewedCompositionId } from './composition.selectors';
+import { compositionFilters, currentlyViewedCompositionId } from './composition.selectors';
 
 @Injectable()
 export class CompositionEffects {
   loadCompositions = createEffect(() =>
     this.actions$.pipe(
-      ofType(CompositionActions.getCompositions),
-      switchMap(({ filters }) =>
+      ofType(CompositionActions.getCompositions, CompositionActions.compositionCreated),
+      withLatestFrom(this.store.select(compositionFilters)),
+      switchMap(([_, filters ]) =>
         this.compositionService.readCompositions(filters).pipe(
           map((compositions) =>
             CompositionActions.compositionsFetched({ compositions })

@@ -1,7 +1,6 @@
 package com.signalsprocessing.engine.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.signalsprocessing.engine.services.CompositionService;
 import com.signalsprocessing.engine.services.CompositionService.CompositionDTO;
 import com.signalsprocessing.engine.services.CompositionService.CompositionDetailsDTO;
-import com.signalsprocessing.engine.services.CompositionService.CompositionFiltersDTO;
 import com.signalsprocessing.engine.services.CompositionService.CompositionStatusDTO;
 import com.signalsprocessing.engine.services.CompositionService.CompositionTypeDTO;
 import com.signalsprocessing.engine.services.CompositionService.DeviceDTO;
@@ -23,6 +21,7 @@ import com.signalsprocessing.engine.services.CompositionService.DeviceStatusDTO;
 import com.signalsprocessing.engine.services.CompositionService.LinkedCompositionsDTO;
 import com.signalsprocessing.engine.services.CompositionService.NewCompositionDTO;
 import com.signalsprocessing.engine.services.transfer.BaseDeviceDTO;
+import com.signalsprocessing.engine.services.transfer.CompositionFiltersDTO;
 import com.signalsprocessing.engine.services.transfer.EditedDeviceDTO;
 import com.signalsprocessing.engine.shared.NameFilterDTO;
 

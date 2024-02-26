@@ -3,7 +3,6 @@ package com.signalsprocessing.engine.services;
 import com.signalsprocessing.engine.shared.FilterUtility;
 import com.signalsprocessing.engine.shared.NameFilterDTO;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +21,7 @@ import com.signalsprocessing.engine.models.LinkedComposition;
 import com.signalsprocessing.engine.models.LinkedCompositionId;
 import com.signalsprocessing.engine.models.Location;
 import com.signalsprocessing.engine.services.transfer.BaseDeviceDTO;
+import com.signalsprocessing.engine.services.transfer.CompositionFiltersDTO;
 import com.signalsprocessing.engine.services.transfer.EditedDeviceDTO;
 
 import jakarta.annotation.Nullable;
@@ -53,31 +53,32 @@ public class CompositionService {
 
                 List<Predicate> predicates = new ArrayList<>();
 
-                List<Long> cities = filters.cities();
-                List<Long> locations = filters.locations();
-                List<Long> excludedCompositions = filters.excludedCompositions();
-                String code = filters.code();
+                Optional<List<Long>> cities = filters.getCities();
+                Optional<List<Long>> locations = filters.getLocations();
+                Optional<List<Long>> excludedCompositions = filters.getExcludedCompositions();
+                Optional<String> code = filters.getCode();
 
-                if (cities != null) {
+                if (cities.isPresent()) {
                         var cityId = root.get("location").get("city").get("id");
-                        predicates.add(cityId.in(cities));
+                        predicates.add(cityId.in(cities.get()));
                 }
 
-                if (locations != null) {
+                if (locations.isPresent()) {
                         var locationId = root.get("location").get("id");
-                        predicates.add(locationId.in(locations));
+                        predicates.add(locationId.in(locations.get()));
                 }
 
-                if (code != null) {
-                        var compositionCode = root.get("code");
-                        Predicate codeIsLike = cb.like(compositionCode.as(String.class), code + "%");
+                if (code.isPresent()) {
+                        var compositionCode = cb.lower(root.get("code"));
+                        Predicate codeIsLike = cb.like(compositionCode.as(String.class),
+                                        code.get().toLowerCase() + "%");
 
                         predicates.add(codeIsLike);
                 }
 
-                if (excludedCompositions != null) {
+                if (excludedCompositions.isPresent()) {
                         var compositionId = root.get("id");
-                        Predicate codeIsNotIn = compositionId.in(excludedCompositions).not();
+                        Predicate codeIsNotIn = compositionId.in(excludedCompositions.get()).not();
 
                         predicates.add(codeIsNotIn);
                 }
@@ -85,8 +86,11 @@ public class CompositionService {
                 Predicate finalCriteria = cb.and(predicates.toArray(new Predicate[0]));
                 initialQuery.where(finalCriteria);
 
+                int offset = FilterUtility.getOffset(filters.getOffset());
+
                 TypedQuery<Composition> query = entityManager
                                 .createQuery(initialQuery)
+                                .setFirstResult(offset)
                                 .setMaxResults(CompositionService.LIMIT);
 
                 List<CompositionDTO> list = query
@@ -416,10 +420,6 @@ public class CompositionService {
         public record CompositionDetailsDTO(@NotNull CompositionDTO composition,
                         @NotNull List<CompositionDTO> relatedCompositions,
                         @NotNull List<DeviceDTO> devices) {
-        }
-
-        public record CompositionFiltersDTO(@Nullable List<Long> cities, @Nullable List<Long> locations,
-                        @Nullable List<Long> excludedCompositions, @Nullable String code) {
         }
 
         public record DeviceDTO(@NotNull long id, @NotNull String name, @NotNull String code,

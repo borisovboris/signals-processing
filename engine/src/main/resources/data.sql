@@ -112,6 +112,56 @@ VALUES
 (3, 'FIRE_ALARM', 3, 50, 3);
 ALTER SEQUENCE composition_id_seq RESTART WITH 1000;
 
+/** Dummy data **/
+INSERT INTO composition (code, type_id, location_id, status_id) 
+VALUES 
+('REVOLVING_DOOR1', 1, 50, 3),
+('REVOLVING_DOOR2', 1, 50, 3),
+('REVOLVING_DOOR3', 1, 50, 3),
+('REVOLVING_DOOR4', 1, 50, 3),
+('REVOLVING_DOOR5', 1, 50, 3),
+('REVOLVING_DOOR6', 1, 50, 3),
+('REVOLVING_DOOR7', 1, 50, 3),
+('REVOLVING_DOOR8', 1, 50, 3),
+('REVOLVING_DOOR9', 1, 50, 3),
+('REVOLVING_DOORa', 1, 50, 3),
+('REVOLVING_DOORb', 1, 50, 3),
+('REVOLVING_DOORc', 1, 50, 3),
+('REVOLVING_DOORd', 1, 50, 3),
+('REVOLVING_DOORq', 1, 50, 3),
+('REVOLVING_DOORw', 1, 50, 3),
+('REVOLVING_DOORe', 1, 50, 3),
+('REVOLVING_DOORr', 1, 50, 3),
+('REVOLVING_DOORt', 1, 50, 3),
+('REVOLVING_DOORy', 1, 50, 3),
+('REVOLVING_DOORu', 1, 50, 3),
+('REVOLVING_DOORi', 1, 50, 3),
+('REVOLVING_DOORo', 1, 50, 3),
+('EVOLVING_DOOR1', 1, 50, 3),
+('EVOLVING_DOOR2', 1, 50, 3),
+('EVOLVING_DOOR3', 1, 50, 3),
+('EVOLVING_DOOR4', 1, 50, 3),
+('EVOLVING_DOOR5', 1, 50, 3),
+('EVOLVING_DOOR6', 1, 50, 3),
+('EVOLVING_DOOR7', 1, 50, 3),
+('EVOLVING_DOOR8', 1, 50, 3),
+('EVOLVING_DOOR9', 1, 50, 3),
+('EVOLVING_DOORa', 1, 50, 3),
+('EVOLVING_DOORb', 1, 50, 3),
+('EVOLVING_DOORc', 1, 50, 3),
+('EVOLVING_DOORd', 1, 50, 3),
+('EVOLVING_DOORq', 1, 50, 3),
+('EVOLVING_DOORw', 1, 50, 3),
+('EVOLVING_DOORe', 1, 50, 3),
+('EVOLVING_DOORr', 1, 50, 3),
+('EVOLVING_DOORt', 1, 50, 3),
+('EVOLVING_DOORy', 1, 50, 3),
+('EVOLVING_DOORu', 1, 50, 3),
+('EVOLVING_DOORi', 1, 50, 3),
+('EVOLVING_DOORo', 1, 50, 3),
+('EVOLVING_DOORp', 1, 50, 3);
+/** **/
+
 INSERT INTO composition_status_record (composition_id, status_id) 
 VALUES 
 (1, 1),
