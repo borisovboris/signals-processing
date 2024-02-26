@@ -1,22 +1,25 @@
 import { createActionGroup, props } from '@ngrx/store';
 import {
+  BaseDeviceDTO,
   CompositionDTO,
   CompositionDetailsDTO,
   CompositionFiltersDTO,
   DeviceDateStatusDTO,
+  EditedDeviceDTO,
   NewCompositionDTO,
-  NewDeviceDTO,
 } from '../../../../generated-sources/openapi';
 
 export const CompositionActions = createActionGroup({
   source: 'Country',
   events: {
-    'Get Compositions': (filters: CompositionFiltersDTO =  {} ) => ({ filters }),
+    'Get Compositions': (filters: CompositionFiltersDTO = {}) => ({ filters }),
     'Compositions Fetched': props<{ compositions: CompositionDTO[] }>(),
     'Get Details': props<{ id: number }>(),
     'Details Fetched': props<{ details: CompositionDetailsDTO }>(),
-    'Create device': props<{ device: NewDeviceDTO }>(),
+    'Create device': props<{ device: BaseDeviceDTO }>(),
     'Device created': props<any>(),
+    'Edit device': props<{ device: EditedDeviceDTO }>(),
+    'Device edited': props<any>(),
     'Link compositions': props<{ firstId: number; secondId: number }>(),
     'Compositions linked': props<any>(),
     'Unlink compositions': props<{ firstId: number; secondId: number }>(),

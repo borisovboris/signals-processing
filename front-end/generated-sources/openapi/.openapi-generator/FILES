@@ -10,6 +10,7 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/baseDeviceDTO.ts
 model/citiesDTO.ts
 model/citiesFiltersDTO.ts
 model/cityDTO.ts
@@ -22,6 +23,7 @@ model/countryDTO.ts
 model/deviceDTO.ts
 model/deviceDateStatusDTO.ts
 model/deviceStatusDTO.ts
+model/editedDeviceDTO.ts
 model/eventDTO.ts
 model/eventDetailsDTO.ts
 model/eventFiltersDTO.ts
@@ -33,7 +35,6 @@ model/models.ts
 model/nameFilterDTO.ts
 model/newCityDTO.ts
 model/newCompositionDTO.ts
-model/newDeviceDTO.ts
 model/newEventDTO.ts
 model/newLocationDTO.ts
 model/signalDTO.ts

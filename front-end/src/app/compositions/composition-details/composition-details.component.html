@@ -27,7 +27,12 @@
             }}
           </p>
           <div class="action-buttons">
-            <button mat-icon-button matTooltip="Edit" color="primary">
+            <button
+              mat-icon-button
+              matTooltip="Edit"
+              color="primary"
+              (click)="openDeviceFormForEdit($event, device)"
+            >
               <mat-icon>edit</mat-icon>
             </button>
             <button

@@ -21,6 +21,8 @@ import com.signalsprocessing.engine.models.DeviceStatus;
 import com.signalsprocessing.engine.models.LinkedComposition;
 import com.signalsprocessing.engine.models.LinkedCompositionId;
 import com.signalsprocessing.engine.models.Location;
+import com.signalsprocessing.engine.services.transfer.BaseDeviceDTO;
+import com.signalsprocessing.engine.services.transfer.EditedDeviceDTO;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
@@ -173,10 +175,10 @@ public class CompositionService {
         }
 
         public static DeviceDTO mapDevice(Device device) {
-                StatusDTO status = new StatusDTO(device.status.name, device.status.isOperational,
+                StatusDTO status = new StatusDTO(device.status.id, device.status.name, device.status.isOperational,
                                 device.status.isBroken, device.status.inMaintenance);
 
-                return new DeviceDTO(device.id, device.name, status, device.creationAt);
+                return new DeviceDTO(device.id, device.name, device.code, status, device.creationAt);
         }
 
         public CompositionDTO mapComposition(Composition composition) {
@@ -184,7 +186,8 @@ public class CompositionService {
                 String locationName = composition.location.name;
                 Long locationId = composition.location.id;
                 int devicesSize = composition.devices.size();
-                StatusDTO status = new StatusDTO(composition.status.name, composition.status.isOperational,
+                StatusDTO status = new StatusDTO(composition.status.id, composition.status.name,
+                                composition.status.isOperational,
                                 composition.status.isBroken, composition.status.inMaintenance);
 
                 return new CompositionDTO(composition.id, locationName, locationId, code, devicesSize, status);
@@ -221,13 +224,26 @@ public class CompositionService {
         }
 
         @Transactional
-        public void createDevice(NewDeviceDTO newDevice) {
-                Composition composition = entityManager.getReference(Composition.class, newDevice.compositionId);
-                DeviceStatus status = entityManager.getReference(DeviceStatus.class, newDevice.statusId);
-
+        public void createDevice(BaseDeviceDTO newDevice) {
                 Device device = new Device();
-                device.setCode(newDevice.deviceCode);
-                device.setName(newDevice.deviceName);
+
+                createOrEditDevice(newDevice, device);
+        }
+
+        @Transactional
+        public void editDevice(EditedDeviceDTO editedDevice) {
+                Device device = entityManager.getReference(Device.class, editedDevice.getDeviceId());
+
+                createOrEditDevice(editedDevice, device);
+        }
+
+        @Transactional
+        public void createOrEditDevice(BaseDeviceDTO baseDevice, Device device) {
+                Composition composition = entityManager.getReference(Composition.class, baseDevice.getCompositionId());
+                DeviceStatus status = entityManager.getReference(DeviceStatus.class, baseDevice.getStatusId());
+
+                device.setCode(baseDevice.getDeviceCode());
+                device.setName(baseDevice.getDeviceName());
                 device.setStatus(status);
                 device.setComposition(composition);
 
@@ -390,7 +406,8 @@ public class CompositionService {
                         @NotNull StatusDTO status) {
         }
 
-        public record StatusDTO(@NotNull String name, @NotNull boolean isOperational, @NotNull boolean isBroken,
+        public record StatusDTO(@NotNull Long id, @NotNull String name, @NotNull boolean isOperational,
+                        @NotNull boolean isBroken,
                         @NotNull boolean inMaintenance) {
         }
 
@@ -406,15 +423,11 @@ public class CompositionService {
                         @Nullable List<Long> excludedCompositions, @Nullable String code) {
         }
 
-        public record DeviceDTO(@NotNull long id, @NotNull String name,
+        public record DeviceDTO(@NotNull long id, @NotNull String name, @NotNull String code,
                         @NotNull StatusDTO status, @NotNull LocalDate creationAt) {
         }
 
         public record LinkedCompositionsDTO(@NotNull long firstId, @NotNull long secondId) {
-        }
-
-        public record NewDeviceDTO(@NotNull long compositionId, @NotNull String deviceCode, @NotNull String deviceName,
-                        @NotNull long statusId) {
         }
 
         public record DeviceDateStatusDTO(@NotNull Long occurrences, @NotNull LocalDate date) {

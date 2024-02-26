@@ -14,7 +14,7 @@ export function isNumericLabeledValue(
   input: any
 ): input is LabeledValue<number> {
   return (
-    input !== undefined &&
+    input !== undefined && input !== null &&
     typeof input.label === 'string' &&
     typeof input.value === 'number'
   );

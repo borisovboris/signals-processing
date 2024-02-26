@@ -67,8 +67,12 @@ export class SingleAutocompleteComponent {
     this.currentlySelectedOption = event.option;
   }
 
-  displayFn(data: LabeledValue<number>): string {
-    return data.label;
+  displayFn(data: LabeledValue<number> | null): string {
+    if(data !== null) {
+      return data.label;
+    }
+
+    return '';
   }
 
   clearOption() {

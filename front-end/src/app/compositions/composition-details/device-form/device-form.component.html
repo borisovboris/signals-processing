@@ -1,6 +1,6 @@
 <mat-card>
-  <h1>Add device</h1>
-  <form class="example-form" [formGroup]="deviceForm" (ngSubmit)="onSubmit()">
+  <h1>{{ dialogTitle }}</h1>
+  <form class="example-form" [formGroup]="deviceForm" (ngSubmit)="saveOrEditDevice()">
     <mat-form-field class="example-full-width">
       <mat-label>Device code</mat-label>
       <input formControlName="deviceCode" matInput />
@@ -28,9 +28,9 @@
         mat-raised-button
         color="accent"
         type="submit"
-        [disabled]="!deviceForm.valid"
+        [disabled]="!deviceForm.valid || !deviceChangedThroughEdit()"
       >
-        Save
+        {{ actionButtonText }}
       </button>
     </div>
   </form>

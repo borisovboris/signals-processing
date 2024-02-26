@@ -27,6 +27,7 @@ export class CompositionEffects {
       ofType(
         CompositionActions.getDetails,
         CompositionActions.deviceCreated,
+        CompositionActions.deviceEdited,
         CompositionActions.compositionsLinked,
         CompositionActions.compositionsUnlinked,
         CompositionActions.deleteDevice
@@ -52,6 +53,18 @@ export class CompositionEffects {
       )
     )
   );
+
+  editDevice = createEffect(() =>
+  this.actions$.pipe(
+    ofType(CompositionActions.editDevice),
+    switchMap(({ device }) =>
+      this.compositionService.editDevice(device).pipe(
+        map(() => CompositionActions.deviceEdited()),
+        catchError(() => EMPTY)
+      )
+    )
+  )
+);
 
   createComposition = createEffect(() =>
   this.actions$.pipe(

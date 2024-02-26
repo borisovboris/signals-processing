@@ -9,13 +9,19 @@ import { Store } from '@ngrx/store';
 
 import { CommonModule } from '@angular/common';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { DeviceFormComponent } from './device-form/device-form.component';
+import {
+  CreateEditDevice,
+  DeviceFormComponent,
+} from './device-form/device-form.component';
 import {
   LinkCompositionData,
   LinkCompositionFormComponent,
 } from './link-composition-form/link-composition-form.component';
 import { MaterialModule } from '../../material/material.module';
-import { CompositionDetailsDTO } from '../../../../generated-sources/openapi';
+import {
+  CompositionDetailsDTO,
+  DeviceDTO,
+} from '../../../../generated-sources/openapi';
 import { DialogService } from '../../shared/services/dialog.service';
 import { isDefined } from '../../shared/utils';
 import { CompositionActions } from '../../store/composition/composition.actions';
@@ -57,9 +63,38 @@ export class CompositionDetailsComponent implements OnInit {
   }
 
   openDeviceForm() {
-    this.dialogService.open(DeviceFormComponent, {
-      data: { compositionId: this.compositionId },
-    });
+    if (this.compositionId) {
+      const data: CreateEditDevice = {
+        compositionId: this.compositionId,
+      };
+
+      this.dialogService.open(DeviceFormComponent, {
+        data,
+      });
+    }
+  }
+
+  openDeviceFormForEdit(event: Event, device: DeviceDTO) {
+    event.stopPropagation();
+
+    if (this.compositionId) {
+      const data: CreateEditDevice = {
+        compositionId: this.compositionId,
+        editInfo: {
+          status: {
+            label: device.status.name,
+            value: device.status.id,
+          },
+          deviceName: device.name,
+          deviceCode: device.code,
+          deviceId: device.id,
+        },
+      };
+
+      this.dialogService.open(DeviceFormComponent, {
+        data,
+      });
+    }
   }
 
   openLinkCompositionForm() {

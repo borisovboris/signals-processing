@@ -22,11 +22,13 @@ import com.signalsprocessing.engine.services.CompositionService.DeviceDateStatus
 import com.signalsprocessing.engine.services.CompositionService.DeviceStatusDTO;
 import com.signalsprocessing.engine.services.CompositionService.LinkedCompositionsDTO;
 import com.signalsprocessing.engine.services.CompositionService.NewCompositionDTO;
-import com.signalsprocessing.engine.services.CompositionService.NewDeviceDTO;
+import com.signalsprocessing.engine.services.transfer.BaseDeviceDTO;
+import com.signalsprocessing.engine.services.transfer.EditedDeviceDTO;
 import com.signalsprocessing.engine.shared.NameFilterDTO;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RequestMapping(name = "/api/compositions/", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -98,8 +100,13 @@ public class CompositionsController {
     }
 
     @PostMapping("create-device")
-    public void createDevice(@RequestBody NewDeviceDTO newDevice) {
+    public void createDevice(@RequestBody BaseDeviceDTO newDevice) {
         service.createDevice(newDevice);
+    }
+
+    @PutMapping("edit-device")
+    public void editDevice(@RequestBody EditedDeviceDTO editedDevice) {
+        service.editDevice(editedDevice);
     }
 
     @PostMapping("create-composition")

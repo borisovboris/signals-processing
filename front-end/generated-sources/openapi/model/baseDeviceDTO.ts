@@ -11,11 +11,10 @@
  */
 
 
-export interface StatusDTO { 
-    id: number;
-    name: string;
-    isOperational: boolean;
-    isBroken: boolean;
-    inMaintenance: boolean;
+export interface BaseDeviceDTO { 
+    compositionId: number;
+    deviceCode: string;
+    deviceName: string;
+    statusId: number;
 }
 

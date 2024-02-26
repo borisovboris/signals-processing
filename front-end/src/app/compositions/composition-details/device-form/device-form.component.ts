@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -32,9 +33,22 @@ import {
   isNumericLabeledValue,
   labeledValueValidator,
 } from '../../../shared/autocomplete-chips/autocomplete.model';
-import { CompositionsService } from '../../../../../generated-sources/openapi';
+import {
+  CompositionsService,
+  EditedDeviceDTO,
+} from '../../../../../generated-sources/openapi';
 import { SingleAutocompleteComponent } from '../../../shared/single-autocomplete/single-autocomplete.component';
 import { CommonModule } from '@angular/common';
+
+export interface CreateEditDevice {
+  compositionId: number;
+  editInfo?: {
+    status: LabeledValue<number>;
+    deviceName: string;
+    deviceCode: string;
+    deviceId: number;
+  };
+}
 
 @Component({
   selector: 'app-device-form',
@@ -50,20 +64,23 @@ import { CommonModule } from '@angular/common';
   styleUrl: './device-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DeviceFormComponent {
+export class DeviceFormComponent implements AfterViewInit {
   uniqueCodeValidator(): AsyncValidatorFn {
     return (control) =>
       control.valueChanges.pipe(
         debounceTime(400),
         distinctUntilChanged(),
         switchMap((value) =>
-          this.compositionService.checkIfDeviceCodeExists(
-            this.dialogData.compositionId,
-            value
-          )
+          this.compositionService
+            .checkIfDeviceCodeExists(this.dialogData.compositionId, value)
+            .pipe(map((exists) => [exists, value]))
         ),
-        map((exists: boolean) => {
-          if (exists) {
+        map(([exists, value]) => {
+          if (
+            exists === true &&
+            value.toLowerCase() !==
+              this.dialogData.editInfo?.deviceCode.toLowerCase()
+          ) {
             return { deviceCodeExists: true };
           }
 
@@ -71,7 +88,7 @@ export class DeviceFormComponent {
         }),
         first(),
         finalize(() => this.changeRef.markForCheck())
-      ); // important to make observable finite
+      );
   }
 
   uniqueNameValidator(): AsyncValidatorFn {
@@ -79,14 +96,17 @@ export class DeviceFormComponent {
       control.valueChanges.pipe(
         debounceTime(400),
         distinctUntilChanged(),
-        switchMap((value) =>
-          this.compositionService.checkIfDeviceNameExists(
-            this.dialogData.compositionId,
-            value
-          )
-        ),
-        map((exists: boolean) => {
-          if (exists) {
+        switchMap((value) => {
+          return this.compositionService
+            .checkIfDeviceNameExists(this.dialogData.compositionId, value)
+            .pipe(map((exists) => [exists, value]));
+        }),
+        map(([exists, val]) => {
+          if (
+            exists === true &&
+            val.toLowerCase() !==
+              this.dialogData.editInfo?.deviceName.toLowerCase()
+          ) {
             return { deviceNameExists: true };
           }
 
@@ -94,10 +114,10 @@ export class DeviceFormComponent {
         }),
         first(),
         finalize(() => this.changeRef.markForCheck())
-      ); // important to make observable finite
+      );
   }
 
-  dialogData: any = this.injector.get(DIALOG_DATA);
+  dialogData: CreateEditDevice = this.injector.get(DIALOG_DATA);
   dialogRef: DialogReference = this.injector.get(DialogReference);
 
   statuses$: BehaviorSubject<LabeledValue<number>[]> = new BehaviorSubject<
@@ -105,7 +125,11 @@ export class DeviceFormComponent {
   >([]);
   statusOptions$ = this.statuses$.asObservable();
   statusCtrl: FormControl<LabeledValue<number> | string | null> =
-    new FormControl('', [labeledValueValidator]);
+    new FormControl(null, [labeledValueValidator]);
+
+  inEditMode: boolean;
+  dialogTitle: string;
+  actionButtonText: string;
 
   readonly deviceForm = new FormGroup({
     deviceCode: new FormControl<string>(
@@ -126,7 +150,27 @@ export class DeviceFormComponent {
     private readonly injector: Injector,
     private readonly compositionService: CompositionsService,
     private readonly changeRef: ChangeDetectorRef
-  ) {}
+  ) {
+    const inEditMode = this.dialogData.editInfo !== undefined ? true : false;
+    this.inEditMode = inEditMode;
+    this.actionButtonText = inEditMode ? 'Edit' : 'Save';
+    this.dialogTitle = inEditMode ? 'Edit device' : 'Add device';
+  }
+
+  ngAfterViewInit() {
+    if (this.dialogData.editInfo !== undefined) {
+      this.deviceForm.get('status')?.setValue(this.dialogData.editInfo.status);
+      this.deviceForm
+        .get('deviceCode')
+        ?.setValue(this.dialogData.editInfo.deviceCode);
+      this.deviceForm
+        .get('deviceName')
+        ?.setValue(this.dialogData.editInfo.deviceName);
+
+      this.deviceForm.markAllAsTouched();
+      this.deviceForm.updateValueAndValidity();
+    }
+  }
 
   onStatusInput(text: string) {
     this.compositionService
@@ -148,7 +192,19 @@ export class DeviceFormComponent {
     return this.deviceForm.controls['deviceName'];
   }
 
-  onSubmit() {
+  get deviceStatus() {
+    return this.deviceForm.controls['status'];
+  }
+
+  saveOrEditDevice() {
+    if (this.inEditMode) {
+      this.editDevice();
+    } else {
+      this.saveDevice();
+    }
+  }
+
+  saveDevice() {
     const compositionId = this.dialogData.compositionId;
     const deviceCode = this.deviceCode.value;
     const deviceName = this.deviceName.value;
@@ -168,11 +224,65 @@ export class DeviceFormComponent {
       };
 
       this.store.dispatch(CompositionActions.createDevice({ device }));
-      this.dialogRef.close();
+      this.close();
+    }
+  }
+
+  editDevice() {
+    const compositionId = this.dialogData.compositionId;
+    const deviceCode = this.deviceCode.value;
+    const deviceName = this.deviceName.value;
+    const status = this.deviceForm.controls['status'].value;
+    const deviceId = this.dialogData.editInfo?.deviceId;
+
+    if (
+      compositionId !== undefined &&
+      deviceCode &&
+      deviceName &&
+      deviceId !== undefined &&
+      isNumericLabeledValue(status)
+    ) {
+      const data: EditedDeviceDTO = {
+        compositionId,
+        deviceCode,
+        deviceName,
+        deviceId,
+        statusId: status.value,
+      };
+
+      this.store.dispatch(CompositionActions.editDevice({ device: data }));
+      this.close();
     }
   }
 
   close() {
     this.dialogRef.close();
+  }
+
+  deviceChangedThroughEdit() {
+    if (this.dialogData.editInfo === undefined) {
+      return true;
+    }
+
+    const { deviceCode, deviceName, status } = this.dialogData.editInfo;
+
+    const codeChanged =
+      deviceCode.toLowerCase() !== this.deviceCode.value?.toLowerCase();
+    const nameChanged =
+      deviceName.toLowerCase() !== this.deviceName.value?.toLowerCase();
+    const statusChanged =
+      status.value !== this.getStatusValue(this.deviceStatus.value);
+
+    return codeChanged || nameChanged || statusChanged;
+  }
+
+  getStatusValue(
+    input: LabeledValue<number> | string | null
+  ): number | null | string {
+    if (isNumericLabeledValue(input)) {
+      return input.value;
+    }
+
+    return input;
   }
 }

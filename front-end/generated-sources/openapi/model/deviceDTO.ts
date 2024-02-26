@@ -15,6 +15,7 @@ import { StatusDTO } from './statusDTO';
 export interface DeviceDTO { 
     id: number;
     name: string;
+    code: string;
     status: StatusDTO;
     creationAt: string;
 }
