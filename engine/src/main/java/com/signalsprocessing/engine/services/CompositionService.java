@@ -360,18 +360,17 @@ public class CompositionService {
 
         public List<DeviceDateStatusDTO> getDeviceStatusTimeline(Long id) {
                 LocalDate lastThirtyDays = LocalDate.now().minusDays(30);
-                Timestamp timeStamp = Timestamp.valueOf(lastThirtyDays.atStartOfDay());
 
                 TypedQuery<DeviceDateStatusDTO> query = entityManager.createQuery(
-                                "SELECT NEW DeviceDateStatusDTO(COUNT(dsr.id) as occurrences, cast(dsr.creationAt as date) as date) "
+                                "SELECT NEW DeviceDateStatusDTO(COUNT(dsr.id) as occurrences, dsr.creationAt as date) "
                                                 +
                                                 "from DeviceStatusRecord dsr WHERE dsr.device.id = :id " +
                                                 "AND dsr.creationAt > :lastThirtyDays " +
                                                 "AND dsr.status.isOperational != true " +
-                                                "GROUP BY cast(dsr.creationAt as date)",
+                                                "GROUP BY dsr.creationAt",
                                 DeviceDateStatusDTO.class)
                                 .setParameter("id", id)
-                                .setParameter("lastThirtyDays", timeStamp);
+                                .setParameter("lastThirtyDays", lastThirtyDays);
 
                 List<DeviceDateStatusDTO> list = query.getResultList();
                 return list;
