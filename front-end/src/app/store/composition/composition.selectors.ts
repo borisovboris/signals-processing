@@ -21,4 +21,4 @@ export const compositionFilters = createSelector(
   (state) => state.filters
 );
 
-export const timeline = createSelector(feature, (state) => state.timeline);
+export const deviceDetails = createSelector(feature, (state) => state.deviceDetails);

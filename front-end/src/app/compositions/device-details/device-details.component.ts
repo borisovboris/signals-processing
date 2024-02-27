@@ -3,23 +3,26 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { CompositionActions } from '../../store/composition/composition.actions';
 import * as d3 from 'd3';
-import { DeviceDateStatusDTO } from '../../../../generated-sources/openapi';
-import { timeline } from '../../store/composition/composition.selectors';
+import { DeviceDateStatusDTO, DeviceDetailsDTO } from '../../../../generated-sources/openapi';
 import { filter, take } from 'rxjs/operators';
 import { MaterialModule } from '../../material/material.module';
 import moment from 'moment';
 import { CommonModule } from '@angular/common';
+import { deviceDetails } from '../../store/composition/composition.selectors';
+import { fadeIn } from '../../shared/animations';
 
 @Component({
   selector: 'app-device-details',
   standalone: true,
   imports: [MaterialModule, CommonModule],
+  animations: [fadeIn],
   templateUrl: './device-details.component.html',
   styleUrl: './device-details.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DeviceDetailsComponent implements OnInit {
-  dataAvailable = false;
+  filledStatusTimeLine?: DeviceDateStatusDTO[];
+  details?: DeviceDetailsDTO;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -30,22 +33,24 @@ export class DeviceDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('deviceId'));
-    this.store.dispatch(CompositionActions.getDeviceStatusTimeline({ id }));
+    this.store.dispatch(CompositionActions.getDeviceDetails({ id }));
 
     this.store
-      .select(timeline)
+      .select(deviceDetails)
       .pipe(
-        filter((timeline) => timeline !== undefined),
+        filter((deviceDetails) => deviceDetails !== undefined),
         take(1)
       )
-      .subscribe((timeline) => {
+      .subscribe((deviceDetails) => {
+        this.details = deviceDetails;
+        const statusTimeline = deviceDetails?.timeline ?? [];
 
-        if (timeline && timeline.length > 0) {
-          this.dataAvailable = true;
-          const filledData = this.fillEmptyDates(timeline);
-          this.createChart(filledData);
-          this.changeRef.markForCheck();
+        if (statusTimeline.length > 0) {
+          this.filledStatusTimeLine = this.fillEmptyDates(statusTimeline);
+          this.createChart( this.filledStatusTimeLine);
         }
+
+        this.changeRef.markForCheck();
       });
   }
 

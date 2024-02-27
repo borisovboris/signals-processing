@@ -42,16 +42,16 @@ export const compositionReducer = createReducer(
       details,
     };
   }),
-  on(CompositionActions.getDeviceStatusTimeline, (state) => {
+  on(CompositionActions.getDeviceDetails, (state) => {
     return {
       ...state,
-      timeline: undefined,
+      deviceDetails: undefined,
     };
   }),
-  on(CompositionActions.deviceStatusTimelineFetched, (state, { timeline }) => {
+  on(CompositionActions.deviceDetailsFetched, (state, { deviceDetails }) => {
     return {
       ...state,
-      timeline,
+      deviceDetails,
     };
   }),
   on(routerNavigationAction, (state, { payload }) => {

@@ -115,14 +115,14 @@ export class CompositionEffects {
     )
   );
 
-  getDeviceStatusTimeline = createEffect(
+  getDeviceDetails = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(CompositionActions.getDeviceStatusTimeline),
+        ofType(CompositionActions.getDeviceDetails),
         switchMap(({ id }) =>
-          this.compositionService.readDeviceStatusTimeline(id).pipe(
-            map((timeline) =>
-              CompositionActions.deviceStatusTimelineFetched({ timeline })
+          this.compositionService.readDeviceDetails(id).pipe(
+            map((deviceDetails) =>
+              CompositionActions.deviceDetailsFetched({ deviceDetails })
             ),
             catchError(() => EMPTY)
           )

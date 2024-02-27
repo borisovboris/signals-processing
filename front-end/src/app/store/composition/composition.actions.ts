@@ -5,6 +5,7 @@ import {
   CompositionDetailsDTO,
   CompositionFiltersDTO,
   DeviceDateStatusDTO,
+  DeviceDetailsDTO,
   EditedDeviceDTO,
   NewCompositionDTO,
 } from '../../../../generated-sources/openapi';
@@ -27,9 +28,9 @@ export const CompositionActions = createActionGroup({
     'Compositions unlinked': props<any>(),
     'Delete device': props<{ id: number }>(),
     'Device deleted': props<any>(),
-    'Get device status timeline': props<{ id: number }>(),
-    'Device status timeline fetched': props<{
-      timeline: DeviceDateStatusDTO[];
+    'Get device details': props<{ id: number }>(),
+    'Device details fetched': props<{
+      deviceDetails: DeviceDetailsDTO;
     }>(),
     'Create composition': props<{ composition: NewCompositionDTO }>(),
     'Composition created': props<any>(),

@@ -5,7 +5,7 @@ import {
   CompositionDetailsDTO,
   CompositionFiltersDTO,
   CountryDTO,
-  DeviceDateStatusDTO,
+  DeviceDetailsDTO,
   EventDTO,
   EventDetailsDTO,
   EventFiltersDTO,
@@ -30,7 +30,7 @@ export interface CompositionState {
   compositions?: CompositionDTO[];
   details?: CompositionDetailsDTO;
   currentlyViewedCompositionId?: number;
-  timeline?: DeviceDateStatusDTO[];
+  deviceDetails?: DeviceDetailsDTO;
   filters: CompositionFiltersDTO;
 }
 

@@ -10,6 +10,7 @@ export * from './compositionTypeDTO';
 export * from './countryDTO';
 export * from './deviceDTO';
 export * from './deviceDateStatusDTO';
+export * from './deviceDetailsDTO';
 export * from './deviceStatusDTO';
 export * from './editedDeviceDTO';
 export * from './eventDTO';

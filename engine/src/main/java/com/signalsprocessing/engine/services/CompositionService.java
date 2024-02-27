@@ -183,7 +183,8 @@ public class CompositionService {
                 StatusDTO status = new StatusDTO(device.status.id, device.status.name, device.status.isOperational,
                                 device.status.isBroken, device.status.inMaintenance);
 
-                return new DeviceDTO(device.id, device.name, device.code, status, device.creationAt);
+                return new DeviceDTO(device.id, device.name, device.code, status, device.creationAt,
+                                device.composition.code);
         }
 
         public CompositionDTO mapComposition(Composition composition) {
@@ -354,16 +355,29 @@ public class CompositionService {
 
         @Transactional
         public void deleteDevice(Long id) {
-                TypedQuery<Device> query = entityManager
-                                .createQuery("SELECT d from Device d WHERE d.id = :id", Device.class)
-                                .setParameter("id", id);
-
-                Device device = query.getSingleResult();
+                Device device = getDevice(id);
 
                 entityManager.remove(device);
         }
 
-        public List<DeviceDateStatusDTO> getDeviceStatusTimeline(Long id) {
+        @Transactional
+        private Device getDevice(Long deviceId) {
+                TypedQuery<Device> query = entityManager
+                                .createQuery("SELECT d from Device d WHERE d.id = :id", Device.class)
+                                .setParameter("id", deviceId);
+
+                return query.getSingleResult();
+        }
+
+        public DeviceDetailsDTO getDeviceDetails(Long deviceId) {
+                Device device = getDevice(deviceId);
+                Composition composition = device.composition;
+                List<DeviceDateStatusDTO> timeline = getDeviceStatusTimeline(deviceId);
+
+                return new DeviceDetailsDTO(mapDevice(device), mapComposition(composition), timeline);
+        }
+
+        private List<DeviceDateStatusDTO> getDeviceStatusTimeline(Long id) {
                 LocalDate lastThirtyDays = LocalDate.now().minusDays(30);
 
                 TypedQuery<DeviceDateStatusDTO> query = entityManager.createQuery(
@@ -424,10 +438,15 @@ public class CompositionService {
         }
 
         public record DeviceDTO(@NotNull long id, @NotNull String name, @NotNull String code,
-                        @NotNull StatusDTO status, @NotNull LocalDate creationAt) {
+                        @NotNull StatusDTO status, @NotNull LocalDate creationAt, @NotNull String compositionCode) {
         }
 
         public record LinkedCompositionsDTO(@NotNull long firstId, @NotNull long secondId) {
+        }
+
+        public record DeviceDetailsDTO(@NotNull DeviceDTO device, @NotNull CompositionDTO composition,
+                        @NotNull List<DeviceDateStatusDTO> timeline) {
+
         }
 
         public record DeviceDateStatusDTO(@NotNull Long occurrences, @NotNull LocalDate date) {

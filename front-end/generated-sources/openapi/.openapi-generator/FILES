@@ -22,6 +22,7 @@ model/compositionTypeDTO.ts
 model/countryDTO.ts
 model/deviceDTO.ts
 model/deviceDateStatusDTO.ts
+model/deviceDetailsDTO.ts
 model/deviceStatusDTO.ts
 model/editedDeviceDTO.ts
 model/eventDTO.ts

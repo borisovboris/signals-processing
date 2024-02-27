@@ -17,6 +17,7 @@ import com.signalsprocessing.engine.services.CompositionService.CompositionStatu
 import com.signalsprocessing.engine.services.CompositionService.CompositionTypeDTO;
 import com.signalsprocessing.engine.services.CompositionService.DeviceDTO;
 import com.signalsprocessing.engine.services.CompositionService.DeviceDateStatusDTO;
+import com.signalsprocessing.engine.services.CompositionService.DeviceDetailsDTO;
 import com.signalsprocessing.engine.services.CompositionService.DeviceStatusDTO;
 import com.signalsprocessing.engine.services.CompositionService.LinkedCompositionsDTO;
 import com.signalsprocessing.engine.services.CompositionService.NewCompositionDTO;
@@ -51,9 +52,9 @@ public class CompositionsController {
         return service.getCompositionDetails(id);
     }
 
-    @GetMapping("read-device-status-timeline/{id}")
-    public List<DeviceDateStatusDTO> readDeviceStatusTimeline(@PathVariable long id) {
-        return service.getDeviceStatusTimeline(id);
+    @GetMapping("read-device-details/{id}")
+    public DeviceDetailsDTO readDeviceDetails(@PathVariable long id) {
+        return service.getDeviceDetails(id);
     }
 
     @GetMapping("read-composition-statuses")
