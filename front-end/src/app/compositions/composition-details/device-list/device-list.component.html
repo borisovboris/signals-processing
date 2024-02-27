@@ -1,0 +1,47 @@
+<div class="heading">
+  <h2>Devices</h2>
+  <button mat-raised-button color="accent" (click)="openDeviceForm()">
+    Add device
+  </button>
+</div>
+<ng-container *ngIf="details !== undefined">
+  <div class="columns">
+    <p>Name</p>
+    <p>Added on</p>
+    <p>Status</p>
+    <p>Actions</p>
+  </div>
+  <cdk-virtual-scroll-viewport
+    CdkScrollable
+    [itemSize]="60"
+    class="example-viewport"
+  >
+    <div class="row-wrapper" *cdkVirtualFor="let device of details.devices">
+      <div class="row mat-elevation-z2" (click)="goToDevice(device.id)">
+        <p>{{ device.name }}</p>
+        <p>{{ device.creationAt | date }}</p>
+        <p>
+          {{ device.status.isOperational ? "Operational" : "Not operational" }}
+        </p>
+        <div class="action-buttons">
+          <button
+            mat-icon-button
+            matTooltip="Edit"
+            color="primary"
+            (click)="openDeviceFormForEdit($event, device)"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            matTooltip="Delete"
+            color="warn"
+            (click)="deleteDevice($event, device.id)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </cdk-virtual-scroll-viewport>
+</ng-container>

@@ -115,7 +115,8 @@ public class CompositionService {
                         return lc.firstComposition.id != id ? lc.firstComposition : lc.secondComposition;
                 }).map(rc -> mapComposition(rc)).toList();
                 Composition composition = getComposition(id);
-                List<DeviceDTO> devices = composition.devices.stream().map(d -> mapDevice(d)).toList();
+                List<DeviceDTO> devices = composition.devices.stream().map(d -> mapDevice(d))
+                                .sorted((o1, o2) -> o1.name.compareTo(o2.name)).toList();
 
                 return new CompositionDetailsDTO(mapComposition(composition), relatedCompositions, devices);
         }

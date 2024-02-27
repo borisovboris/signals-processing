@@ -1,0 +1,23 @@
+@use "sass:map";
+@import "./colors";
+@import "./list";
+@import "./card";
+
+@include row;
+@include columns;
+
+:host {
+  padding: 0 5vw;
+  height: 100%;
+
+  .example-viewport {
+    min-height: 100%;
+  }
+
+  @include card;
+  @include list-margin;
+
+  .heading {
+    @include heading-with-button;
+  }
+}

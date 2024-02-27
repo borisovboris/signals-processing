@@ -1,11 +1,3 @@
-@use "sass:map";
-@import "./colors";
-@import "./list";
-@import "./card";
-
-@include row;
-@include columns;
-
 .wrapper {
   display: flex;
   padding: 0 5vw;
@@ -19,23 +11,11 @@
     margin-left: 15px;
   }
 
-  .example-viewport {
-    min-height: 100%;
-  }
-
   .devices {
-    @include card;
-    @include list-margin;
     flex: 1;
   }
 
   .related-compositions {
-    @include list-margin;
-    @include card;
     flex: 1;
-  }
-
-  .heading {
-    @include heading-with-button;
   }
 }
