@@ -16,6 +16,7 @@
 
   @include card;
   @include list-margin;
+  @include vertical-order;
 
   .heading {
     @include heading-with-button;

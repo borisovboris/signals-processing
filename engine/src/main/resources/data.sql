@@ -182,6 +182,47 @@ VALUES
 (4, 'STAIRS_MOTOR', 'Stairs motor', 2, 1);
 ALTER SEQUENCE device_id_seq RESTART WITH 1000;
 
+/** Dummy data **/
+INSERT INTO device (code, name, composition_id, status_id) 
+VALUES 
+('CAMERA1', 'Camera1', 3, 3),
+('CAMERA2', 'Camera2', 3, 3),
+('CAMERA3', 'Camera3', 3, 3),
+('CAMERA4', 'Camera4', 3, 3),
+('CAMERA5', 'Camera5', 3, 3),
+('CAMERA6', 'Camera6', 3, 3),
+('CAMERA7', 'Camera7', 3, 3),
+('CAMERA8', 'Camera8', 3, 3),
+('CAMERA9', 'Camera9', 3, 3),
+('CAMERA11', 'Cameraq', 3, 3),
+('CAMERA21', 'Cameraw', 3, 3),
+('CAMERA31', 'Camerae', 3, 3),
+('CAMERA41', 'Camerar', 3, 3),
+('CAMERA51', 'Camerat', 3, 3),
+('CAMERA61', 'Cameray', 3, 3),
+('CAMERA71', 'Camerau', 3, 3),
+('CAMERA81', 'Camerai', 3, 3),
+('CAMERA91', 'Camerao', 3, 3),
+('CAMERA12', 'Camerap', 3, 3),
+('CAMERA22', 'Cameraa', 3, 3),
+('CAMERA32', 'Cameras', 3, 3),
+('CAMERA42', 'Camerad', 3, 3),
+('CAMERA52', 'Cameraf', 3, 3),
+('CAMERA62', 'Camerag', 3, 3),
+('CAMERA72', 'Camerah', 3, 3),
+('CAMERA82', 'Cameraj', 3, 3),
+('CAMERA92', 'Camerak', 3, 3),
+('CAMERA13', 'Cameral', 3, 3),
+('CAMERA23', 'Cameraz', 3, 3),
+('CAMERA33', 'Camerax', 3, 3),
+('CAMERA43', 'Camerac', 3, 3),
+('CAMERA53', 'Camerav', 3, 3),
+('CAMERA63', 'Camerab', 3, 3),
+('CAMERA73', 'Cameran', 3, 3),
+('CAMERA83', 'Cameram', 3, 3),
+('CAMERA93', 'Camerall', 3, 3);
+/** **/
+
 INSERT INTO device_status_record(device_id, status_id) 
 VALUES 
 (1, 1),

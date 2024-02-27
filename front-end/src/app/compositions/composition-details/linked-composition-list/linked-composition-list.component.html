@@ -11,34 +11,38 @@
     <p>Status</p>
     <p>Actions</p>
   </div>
-  <cdk-virtual-scroll-viewport
-    CdkScrollable
-    [itemSize]="60"
-    class="example-viewport"
-  >
-    <div
-      class="row-wrapper"
-      *cdkVirtualFor="let composition of details.relatedCompositions"
+  <div class="list-wrapper">
+    <cdk-virtual-scroll-viewport
+      CdkScrollable
+      [itemSize]="60"
+      class="example-viewport"
     >
-      <div class="row mat-elevation-z2">
-        <p>{{ composition.code }}</p>
-        <p>{{ composition.devicesSize }}</p>
-        <p>
-          {{
-            composition.status.isOperational ? "Operational" : "Not operational"
-          }}
-        </p>
-        <div class="action-buttons">
-          <button
-            mat-icon-button
-            matTooltip="Unlink device"
-            color="warn"
-            (click)="unlinkCompositions(composition.id)"
-          >
-            <mat-icon>phonelink_off</mat-icon>
-          </button>
+      <div
+        class="row-wrapper"
+        *cdkVirtualFor="let composition of details.relatedCompositions"
+      >
+        <div class="row mat-elevation-z2">
+          <p>{{ composition.code }}</p>
+          <p>{{ composition.devicesSize }}</p>
+          <p>
+            {{
+              composition.status.isOperational
+                ? "Operational"
+                : "Not operational"
+            }}
+          </p>
+          <div class="action-buttons">
+            <button
+              mat-icon-button
+              matTooltip="Unlink device"
+              color="warn"
+              (click)="unlinkCompositions(composition.id)"
+            >
+              <mat-icon>phonelink_off</mat-icon>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  </cdk-virtual-scroll-viewport>
+    </cdk-virtual-scroll-viewport>
+  </div>
 </ng-container>
