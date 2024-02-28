@@ -26,24 +26,10 @@
               device.status.isOperational ? "Operational" : "Not operational"
             }}
           </p>
-          <div class="action-buttons">
-            <button
-              mat-icon-button
-              matTooltip="Edit"
-              color="primary"
-              (click)="openDeviceFormForEdit($event, device)"
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button
-              mat-icon-button
-              matTooltip="Delete"
-              color="warn"
-              (click)="deleteDevice($event, device.id)"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
-          </div>
+          <app-list-actions
+            (edit)="openDeviceFormForEdit(device)"
+            (delete)="deleteDevice(device.id)"
+          ></app-list-actions>
         </div>
       </div>
     </cdk-virtual-scroll-viewport>

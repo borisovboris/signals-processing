@@ -1,8 +1,22 @@
 @use "sass:map";
 @import "./colors";
 
+@mixin action-buttons-container {
+  display: inline-block;
+  flex: 1;
+
+  display: flex;
+  justify-content: center;
+
+  > button {
+    margin-top: -10px;
+    margin-bottom: -10px;
+  }
+}
+
 @mixin columns {
   .columns {
+    margin: 0px 76px;
     display: flex;
     justify-content: space-evenly;
 
@@ -13,12 +27,11 @@
       font-weight: 500;
       color: darkgray;
     }
-    
   }
 }
 
 @mixin list-margin() {
-  & > :not(.example-viewport, .list-wrapper) {
+  & > :not(.example-viewport, .list-wrapper, .columns) {
     margin-left: 45px;
     margin-right: 45px;
   }
@@ -46,18 +59,6 @@
         overflow: hidden;
       }
 
-      .action-buttons {
-        flex: 1;
-        display: flex;
-        justify-content: center;
-
-
-        > button {
-          margin-top: -10px;
-          margin-bottom: -10px;
-        }
-      }
-
       &:hover {
         cursor: pointer;
       }
@@ -66,5 +67,9 @@
         background-color: map.get($warn, 100);
       }
     }
+  }
+
+  cdk-virtual-scroll-viewport {
+    scrollbar-gutter: stable both-edges;
   }
 }

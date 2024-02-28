@@ -30,6 +30,7 @@ import moment from 'moment';
 import { BatchList } from '../../shared/batch-list';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { fadeIn } from '../../shared/animations';
+import { ListActionsComponent } from '../../shared/list-actions/list-actions.component';
 
 export enum ManualInsert {
   ANY = 'Any',
@@ -46,6 +47,7 @@ export enum ManualInsert {
     MaterialModule,
     AutocompleteChipsComponent,
     ReactiveFormsModule,
+    ListActionsComponent,
   ],
   animations: [fadeIn],
   templateUrl: './event-list.component.html',

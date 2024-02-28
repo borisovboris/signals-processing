@@ -8,11 +8,12 @@ import { MaterialModule } from '../../material/material.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { DialogService } from '../../shared/services/dialog.service';
 import { LocationFormComponent } from './location-form/location-form.component';
+import { ListActionsComponent } from '../../shared/list-actions/list-actions.component';
 
 @Component({
   selector: 'app-city-details',
   standalone: true,
-  imports: [CommonModule, MaterialModule, ScrollingModule],
+  imports: [CommonModule, MaterialModule, ScrollingModule, ListActionsComponent],
   templateUrl: './city-details.component.html',
   styleUrl: './city-details.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

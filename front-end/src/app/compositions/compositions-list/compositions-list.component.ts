@@ -21,6 +21,7 @@ import { CountriesService } from '../../../../generated-sources/openapi';
 import { LabeledValue } from '../../shared/autocomplete-chips/autocomplete.model';
 import { fadeIn } from '../../shared/animations';
 import { BatchList } from '../../shared/batch-list';
+import { ListActionsComponent } from '../../shared/list-actions/list-actions.component';
 
 @Component({
   selector: 'app-compositions-list',
@@ -31,6 +32,7 @@ import { BatchList } from '../../shared/batch-list';
     MaterialModule,
     ScrollingModule,
     ReactiveFormsModule,
+    ListActionsComponent
   ],
   animations: [fadeIn],
   templateUrl: './compositions-list.component.html',

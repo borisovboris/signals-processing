@@ -36,11 +36,12 @@
       <p>Code</p>
       <p>Devices</p>
       <p>Status</p>
+      <p>Actions</p>
     </div>
     <div class="list-wrapper">
       <cdk-virtual-scroll-viewport
         CdkScrollable
-        [itemSize]="60"
+        [itemSize]="68"
         class="example-viewport"
         (scrolledIndexChange)="onScroll()"
         @fadeIn
@@ -63,6 +64,7 @@
                   : "Not operational"
               }}
             </p>
+            <app-list-actions></app-list-actions>
           </div>
         </div>
       </cdk-virtual-scroll-viewport>

@@ -66,13 +66,14 @@
       <p>Type</p>
       <p>Added on</p>
       <p>Manual</p>
+      <p>Actions</p>
     </div>
 
     <ng-container *ngIf="events$ | async as events">
       <div class="list-wrapper" @fadeIn>
         <cdk-virtual-scroll-viewport
           CdkScrollable
-          [itemSize]="60"
+          [itemSize]="68"
           class="example-viewport"
           (scrolledIndexChange)="onScroll()"
         >
@@ -85,6 +86,7 @@
               <p>{{ event.typeName }}</p>
               <p>{{ event.eventCreationAt | date }}</p>
               <p>{{ event.manualInsert ? 'Yes' : 'No' }}</p>
+              <app-list-actions></app-list-actions>
             </div>
           </div>
         </cdk-virtual-scroll-viewport>

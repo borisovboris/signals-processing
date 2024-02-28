@@ -18,11 +18,12 @@ import { DialogService } from '../../shared/services/dialog.service';
 import { CityFormComponent } from './city-form/city-form.component';
 import { BatchList } from '../../shared/batch-list';
 import { debounceTime, filter, take } from 'rxjs';
+import { ListActionsComponent } from '../../shared/list-actions/list-actions.component';
 
 @Component({
   selector: 'app-country-details',
   standalone: true,
-  imports: [CommonModule, MaterialModule, ScrollingModule],
+  imports: [CommonModule, MaterialModule, ScrollingModule, ListActionsComponent],
   templateUrl: './country-details.component.html',
   styleUrl: './country-details.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

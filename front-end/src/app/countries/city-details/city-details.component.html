@@ -11,34 +11,40 @@
       <p>Address</p>
       <p>Status</p>
       <p>Compositions</p>
+      <p>Actions</p>
     </div>
-    <cdk-virtual-scroll-viewport
-      CdkScrollable
-      [itemSize]="60"
-      class="example-viewport"
-    >
-      <div
-        class="row-wrapper"
-        *cdkVirtualFor="let location of locations.locations"
+    <div class="list-wrapper">
+      <cdk-virtual-scroll-viewport
+        CdkScrollable
+        [itemSize]="68"
+        class="example-viewport"
       >
         <div
-          class="row mat-elevation-z2"
-          [class.not-operational]="!location.isOperational"
-          (click)="
-            goToLocationCompositions(
-              locations.city.id,
-              locations.city.name,
-              location.id,
-              location.name
-            )
-          "
+          class="row-wrapper"
+          *cdkVirtualFor="let location of locations.locations"
         >
-          <p>{{ location.name }}</p>
-          <p>{{ location.address }}</p>
-          <p>{{ location.isOperational ? 'Operational' : 'Not operational' }}</p>
-          <p>{{ location.compositionsSize }}</p>
+          <div
+            class="row mat-elevation-z2"
+            [class.not-operational]="!location.isOperational"
+            (click)="
+              goToLocationCompositions(
+                locations.city.id,
+                locations.city.name,
+                location.id,
+                location.name
+              )
+            "
+          >
+            <p>{{ location.name }}</p>
+            <p>{{ location.address }}</p>
+            <p>
+              {{ location.isOperational ? "Operational" : "Not operational" }}
+            </p>
+            <p>{{ location.compositionsSize }}</p>
+            <app-list-actions></app-list-actions>
+          </div>
         </div>
-      </div>
-    </cdk-virtual-scroll-viewport>
+      </cdk-virtual-scroll-viewport>
+    </div>
   </mat-card>
 </div>

@@ -1,6 +1,6 @@
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { DialogService } from '../../../shared/services/dialog.service';
@@ -8,11 +8,12 @@ import { CompositionActions } from '../../../store/composition/composition.actio
 import { CreateEditDevice, DeviceFormComponent } from '../device-form/device-form.component';
 import { CompositionDetailsDTO, DeviceDTO } from '../../../../../generated-sources/openapi';
 import { MaterialModule } from '../../../material/material.module';
+import { ListActionsComponent } from '../../../shared/list-actions/list-actions.component';
 
 @Component({
   selector: 'app-device-list',
   standalone: true,
-  imports: [MaterialModule, ScrollingModule, CommonModule],
+  imports: [MaterialModule, ScrollingModule, CommonModule, ListActionsComponent],
   templateUrl: './device-list.component.html',
   styleUrl: './device-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -27,8 +28,7 @@ export class DeviceListComponent {
     private readonly dialogService: DialogService,
   ) {}
   
-  deleteDevice(event: Event, id: number) {
-    event.stopPropagation();
+  deleteDevice(id: number) {
     this.store.dispatch(CompositionActions.deleteDevice({ id }));
   }
 
@@ -48,9 +48,7 @@ export class DeviceListComponent {
     }
   }
 
-  openDeviceFormForEdit(event: Event, device: DeviceDTO) {
-    event.stopPropagation();
-
+  openDeviceFormForEdit(device: DeviceDTO) {
     if (this.compositionId) {
       const data: CreateEditDevice = {
         compositionId: this.compositionId,

@@ -21,4 +21,8 @@
   .heading {
     @include heading-with-button;
   }
+
+  .action-buttons {
+    @include action-buttons-container;
+  }
 }

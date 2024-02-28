@@ -19,11 +19,12 @@ import { Router, RouterLink } from '@angular/router';
 import { CountryFormComponent } from '../country-form/country-form.component';
 import { DialogService } from '../../shared/services/dialog.service';
 import { BatchList } from '../../shared/batch-list';
+import { ListActionsComponent } from '../../shared/list-actions/list-actions.component';
 
 @Component({
   selector: 'app-country-list',
   standalone: true,
-  imports: [CommonModule, MaterialModule, ScrollingModule, RouterLink],
+  imports: [CommonModule, MaterialModule, ScrollingModule, RouterLink, ListActionsComponent],
   templateUrl: './country-list.component.html',
   styleUrl: './country-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
