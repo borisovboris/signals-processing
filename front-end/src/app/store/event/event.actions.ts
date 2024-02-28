@@ -16,5 +16,7 @@ export const EventActions = createActionGroup({
     'Event details fetched': props<{ details: EventDetailsDTO }>(),
     'Create event': props<{ event: NewEventDTO }>(),
     'Event created': props<any>(),
+    'Delete event': props<{ id: number }>(),
+    'Event deleted': props<any>(),
   },
 });

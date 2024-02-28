@@ -12,7 +12,7 @@ export const eventReducer = createReducer(
   on(EventActions.eventDetailsFetched, (state, { details }) => {
     return { ...state, details };
   }),
-  on(EventActions.resetEvents, EventActions.eventCreated, (state) => ({
+  on(EventActions.resetEvents, EventActions.eventCreated, EventActions.eventDeleted, (state) => ({
     ...state,
     events: [],
     filters: { ...state.filters, offset: 0 },

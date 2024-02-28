@@ -3,6 +3,7 @@ package com.signalsprocessing.engine.controllers;
 import java.util.List;
 
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,5 +51,11 @@ public class EventsController {
     @ResponseBody
     public void createEvent(@RequestBody NewEventDTO event) {
         service.createEvent(event);
+    }
+
+    @DeleteMapping("delete-event/{id}")
+    @ResponseBody
+    public void deleteEvent(@PathVariable("id") Long id) {
+        service.deleteEvent(id);
     }
 }

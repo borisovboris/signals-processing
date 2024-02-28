@@ -10,7 +10,7 @@ import { eventFilters } from './event.selectors';
 export class EventEffects {
   loadEvents = createEffect(() =>
     this.actions$.pipe(
-      ofType(EventActions.getEvents, EventActions.eventCreated),
+      ofType(EventActions.getEvents, EventActions.eventCreated, EventActions.eventDeleted),
       withLatestFrom(this.store.select(eventFilters)),
       switchMap(([_, filters]) =>
         this.eventsService.readEvents(filters).pipe(
@@ -38,12 +38,24 @@ export class EventEffects {
       ofType(EventActions.createEvent),
       switchMap(({ event }) =>
         this.eventsService.createEvent(event).pipe(
-          map((details) => EventActions.eventCreated()),
+          map(() => EventActions.eventCreated()),
           catchError(() => EMPTY)
         )
       )
     )
   );
+
+  deleteEvent = createEffect(() =>
+  this.actions$.pipe(
+    ofType(EventActions.deleteEvent),
+    switchMap(({ id }) =>
+      this.eventsService.deleteEvent(id).pipe(
+        map((details) => EventActions.eventDeleted()),
+        catchError(() => EMPTY)
+      )
+    )
+  )
+);
 
   constructor(
     private actions$: Actions,

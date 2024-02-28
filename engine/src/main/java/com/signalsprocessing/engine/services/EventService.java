@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -148,6 +147,11 @@ public class EventService {
 
             entityManager.persist(eventDevice);
         }
+    }
+
+    @Transactional
+    public void deleteEvent(Long id) {
+        entityManager.remove(entityManager.getReference(Event.class, id));
     }
 
     public EventDTO mapEvent(Event event) {

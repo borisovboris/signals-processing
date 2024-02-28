@@ -187,4 +187,9 @@ export class EventListComponent extends BatchList implements OnInit {
         return undefined;
     }
   }
+
+  deleteEvent(id: number) {
+    this.offset = 0;
+    this.store.dispatch(EventActions.deleteEvent({ id }));
+  }
 }

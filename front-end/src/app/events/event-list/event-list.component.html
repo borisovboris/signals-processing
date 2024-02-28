@@ -86,7 +86,7 @@
               <p>{{ event.typeName }}</p>
               <p>{{ event.eventCreationAt | date }}</p>
               <p>{{ event.manualInsert ? 'Yes' : 'No' }}</p>
-              <app-list-actions></app-list-actions>
+              <app-list-actions (delete)="deleteEvent(event.id)"></app-list-actions>
             </div>
           </div>
         </cdk-virtual-scroll-viewport>
