@@ -123,4 +123,10 @@ public class CountriesController {
     public void deleteCity(@PathVariable("id") Long id) {
         service.deleteCity(id);
     }
+
+    @DeleteMapping("delete-location/{id}")
+    @ResponseBody
+    public void deleteLocation(@PathVariable("id") Long id) {
+        service.deleteLocation(id);
+    }
 }

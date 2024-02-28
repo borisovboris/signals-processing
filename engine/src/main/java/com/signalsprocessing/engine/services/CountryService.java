@@ -250,6 +250,11 @@ public class CountryService {
                 entityManager.merge(location);
         }
 
+        @Transactional
+        public void deleteLocation(Long id) {
+                entityManager.remove(entityManager.getReference(Location.class, id));
+        }
+
         public record CountryDTO(@NotNull long id, @NotNull String name) {
         }
 

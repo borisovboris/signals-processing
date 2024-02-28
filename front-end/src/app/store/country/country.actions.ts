@@ -28,5 +28,7 @@ export const CountryActions = createActionGroup({
     'Country deleted': props<any>(),
     'Delete city': props<{ id: number }>(),
     'City deleted': props<any>(),
+    'Delete location': props<{ id: number, cityId: number }>(),
+    'Location deleted': props<{ cityId: number }>(),
   },
 });

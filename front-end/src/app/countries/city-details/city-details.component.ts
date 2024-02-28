@@ -13,7 +13,12 @@ import { ListActionsComponent } from '../../shared/list-actions/list-actions.com
 @Component({
   selector: 'app-city-details',
   standalone: true,
-  imports: [CommonModule, MaterialModule, ScrollingModule, ListActionsComponent],
+  imports: [
+    CommonModule,
+    MaterialModule,
+    ScrollingModule,
+    ListActionsComponent,
+  ],
   templateUrl: './city-details.component.html',
   styleUrl: './city-details.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -35,10 +40,15 @@ export class CityDetailsComponent {
     this.store.dispatch(CountryActions.getLocations({ cityId: this.cityId }));
   }
 
-  goToLocationCompositions(cityId: number, cityName: string, locationId: number, locationName: string) {
+  goToLocationCompositions(
+    cityId: number,
+    cityName: string,
+    locationId: number,
+    locationName: string
+  ) {
     this.router.navigate([`/compositions`], {
       relativeTo: this.route,
-      queryParams: { cityId, cityName, locationId, locationName},
+      queryParams: { cityId, cityName, locationId, locationName },
     });
   }
 
@@ -47,6 +57,14 @@ export class CityDetailsComponent {
       this.dialogService.open(LocationFormComponent, {
         data: { cityId: this.cityId },
       });
+    }
+  }
+
+  deleteLocation(id: number) {
+    if (this.cityId) {
+      this.store.dispatch(
+        CountryActions.deleteLocation({ id, cityId: this.cityId })
+      );
     }
   }
 }

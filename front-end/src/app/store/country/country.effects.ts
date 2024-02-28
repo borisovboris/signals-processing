@@ -52,7 +52,11 @@ export class CountryEffects {
 
   loadLocations = createEffect(() =>
     this.actions$.pipe(
-      ofType(CountryActions.getLocations, CountryActions.locationCreated),
+      ofType(
+        CountryActions.getLocations,
+        CountryActions.locationCreated,
+        CountryActions.locationDeleted
+      ),
       switchMap(({ cityId }) =>
         this.countriesService.readLocationsOfCity(cityId).pipe(
           map((locations) => CountryActions.locationsFetched({ locations })),
@@ -118,6 +122,18 @@ export class CountryEffects {
           map(() =>
             CountryActions.locationCreated({ cityId: location.cityId })
           ),
+          catchError(() => EMPTY)
+        )
+      )
+    )
+  );
+
+  deleteLocation = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CountryActions.deleteLocation),
+      switchMap(({ id, cityId }) =>
+        this.countriesService.deleteLocation(id).pipe(
+          map(() => CountryActions.locationDeleted({ cityId })),
           catchError(() => EMPTY)
         )
       )

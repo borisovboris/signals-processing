@@ -41,7 +41,9 @@
               {{ location.isOperational ? "Operational" : "Not operational" }}
             </p>
             <p>{{ location.compositionsSize }}</p>
-            <app-list-actions></app-list-actions>
+            <app-list-actions
+              (delete)="deleteLocation(location.id)"
+            ></app-list-actions>
           </div>
         </div>
       </cdk-virtual-scroll-viewport>
