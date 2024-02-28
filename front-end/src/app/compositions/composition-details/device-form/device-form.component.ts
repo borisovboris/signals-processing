@@ -39,6 +39,7 @@ import {
 } from '../../../../../generated-sources/openapi';
 import { SingleAutocompleteComponent } from '../../../shared/single-autocomplete/single-autocomplete.component';
 import { CommonModule } from '@angular/common';
+import { stringsLike } from '../../../shared/utils';
 
 export interface CreateEditDevice {
   compositionId: number;
@@ -78,8 +79,7 @@ export class DeviceFormComponent implements AfterViewInit {
         map(([exists, value]) => {
           if (
             exists === true &&
-            value.toLowerCase() !==
-              this.dialogData.editInfo?.deviceCode.toLowerCase()
+            !stringsLike(value, this.dialogData.editInfo?.deviceCode)
           ) {
             return { deviceCodeExists: true };
           }
@@ -101,11 +101,10 @@ export class DeviceFormComponent implements AfterViewInit {
             .checkIfDeviceNameExists(this.dialogData.compositionId, value)
             .pipe(map((exists) => [exists, value]));
         }),
-        map(([exists, val]) => {
+        map(([exists, value]) => {
           if (
             exists === true &&
-            val.toLowerCase() !==
-              this.dialogData.editInfo?.deviceName.toLowerCase()
+            !stringsLike(value, this.dialogData.editInfo?.deviceName)
           ) {
             return { deviceNameExists: true };
           }

@@ -23,3 +23,11 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
     );
   }
 }
+
+export function stringsLike(first: any, second: any): boolean {
+  if (typeof first !== 'string' || typeof second !== 'string') {
+    return false;
+  }
+
+  return (first as string).toLowerCase() === (second as string).toLowerCase();
+}

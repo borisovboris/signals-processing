@@ -27,11 +27,16 @@ export const countryReducer = createReducer(
     ...state,
     countriesOffset: offset,
   })),
-  on(CountryActions.countryCreated, CountryActions.countryDeleted, (state) => ({
-    ...state,
-    countries: [],
-    countriesOffset: INITIAL_OFFSET,
-  })),
+  on(
+    CountryActions.countryCreated,
+    CountryActions.countryDeleted,
+    CountryActions.countryEdited,
+    (state) => ({
+      ...state,
+      countries: [],
+      countriesOffset: INITIAL_OFFSET,
+    })
+  ),
   on(CountryActions.countriesFetched, (state, { countries }) => {
     const finalCountries = [...state.countries, ...countries];
 

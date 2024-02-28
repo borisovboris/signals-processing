@@ -1,6 +1,6 @@
 <mat-card>
-  <h1>Add country</h1>
-  <form [formGroup]="countryForm" (ngSubmit)="createCountry()">
+  <h1>{{ inEditMode ? "Edit country" : "Add country" }}</h1>
+  <form [formGroup]="countryForm" (ngSubmit)="saveCountry()">
     <mat-form-field class="example-full-width">
       <mat-label>Country name</mat-label>
       <input
@@ -14,8 +14,14 @@
     </mat-form-field>
 
     <div class="actions">
-      <button mat-raised-button color="accent" [disabled]="countryForm.invalid">
-        Add
+      <button
+        mat-raised-button
+        color="accent"
+        [disabled]="
+          countryForm.invalid || !countryChangedThroughEdit() || formPending()
+        "
+      >
+        {{ inEditMode ? "Edit" : "Add" }}
       </button>
     </div>
   </form>

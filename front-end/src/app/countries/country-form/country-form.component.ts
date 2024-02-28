@@ -1,8 +1,10 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   Injector,
+  inject,
 } from '@angular/core';
 import { MaterialModule } from '../../material/material.module';
 import {
@@ -26,8 +28,18 @@ import { CommonModule } from '@angular/common';
 
 import { Store } from '@ngrx/store';
 import { CountryActions } from '../../store/country/country.actions';
-import { MyErrorStateMatcher, isDefined } from '../../shared/utils';
+import {
+  MyErrorStateMatcher,
+  isDefined,
+  stringsLike,
+} from '../../shared/utils';
 import { DialogReference } from '../../shared/services/dialog-reference';
+import { DIALOG_DATA } from '../../shared/services/dialog.service';
+
+export interface CountryDialogData {
+  id?: number;
+  name?: string;
+}
 
 @Component({
   selector: 'app-country-form',
@@ -37,15 +49,19 @@ import { DialogReference } from '../../shared/services/dialog-reference';
   styleUrl: './country-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CountryFormComponent {
+export class CountryFormComponent implements AfterViewInit {
   uniqueCountryValidatorFn(): AsyncValidatorFn {
     return (control) =>
       control.valueChanges.pipe(
         debounceTime(400),
         distinctUntilChanged(),
-        switchMap((value) => this.service.checkIfCountryExists(value)),
-        map((exists: boolean) => {
-          if (exists) {
+        switchMap((value) =>
+          this.service
+            .checkIfCountryExists(value)
+            .pipe(map((exists) => [exists, value]))
+        ),
+        map(([exists, value]) => {
+          if (exists && !stringsLike(this.dialogData?.name, value)) {
             return { countryExists: true };
           }
 
@@ -56,15 +72,28 @@ export class CountryFormComponent {
       ); // important to make observable finite
   }
 
+  dialogData?: CountryDialogData = inject(DIALOG_DATA);
   dialogRef: DialogReference = this.injector.get(DialogReference);
   matcher = new MyErrorStateMatcher();
+  inEditMode = false;
 
   constructor(
     private readonly service: CountriesService,
     private readonly changeRef: ChangeDetectorRef,
     private readonly store: Store,
     private readonly injector: Injector
-  ) {}
+  ) {
+    this.inEditMode = this.dialogData?.name !== undefined;
+  }
+
+  ngAfterViewInit(): void {
+    if (this.dialogData?.name !== undefined) {
+      this.countryName?.setValue(this.dialogData.name);
+
+      this.countryForm.markAllAsTouched();
+      this.countryForm.updateValueAndValidity();
+    }
+  }
 
   readonly countryForm = new FormGroup({
     countryName: new FormControl<string>('', {
@@ -77,6 +106,26 @@ export class CountryFormComponent {
     return this.countryForm.get('countryName');
   }
 
+  saveCountry() {
+    if (this.inEditMode) {
+      this.editCountry();
+    } else {
+      this.createCountry();
+    }
+  }
+
+  editCountry() {
+    const  id = this.dialogData?.id;
+    const name = this.countryName?.value;
+
+    if (id && name) {
+      this.store.dispatch(
+        CountryActions.editCountry({ country: { id, name } })
+      );
+      this.dialogRef.close(true);
+    }
+  }
+
   createCountry() {
     const name = this.countryName?.value;
 
@@ -84,5 +133,13 @@ export class CountryFormComponent {
       this.store.dispatch(CountryActions.createCountry({ name }));
       this.dialogRef.close(true);
     }
+  }
+
+  countryChangedThroughEdit() {
+    return !stringsLike(this.countryName?.value, this.dialogData?.name);
+  }
+
+  formPending() {
+    return this.countryForm.pending;
   }
 }

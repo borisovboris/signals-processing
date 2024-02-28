@@ -203,6 +203,14 @@ public class CountryService {
         }
 
         @Transactional
+        public void editCountry(CountryDTO countryDto) {
+                Country country = entityManager.getReference(Country.class, countryDto.id);
+                country.setName(countryDto.name);
+
+                entityManager.merge(country);
+        }
+
+        @Transactional
         public void deleteCountry(Long id) {
                 entityManager.remove(entityManager.getReference(Country.class, id));
         }

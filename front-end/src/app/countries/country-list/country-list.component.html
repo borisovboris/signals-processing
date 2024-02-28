@@ -3,7 +3,7 @@
     <ng-container *ngIf="countries$ | async as countries">
       <div class="heading">
         <h2>Countries</h2>
-        <button mat-raised-button color="accent" (click)="openCountryForm()">
+        <button mat-raised-button color="accent" (click)="openCountryFormForCreation()">
           Add country
         </button>
       </div>
@@ -27,6 +27,7 @@
               <p>{{ country.name }}</p>
               <app-list-actions
                 (delete)="deleteCountry(country.id)"
+                (edit)="openCountryFormForEdit(country.id, country.name)"
               ></app-list-actions>
             </div>
           </div>

@@ -21,7 +21,8 @@ export class CountryEffects {
       ofType(
         CountryActions.getCountries,
         CountryActions.countryCreated,
-        CountryActions.countryDeleted
+        CountryActions.countryDeleted,
+        CountryActions.countryEdited
       ),
       withLatestFrom(this.store.select(countriesOffset)),
       exhaustMap(([_, offset]) =>
@@ -84,6 +85,18 @@ export class CountryEffects {
       switchMap(({ id }) =>
         this.countriesService.deleteCountry(id).pipe(
           map(() => CountryActions.countryDeleted()),
+          catchError(() => EMPTY)
+        )
+      )
+    )
+  );
+
+  editCountry = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CountryActions.editCountry),
+      switchMap(({ country }) =>
+        this.countriesService.editCountry(country).pipe(
+          map(() => CountryActions.countryEdited()),
           catchError(() => EMPTY)
         )
       )

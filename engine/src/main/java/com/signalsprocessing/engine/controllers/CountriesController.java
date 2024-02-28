@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -78,6 +79,11 @@ public class CountriesController {
     @PostMapping("create-country")
     public void createCountry(@RequestBody String name) {
         service.createCountry(name);
+    }
+
+    @PutMapping("edit-country")
+    public void editCountry(CountryDTO country) {
+        service.editCountry(country);
     }
 
     @GetMapping("city-exists/{countryId}/{name}")

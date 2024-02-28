@@ -16,10 +16,15 @@ import {
 } from '@angular/cdk/scrolling';
 import { Subject, debounceTime, filter, take } from 'rxjs';
 import { Router, RouterLink } from '@angular/router';
-import { CountryFormComponent } from '../country-form/country-form.component';
+import {
+  CountryDialogData,
+  CountryFormComponent,
+} from '../country-form/country-form.component';
 import { DialogService } from '../../shared/services/dialog.service';
 import { BatchList } from '../../shared/batch-list';
 import { ListActionsComponent } from '../../shared/list-actions/list-actions.component';
+import { stringsLike } from '../../shared/utils';
+import { DialogReference } from '../../shared/services/dialog-reference';
 
 @Component({
   selector: 'app-country-list',
@@ -62,13 +67,27 @@ export class CountryListComponent extends BatchList implements OnInit {
     this.router.navigate([`countries`, id]);
   }
 
-  openCountryForm() {
+  openCountryFormForCreation() {
     const dialogRef = this.dialogService.open(CountryFormComponent);
-    dialogRef
+    this.onDialogClosed(dialogRef);
+  }
+
+  openCountryFormForEdit(id: number, name: string) {
+    const data: CountryDialogData = {
+      id,
+      name,
+    };
+
+    const dialogRef = this.dialogService.open(CountryFormComponent, { data });
+    this.onDialogClosed(dialogRef);
+  }
+
+  onDialogClosed(ref: DialogReference) {
+    ref
       .afterClosed()
       .pipe(
         take(1),
-        filter((created) => created === true)
+        filter((completed) => completed === true)
       )
       .subscribe(() => (this.offset = INITIAL_OFFSET));
   }
