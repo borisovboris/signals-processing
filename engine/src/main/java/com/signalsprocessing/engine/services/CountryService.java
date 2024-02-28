@@ -220,6 +220,11 @@ public class CountryService {
         }
 
         @Transactional
+        public void deleteCity(Long id) {
+                entityManager.remove(entityManager.getReference(City.class, id));
+        }
+
+        @Transactional
         public boolean checkIfLocationNameExists(Long cityId, String name) {
                 TypedQuery<Location> query = entityManager
                                 .createQuery("SELECT l from Location l WHERE l.city.id = :cityId " +

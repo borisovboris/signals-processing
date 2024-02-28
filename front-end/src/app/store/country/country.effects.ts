@@ -18,7 +18,11 @@ import { ROUTER_NAVIGATION } from '@ngrx/router-store';
 export class CountryEffects {
   loadCountries$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(CountryActions.getCountries, CountryActions.countryCreated, CountryActions.countryDeleted),
+      ofType(
+        CountryActions.getCountries,
+        CountryActions.countryCreated,
+        CountryActions.countryDeleted
+      ),
       withLatestFrom(this.store.select(countriesOffset)),
       exhaustMap(([_, offset]) =>
         this.countriesService.readCountries(offset).pipe(
@@ -31,7 +35,11 @@ export class CountryEffects {
 
   loadCities = createEffect(() =>
     this.actions$.pipe(
-      ofType(CountryActions.getCitiesOfCountry, CountryActions.cityCreated),
+      ofType(
+        CountryActions.getCitiesOfCountry,
+        CountryActions.cityCreated,
+        CountryActions.cityDeleted
+      ),
       withLatestFrom(this.store.select(cityFilters)),
       switchMap(([, filters]) => {
         return this.countriesService.readCitiesOfCountry(filters).pipe(
@@ -67,16 +75,16 @@ export class CountryEffects {
   );
 
   deleteCountry = createEffect(() =>
-  this.actions$.pipe(
-    ofType(CountryActions.deleteCountry),
-    switchMap(({ id }) =>
-      this.countriesService.deleteCountry(id).pipe(
-        map(() => CountryActions.countryDeleted({ id })),
-        catchError(() => EMPTY)
+    this.actions$.pipe(
+      ofType(CountryActions.deleteCountry),
+      switchMap(({ id }) =>
+        this.countriesService.deleteCountry(id).pipe(
+          map(() => CountryActions.countryDeleted()),
+          catchError(() => EMPTY)
+        )
       )
     )
-  )
-);
+  );
 
   createCity = createEffect(() =>
     this.actions$.pipe(
@@ -84,6 +92,18 @@ export class CountryEffects {
       switchMap(({ city }) =>
         this.countriesService.createCity(city).pipe(
           map(() => CountryActions.cityCreated()),
+          catchError(() => EMPTY)
+        )
+      )
+    )
+  );
+
+  deleteCity = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CountryActions.deleteCity),
+      switchMap(({ id }) =>
+        this.countriesService.deleteCity(id).pipe(
+          map(() => CountryActions.cityDeleted()),
           catchError(() => EMPTY)
         )
       )

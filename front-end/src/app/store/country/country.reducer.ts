@@ -14,7 +14,7 @@ export const citiesPath = /^\/countries\/[\d]+$/;
 
 export const countryReducer = createReducer(
   initialState,
-  on(CountryActions.cityCreated, (state) => ({
+  on(CountryActions.cityCreated, CountryActions.cityDeleted, (state) => ({
     ...state,
     cityFilters: { ...state.cityFilters, offset: 0 },
     cities: undefined,

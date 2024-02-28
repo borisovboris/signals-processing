@@ -24,7 +24,7 @@
         >
           <div class="row mat-elevation-z2">
             <p>{{ city.name }}</p>
-           <app-list-actions></app-list-actions>
+            <app-list-actions (delete)="deleteCity(city.id)"></app-list-actions>
           </div>
         </div>
       </cdk-virtual-scroll-viewport>

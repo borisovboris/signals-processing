@@ -117,4 +117,10 @@ public class CountriesController {
     public void deleteCountry(@PathVariable("id") Long id) {
         service.deleteCountry(id);
     }
+
+    @DeleteMapping("delete-city/{id}")
+    @ResponseBody
+    public void deleteCity(@PathVariable("id") Long id) {
+        service.deleteCity(id);
+    }
 }

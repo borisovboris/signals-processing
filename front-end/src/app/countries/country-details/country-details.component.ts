@@ -83,4 +83,9 @@ export class CountryDetailsComponent extends BatchList implements OnInit {
         .subscribe((_) => (this.offset = 0));
     }
   }
+
+  deleteCity(id: number) {
+    this.store.dispatch(CountryActions.deleteCity({ id }));
+    this.offset = 0;
+  }
 }
