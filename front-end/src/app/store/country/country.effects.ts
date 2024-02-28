@@ -18,7 +18,7 @@ import { ROUTER_NAVIGATION } from '@ngrx/router-store';
 export class CountryEffects {
   loadCountries$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(CountryActions.getCountries, CountryActions.countryCreated),
+      ofType(CountryActions.getCountries, CountryActions.countryCreated, CountryActions.countryDeleted),
       withLatestFrom(this.store.select(countriesOffset)),
       exhaustMap(([_, offset]) =>
         this.countriesService.readCountries(offset).pipe(
@@ -65,6 +65,18 @@ export class CountryEffects {
       )
     )
   );
+
+  deleteCountry = createEffect(() =>
+  this.actions$.pipe(
+    ofType(CountryActions.deleteCountry),
+    switchMap(({ id }) =>
+      this.countriesService.deleteCountry(id).pipe(
+        map(() => CountryActions.countryDeleted({ id })),
+        catchError(() => EMPTY)
+      )
+    )
+  )
+);
 
   createCity = createEffect(() =>
     this.actions$.pipe(

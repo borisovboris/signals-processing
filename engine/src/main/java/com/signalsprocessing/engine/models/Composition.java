@@ -46,6 +46,15 @@ public class Composition {
     @OneToMany(mappedBy = "composition", cascade = CascadeType.ALL)
     public Set<Device> devices;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "firstComposition")
+    private Set<LinkedComposition> linkedCompositionsOne;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "secondComposition")
+    private Set<LinkedComposition> linkedCompositionsSecond;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "composition")
+    private Set<CompositionStatusRecord> statusRecords;
+
     @Column(insertable = false, updatable = false, nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
     public LocalDate creationAt;
 

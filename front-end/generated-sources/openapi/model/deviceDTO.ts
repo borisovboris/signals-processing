@@ -18,5 +18,6 @@ export interface DeviceDTO {
     code: string;
     status: StatusDTO;
     creationAt: string;
+    compositionCode: string;
 }
 

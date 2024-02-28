@@ -1,5 +1,6 @@
 package com.signalsprocessing.engine.controllers;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -109,5 +110,11 @@ public class CountriesController {
     @ResponseBody
     public void createLocation(@RequestBody NewLocationDTO newLocation) {
         service.createLocation(newLocation);
+    }
+
+    @DeleteMapping("delete-country/{id}")
+    @ResponseBody
+    public void deleteCountry(@PathVariable("id") Long id) {
+        service.deleteCountry(id);
     }
 }

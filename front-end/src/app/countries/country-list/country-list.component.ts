@@ -24,12 +24,18 @@ import { ListActionsComponent } from '../../shared/list-actions/list-actions.com
 @Component({
   selector: 'app-country-list',
   standalone: true,
-  imports: [CommonModule, MaterialModule, ScrollingModule, RouterLink, ListActionsComponent],
+  imports: [
+    CommonModule,
+    MaterialModule,
+    ScrollingModule,
+    RouterLink,
+    ListActionsComponent,
+  ],
   templateUrl: './country-list.component.html',
   styleUrl: './country-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CountryListComponent  extends BatchList implements OnInit{
+export class CountryListComponent extends BatchList implements OnInit {
   @ViewChild(CdkVirtualScrollViewport)
   viewport!: CdkVirtualScrollViewport;
 
@@ -65,5 +71,10 @@ export class CountryListComponent  extends BatchList implements OnInit{
         filter((created) => created === true)
       )
       .subscribe(() => (this.offset = INITIAL_OFFSET));
+  }
+
+  deleteCountry(id: number) {
+    this.store.dispatch(CountryActions.deleteCountry({ id }));
+    this.offset = 0;
   }
 }

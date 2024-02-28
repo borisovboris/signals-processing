@@ -203,6 +203,11 @@ public class CountryService {
         }
 
         @Transactional
+        public void deleteCountry(Long id) {
+                entityManager.remove(entityManager.getReference(Country.class, id));
+        }
+
+        @Transactional
         public void createCity(NewCityDTO newCity) {
                 Country country = getCountry(newCity.countryId);
                 City city = new City();
@@ -264,7 +269,7 @@ public class CountryService {
                         String coordinates, String description) {
         }
 
-        public class CitiesFiltersDTO extends OffsetConstraint{
+        public class CitiesFiltersDTO extends OffsetConstraint {
                 private Long countryId;
 
                 public CitiesFiltersDTO(Long countryId, @Nullable Integer offset) {

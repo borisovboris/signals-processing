@@ -3,6 +3,7 @@ package com.signalsprocessing.engine.models;
 import java.time.LocalDate;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -47,7 +48,7 @@ public class Location {
     @Column(columnDefinition = "boolean default true")
     public boolean isOperational;
 
-    @OneToMany(mappedBy = "location")
+    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
     public Set<Composition> compositions;
 
     public void setCode(String code) {
