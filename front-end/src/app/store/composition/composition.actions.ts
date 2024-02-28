@@ -34,5 +34,7 @@ export const CompositionActions = createActionGroup({
     }>(),
     'Create composition': props<{ composition: NewCompositionDTO }>(),
     'Composition created': props<any>(),
+    'Delete composition': props<{ id: number }>(),
+    'Composition deleted': props<any>(),
   },
 });

@@ -322,6 +322,11 @@ public class CompositionService {
         }
 
         @Transactional
+        public void deleteComposition(Long id) {
+                entityManager.remove(entityManager.getReference(Composition.class, id));
+        }
+
+        @Transactional
         public boolean checkIfCompositionExists(Long locationId, String code) {
                 TypedQuery<Composition> query = entityManager
                                 .createQuery("SELECT c from Composition c WHERE c.location.id = :locationId " +

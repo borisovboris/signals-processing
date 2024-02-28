@@ -128,4 +128,9 @@ public class CompositionsController {
     public void deleteDevice(@PathVariable long id) {
         service.deleteDevice(id);
     }
+
+    @DeleteMapping("delete-composition/{id}")
+    public void deleteComposition(@PathVariable long id) {
+        service.deleteComposition(id);
+    }
 }

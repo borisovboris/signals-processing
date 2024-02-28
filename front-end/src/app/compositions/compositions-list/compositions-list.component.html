@@ -48,7 +48,7 @@
       >
         <div
           class="row-wrapper"
-          *cdkVirtualFor="let composition of compositions"
+          *cdkVirtualFor="let composition of compositions;"
         >
           <div
             class="row mat-elevation-z2"
@@ -64,7 +64,9 @@
                   : "Not operational"
               }}
             </p>
-            <app-list-actions></app-list-actions>
+            <app-list-actions
+              (delete)="deleteComposition(composition.id)"
+            ></app-list-actions>
           </div>
         </div>
       </cdk-virtual-scroll-viewport>

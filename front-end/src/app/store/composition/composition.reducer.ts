@@ -25,6 +25,7 @@ export const compositionReducer = createReducer(
   on(
     CompositionActions.resetCompositions,
     CompositionActions.compositionCreated,
+    CompositionActions.compositionDeleted,
     (state) => ({
       ...state,
       compositions: [],

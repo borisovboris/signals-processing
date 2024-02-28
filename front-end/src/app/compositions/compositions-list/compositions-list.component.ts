@@ -10,7 +10,10 @@ import { CompositionActions } from '../../store/composition/composition.actions'
 import { compositions } from '../../store/composition/composition.selectors';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../material/material.module';
-import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
+import {
+  CdkVirtualScrollViewport,
+  ScrollingModule,
+} from '@angular/cdk/scrolling';
 import { AutocompleteChipsComponent } from '../../shared/autocomplete-chips/autocomplete-chips.component';
 import { BehaviorSubject, debounceTime, map, take } from 'rxjs';
 import { DialogService } from '../../shared/services/dialog.service';
@@ -32,17 +35,20 @@ import { ListActionsComponent } from '../../shared/list-actions/list-actions.com
     MaterialModule,
     ScrollingModule,
     ReactiveFormsModule,
-    ListActionsComponent
+    ListActionsComponent,
   ],
   animations: [fadeIn],
   templateUrl: './compositions-list.component.html',
   styleUrl: './compositions-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CompositionsListComponent extends BatchList implements AfterViewInit {
+export class CompositionsListComponent
+  extends BatchList
+  implements AfterViewInit
+{
   @ViewChild(CdkVirtualScrollViewport)
   viewport!: CdkVirtualScrollViewport;
-  
+
   @ViewChild('cityChips') cityChips!: AutocompleteChipsComponent;
   @ViewChild('locationChips') locationChips!: AutocompleteChipsComponent;
 
@@ -200,5 +206,10 @@ export class CompositionsListComponent extends BatchList implements AfterViewIni
 
   openCountryForm() {
     this.dialogService.open(CompositionFormComponent);
+  }
+
+  deleteComposition(id: number) {
+    this.store.dispatch(CompositionActions.deleteComposition({ id }));
+    this.offset = 0;
   }
 }

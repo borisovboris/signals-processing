@@ -4,15 +4,22 @@ import { CompositionsService } from '../../../../generated-sources/openapi';
 import { Store } from '@ngrx/store';
 import { EMPTY, catchError, map, switchMap, withLatestFrom } from 'rxjs';
 import { CompositionActions } from './composition.actions';
-import { compositionFilters, currentlyViewedCompositionId } from './composition.selectors';
+import {
+  compositionFilters,
+  currentlyViewedCompositionId,
+} from './composition.selectors';
 
 @Injectable()
 export class CompositionEffects {
   loadCompositions = createEffect(() =>
     this.actions$.pipe(
-      ofType(CompositionActions.getCompositions, CompositionActions.compositionCreated),
+      ofType(
+        CompositionActions.getCompositions,
+        CompositionActions.compositionCreated,
+        CompositionActions.compositionDeleted,
+      ),
       withLatestFrom(this.store.select(compositionFilters)),
-      switchMap(([_, filters ]) =>
+      switchMap(([_, filters]) =>
         this.compositionService.readCompositions(filters).pipe(
           map((compositions) =>
             CompositionActions.compositionsFetched({ compositions })
@@ -56,23 +63,35 @@ export class CompositionEffects {
   );
 
   editDevice = createEffect(() =>
-  this.actions$.pipe(
-    ofType(CompositionActions.editDevice),
-    switchMap(({ device }) =>
-      this.compositionService.editDevice(device).pipe(
-        map(() => CompositionActions.deviceEdited()),
-        catchError(() => EMPTY)
+    this.actions$.pipe(
+      ofType(CompositionActions.editDevice),
+      switchMap(({ device }) =>
+        this.compositionService.editDevice(device).pipe(
+          map(() => CompositionActions.deviceEdited()),
+          catchError(() => EMPTY)
+        )
       )
     )
-  )
-);
+  );
 
   createComposition = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CompositionActions.createComposition),
+      switchMap(({ composition }) =>
+        this.compositionService.createComposition(composition).pipe(
+          map(() => CompositionActions.compositionCreated()),
+          catchError(() => EMPTY)
+        )
+      )
+    )
+  );
+
+  deleteComposition = createEffect(() =>
   this.actions$.pipe(
-    ofType(CompositionActions.createComposition),
-    switchMap(({ composition }) =>
-      this.compositionService.createComposition(composition).pipe(
-        map(() => CompositionActions.compositionCreated()),
+    ofType(CompositionActions.deleteComposition),
+    switchMap(({ id }) =>
+      this.compositionService.deleteComposition(id).pipe(
+        map(() => CompositionActions.compositionDeleted()),
         catchError(() => EMPTY)
       )
     )
@@ -115,19 +134,18 @@ export class CompositionEffects {
     )
   );
 
-  getDeviceDetails = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(CompositionActions.getDeviceDetails),
-        switchMap(({ id }) =>
-          this.compositionService.readDeviceDetails(id).pipe(
-            map((deviceDetails) =>
-              CompositionActions.deviceDetailsFetched({ deviceDetails })
-            ),
-            catchError(() => EMPTY)
-          )
+  getDeviceDetails = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CompositionActions.getDeviceDetails),
+      switchMap(({ id }) =>
+        this.compositionService.readDeviceDetails(id).pipe(
+          map((deviceDetails) =>
+            CompositionActions.deviceDetailsFetched({ deviceDetails })
+          ),
+          catchError(() => EMPTY)
         )
       )
+    )
   );
 
   constructor(
