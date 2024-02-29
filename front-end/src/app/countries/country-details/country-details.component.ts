@@ -19,11 +19,18 @@ import { CityFormComponent } from './city-form/city-form.component';
 import { BatchList } from '../../shared/batch-list';
 import { debounceTime, filter, take } from 'rxjs';
 import { ListActionsComponent } from '../../shared/list-actions/list-actions.component';
+import { CityDTO } from '../../../../generated-sources/openapi';
+import { DialogReference } from '../../shared/services/dialog-reference';
 
 @Component({
   selector: 'app-country-details',
   standalone: true,
-  imports: [CommonModule, MaterialModule, ScrollingModule, ListActionsComponent],
+  imports: [
+    CommonModule,
+    MaterialModule,
+    ScrollingModule,
+    ListActionsComponent,
+  ],
   templateUrl: './country-details.component.html',
   styleUrl: './country-details.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -69,23 +76,43 @@ export class CountryDetailsComponent extends BatchList implements OnInit {
     this.router.navigate([`/countries/cities`, id]);
   }
 
-  openCityForm() {
+  openCityEditForm(city: CityDTO) {
     if (this.countryId !== undefined) {
-      this.dialogService
-        .open(CityFormComponent, {
-          data: { countryId: this.countryId },
-        })
-        .afterClosed()
-        .pipe(
-          take(1),
-          filter((result) => result === true)
-        )
-        .subscribe((_) => (this.offset = 0));
+      const dialogRef = this.dialogService.open(CityFormComponent, {
+        data: {
+          countryId: this.countryId,
+          cityId: city.id,
+          name: city.name,
+          postalCode: city.postalCode,
+        },
+      });
+
+      this.onDialogClosed(dialogRef);
+    }
+  }
+
+  openCityCreationForm() {
+    if (this.countryId !== undefined) {
+      const dialogRef = this.dialogService.open(CityFormComponent, {
+        data: { countryId: this.countryId },
+      });
+
+      this.onDialogClosed(dialogRef);
     }
   }
 
   deleteCity(id: number) {
     this.store.dispatch(CountryActions.deleteCity({ id }));
     this.offset = 0;
+  }
+
+  onDialogClosed(ref: DialogReference) {
+    ref
+      .afterClosed()
+      .pipe(
+        take(1),
+        filter((completed) => completed === true)
+      )
+      .subscribe((_) => (this.offset = 0));
   }
 }

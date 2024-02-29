@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.signalsprocessing.engine.models.City;
 import com.signalsprocessing.engine.models.Country;
 import com.signalsprocessing.engine.models.Location;
+import com.signalsprocessing.engine.services.transfer.BaseCityDTO;
+import com.signalsprocessing.engine.services.transfer.EditedCityDTO;
 import com.signalsprocessing.engine.shared.FilterUtility;
 import com.signalsprocessing.engine.shared.NameFilterDTO;
 import com.signalsprocessing.engine.shared.OffsetConstraint;
@@ -160,7 +162,8 @@ public class CountryService {
                 Integer offset = FilterUtility.getOffset(filters.getOffset());
 
                 TypedQuery<City> query = entityManager
-                                .createQuery("SELECT c from City c WHERE c.country.id = :countryId", City.class)
+                                .createQuery("SELECT c from City c WHERE c.country.id = :countryId ORDER BY c.name ASC",
+                                                City.class)
                                 .setParameter("countryId", countryId)
                                 .setFirstResult(offset)
                                 .setMaxResults(CountryService.LIMIT);
@@ -216,13 +219,24 @@ public class CountryService {
         }
 
         @Transactional
-        public void createCity(NewCityDTO newCity) {
-                Country country = getCountry(newCity.countryId);
+        public void createCity(BaseCityDTO newCityDto) {
                 City city = new City();
 
+                createOrEditCity(newCityDto, city);
+        }
+
+        @Transactional
+        public void editCity(EditedCityDTO cityDto) {
+                City city = entityManager.getReference(City.class, cityDto.getId());
+                createOrEditCity(cityDto, city);
+        }
+
+        public void createOrEditCity(BaseCityDTO dto, City city) {
+                Country country = getCountry(dto.getCountryId());
+
                 city.setCountry(country);
-                city.setName(newCity.name);
-                city.setPostalCode(newCity.postalCode);
+                city.setName(dto.getName());
+                city.setPostalCode(dto.getPostalCode());
 
                 entityManager.merge(city);
         }
@@ -278,9 +292,6 @@ public class CountryService {
         }
 
         public record LocationsDTO(@NotNull CityDTO city, @NotNull List<LocationDTO> locations) {
-        }
-
-        public record NewCityDTO(@NotNull Long countryId, @NotNull String name, @NotNull String postalCode) {
         }
 
         public record NewLocationDTO(@NotNull Long cityId, @NotNull String name, @NotNull String address,

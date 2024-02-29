@@ -2,7 +2,7 @@
   <mat-card>
     <div class="heading">
       <h2>Cities in {{ cities.country.name }}</h2>
-      <button mat-raised-button color="accent" (click)="openCityForm()">
+      <button mat-raised-button color="accent" (click)="openCityCreationForm()">
         Add city
       </button>
     </div>
@@ -24,7 +24,7 @@
         >
           <div class="row mat-elevation-z2">
             <p>{{ city.name }}</p>
-            <app-list-actions (delete)="deleteCity(city.id)"></app-list-actions>
+            <app-list-actions (delete)="deleteCity(city.id)" (edit)="openCityEditForm(city)"></app-list-actions>
           </div>
         </div>
       </cdk-virtual-scroll-viewport>

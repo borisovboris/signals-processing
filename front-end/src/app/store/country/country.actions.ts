@@ -1,10 +1,11 @@
 import { createActionGroup, props } from '@ngrx/store';
 import {
+  BaseCityDTO,
   CitiesDTO,
   CitiesFiltersDTO,
   CountryDTO,
+  EditedCityDTO,
   LocationsDTO,
-  NewCityDTO,
   NewLocationDTO,
 } from '../../../../generated-sources/openapi';
 import { INITIAL_OFFSET } from '../state';
@@ -20,7 +21,7 @@ export const CountryActions = createActionGroup({
     'Locations Fetched': props<{ locations: LocationsDTO }>(),
     'Create country': props<{ name: string }>(),
     'Country created': props<any>(),
-    'Create city': props<{ city: NewCityDTO }>(),
+    'Create city': props<{ city: BaseCityDTO }>(),
     'City created': props<any>(),
     'Create location': props<{ location: NewLocationDTO }>(),
     'Location created': props<{ cityId: number }>(),
@@ -31,6 +32,8 @@ export const CountryActions = createActionGroup({
     'Delete location': props<{ id: number, cityId: number }>(),
     'Location deleted': props<{ cityId: number }>(),
     'Edit country': props<{ country: CountryDTO }>(),
-    'Country edited': props<any>()
+    'Country edited': props<any>(),
+    'Edit city': props<{ city: EditedCityDTO }>(),
+    'City edited': props<any>(),
   },
 });

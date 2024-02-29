@@ -39,7 +39,8 @@ export class CountryEffects {
       ofType(
         CountryActions.getCitiesOfCountry,
         CountryActions.cityCreated,
-        CountryActions.cityDeleted
+        CountryActions.cityDeleted,
+        CountryActions.cityEdited,
       ),
       withLatestFrom(this.store.select(cityFilters)),
       switchMap(([, filters]) => {
@@ -114,6 +115,18 @@ export class CountryEffects {
       )
     )
   );
+
+  editCity = createEffect(() =>
+  this.actions$.pipe(
+    ofType(CountryActions.editCity),
+    switchMap(({ city }) =>
+      this.countriesService.editCity(city).pipe(
+        map(() => CountryActions.cityEdited()),
+        catchError(() => EMPTY)
+      )
+    )
+  )
+);
 
   deleteCity = createEffect(() =>
     this.actions$.pipe(
