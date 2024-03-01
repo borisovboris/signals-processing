@@ -21,6 +21,8 @@ import { Observable }                                        from 'rxjs';
 // @ts-ignore
 import { BaseCityDTO } from '../model/baseCityDTO';
 // @ts-ignore
+import { BaseLocationDTO } from '../model/baseLocationDTO';
+// @ts-ignore
 import { CitiesDTO } from '../model/citiesDTO';
 // @ts-ignore
 import { CitiesFiltersDTO } from '../model/citiesFiltersDTO';
@@ -31,13 +33,13 @@ import { CountryDTO } from '../model/countryDTO';
 // @ts-ignore
 import { EditedCityDTO } from '../model/editedCityDTO';
 // @ts-ignore
+import { EditedLocationDTO } from '../model/editedLocationDTO';
+// @ts-ignore
 import { LocationDTO } from '../model/locationDTO';
 // @ts-ignore
 import { LocationsDTO } from '../model/locationsDTO';
 // @ts-ignore
 import { NameFilterDTO } from '../model/nameFilterDTO';
-// @ts-ignore
-import { NewLocationDTO } from '../model/newLocationDTO';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -482,16 +484,16 @@ export class CountriesService {
     }
 
     /**
-     * @param newLocationDTO 
+     * @param baseLocationDTO 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createLocation(newLocationDTO: NewLocationDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any>;
-    public createLocation(newLocationDTO: NewLocationDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpResponse<any>>;
-    public createLocation(newLocationDTO: NewLocationDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpEvent<any>>;
-    public createLocation(newLocationDTO: NewLocationDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any> {
-        if (newLocationDTO === null || newLocationDTO === undefined) {
-            throw new Error('Required parameter newLocationDTO was null or undefined when calling createLocation.');
+    public createLocation(baseLocationDTO: BaseLocationDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any>;
+    public createLocation(baseLocationDTO: BaseLocationDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpResponse<any>>;
+    public createLocation(baseLocationDTO: BaseLocationDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpEvent<any>>;
+    public createLocation(baseLocationDTO: BaseLocationDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any> {
+        if (baseLocationDTO === null || baseLocationDTO === undefined) {
+            throw new Error('Required parameter baseLocationDTO was null or undefined when calling createLocation.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -537,7 +539,7 @@ export class CountriesService {
         return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: newLocationDTO,
+                body: baseLocationDTO,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -835,6 +837,72 @@ export class CountriesService {
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param editedLocationDTO 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public editLocation(editedLocationDTO: EditedLocationDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any>;
+    public editLocation(editedLocationDTO: EditedLocationDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpResponse<any>>;
+    public editLocation(editedLocationDTO: EditedLocationDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpEvent<any>>;
+    public editLocation(editedLocationDTO: EditedLocationDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any> {
+        if (editedLocationDTO === null || editedLocationDTO === undefined) {
+            throw new Error('Required parameter editedLocationDTO was null or undefined when calling editLocation.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/edit-location`;
+        return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: editedLocationDTO,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

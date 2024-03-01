@@ -18,9 +18,10 @@ import com.signalsprocessing.engine.services.CountryService.CityDTO;
 import com.signalsprocessing.engine.services.CountryService.CountryDTO;
 import com.signalsprocessing.engine.services.CountryService.LocationDTO;
 import com.signalsprocessing.engine.services.CountryService.LocationsDTO;
-import com.signalsprocessing.engine.services.CountryService.NewLocationDTO;
 import com.signalsprocessing.engine.services.transfer.BaseCityDTO;
+import com.signalsprocessing.engine.services.transfer.BaseLocationDTO;
 import com.signalsprocessing.engine.services.transfer.EditedCityDTO;
+import com.signalsprocessing.engine.services.transfer.EditedLocationDTO;
 import com.signalsprocessing.engine.shared.NameFilterDTO;
 
 import java.util.List;
@@ -121,8 +122,14 @@ public class CountriesController {
 
     @PostMapping("create-location")
     @ResponseBody
-    public void createLocation(@RequestBody NewLocationDTO newLocation) {
+    public void createLocation(@RequestBody BaseLocationDTO newLocation) {
         service.createLocation(newLocation);
+    }
+
+    @PutMapping("edit-location")
+    @ResponseBody
+    public void editLocation(@RequestBody EditedLocationDTO editedLocation) {
+        service.editLocation(editedLocation);
     }
 
     @DeleteMapping("delete-country/{id}")

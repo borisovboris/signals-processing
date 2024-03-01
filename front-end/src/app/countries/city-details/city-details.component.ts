@@ -7,8 +7,12 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../material/material.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { DialogService } from '../../shared/services/dialog.service';
-import { LocationFormComponent } from './location-form/location-form.component';
+import {
+  LocationDialogData,
+  LocationFormComponent,
+} from './location-form/location-form.component';
 import { ListActionsComponent } from '../../shared/list-actions/list-actions.component';
+import { LocationDTO } from '../../../../generated-sources/openapi';
 
 @Component({
   selector: 'app-city-details',
@@ -52,10 +56,29 @@ export class CityDetailsComponent {
     });
   }
 
-  openLocationForm() {
+  openLocationCreationForm() {
     if (this.cityId) {
       this.dialogService.open(LocationFormComponent, {
         data: { cityId: this.cityId },
+      });
+    }
+  }
+
+  openLocationEditForm(location: LocationDTO) {
+    if (this.cityId) {
+      const data: LocationDialogData = {
+        cityId: this.cityId,
+        editInfo: {
+          id: location.id,
+          name: location.name,
+          address: location.address,
+          coordinates: location.coordinates,
+          description: location.description,
+        },
+      };
+
+      this.dialogService.open(LocationFormComponent, {
+        data,
       });
     }
   }

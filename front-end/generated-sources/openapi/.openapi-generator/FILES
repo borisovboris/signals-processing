@@ -12,6 +12,7 @@ git_push.sh
 index.ts
 model/baseCityDTO.ts
 model/baseDeviceDTO.ts
+model/baseLocationDTO.ts
 model/citiesDTO.ts
 model/citiesFiltersDTO.ts
 model/cityDTO.ts
@@ -27,6 +28,7 @@ model/deviceDetailsDTO.ts
 model/deviceStatusDTO.ts
 model/editedCityDTO.ts
 model/editedDeviceDTO.ts
+model/editedLocationDTO.ts
 model/eventDTO.ts
 model/eventDetailsDTO.ts
 model/eventFiltersDTO.ts
@@ -38,7 +40,6 @@ model/models.ts
 model/nameFilterDTO.ts
 model/newCompositionDTO.ts
 model/newEventDTO.ts
-model/newLocationDTO.ts
 model/signalDTO.ts
 model/signalDTO1.ts
 model/statusDTO.ts

@@ -11,7 +11,9 @@ import com.signalsprocessing.engine.models.City;
 import com.signalsprocessing.engine.models.Country;
 import com.signalsprocessing.engine.models.Location;
 import com.signalsprocessing.engine.services.transfer.BaseCityDTO;
+import com.signalsprocessing.engine.services.transfer.BaseLocationDTO;
 import com.signalsprocessing.engine.services.transfer.EditedCityDTO;
+import com.signalsprocessing.engine.services.transfer.EditedLocationDTO;
 import com.signalsprocessing.engine.shared.FilterUtility;
 import com.signalsprocessing.engine.shared.NameFilterDTO;
 import com.signalsprocessing.engine.shared.OffsetConstraint;
@@ -259,15 +261,25 @@ public class CountryService {
         }
 
         @Transactional
-        public void createLocation(NewLocationDTO newLocation) {
+        public void createLocation(BaseLocationDTO newLocation) {
                 Location location = new Location();
-                City city = getCity(newLocation.cityId);
+                createOrEditLocation(newLocation, location);
+        }
+
+        @Transactional
+        public void editLocation(EditedLocationDTO editedLocation) {
+                Location location = entityManager.getReference(Location.class, editedLocation.getId());
+                createOrEditLocation(editedLocation, location);
+        }
+
+        private void createOrEditLocation(BaseLocationDTO dto, Location location) {
+                City city = getCity(dto.getCityId());
 
                 location.setCity(city);
-                location.setCode(newLocation.name);
-                location.setName(newLocation.name);
-                location.setAddress(newLocation.address);
-                location.setCoordinates(newLocation.coordinates);
+                location.setCode(dto.getName());
+                location.setName(dto.getName());
+                location.setAddress(dto.getAddress());
+                location.setCoordinates(dto.getCoordinates());
 
                 entityManager.merge(location);
         }
@@ -292,10 +304,6 @@ public class CountryService {
         }
 
         public record LocationsDTO(@NotNull CityDTO city, @NotNull List<LocationDTO> locations) {
-        }
-
-        public record NewLocationDTO(@NotNull Long cityId, @NotNull String name, @NotNull String address,
-                        String coordinates, String description) {
         }
 
         public class CitiesFiltersDTO extends OffsetConstraint {

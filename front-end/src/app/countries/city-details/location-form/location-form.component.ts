@@ -1,11 +1,16 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   Injector,
 } from '@angular/core';
 import { DialogReference } from '../../../shared/services/dialog-reference';
-import { MyErrorStateMatcher, isDefined } from '../../../shared/utils';
+import {
+  MyErrorStateMatcher,
+  isDefined,
+  stringsLike,
+} from '../../../shared/utils';
 import {
   AsyncValidatorFn,
   FormControl,
@@ -29,6 +34,17 @@ import { CountriesService } from '../../../../../generated-sources/openapi';
 import { MaterialModule } from '../../../material/material.module';
 import { CommonModule } from '@angular/common';
 
+export interface LocationDialogData {
+  cityId: number;
+  editInfo?: {
+    id: number;
+    name: string;
+    address: string;
+    coordinates?: string;
+    description?: string;
+  };
+}
+
 @Component({
   selector: 'app-location-form',
   standalone: true,
@@ -37,7 +53,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './location-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LocationFormComponent {
+export class LocationFormComponent implements AfterViewInit {
   uniqueCityNameValidatorFn(): AsyncValidatorFn {
     return (control) =>
       control.valueChanges.pipe(
@@ -45,10 +61,12 @@ export class LocationFormComponent {
         distinctUntilChanged(),
         switchMap((value) => {
           const { cityId } = this.dialogData;
-          return this.service.checkIfLocationNameExists(cityId, value);
+          return this.service
+            .checkIfLocationNameExists(cityId, value)
+            .pipe(map((exists) => [exists, value]));
         }),
-        map((exists: boolean) => {
-          if (exists) {
+        map(([exists, value]) => {
+          if (exists && !stringsLike(this.dialogData.editInfo?.name, value)) {
             return { locationExists: true };
           }
 
@@ -59,16 +77,39 @@ export class LocationFormComponent {
       ); // important to make observable finite
   }
 
-  dialogData: { cityId: number } = this.injector.get(DIALOG_DATA);
+  dialogData: LocationDialogData = this.injector.get(DIALOG_DATA);
   dialogRef: DialogReference = this.injector.get(DialogReference);
   matcher = new MyErrorStateMatcher();
+  inEditMode = false;
 
   constructor(
     private readonly service: CountriesService,
     private readonly changeRef: ChangeDetectorRef,
     private readonly store: Store,
     private readonly injector: Injector
-  ) {}
+  ) {
+    this.inEditMode = this.dialogData.editInfo !== undefined;
+  }
+
+  ngAfterViewInit() {
+    if (this.dialogData.editInfo !== undefined) {
+      this.locationForm
+        .get('locationName')
+        ?.setValue(this.dialogData.editInfo.name);
+      this.locationForm
+        .get('address')
+        ?.setValue(this.dialogData.editInfo.address);
+      this.locationForm
+        .get('coordinates')
+        ?.setValue(this.dialogData.editInfo.coordinates ?? null);
+      this.locationForm
+        .get('description')
+        ?.setValue(this.dialogData.editInfo.description ?? null);
+
+      this.locationForm.markAllAsTouched();
+      this.locationForm.updateValueAndValidity();
+    }
+  }
 
   readonly locationForm = new FormGroup({
     locationName: new FormControl<string>('', {
@@ -86,18 +127,63 @@ export class LocationFormComponent {
     return this.locationForm.get('locationName');
   }
 
+  get coordinates() {
+    return this.locationForm.get('coordinates');
+  }
+
+  get address() {
+    return this.locationForm.get('address');
+  }
+
+  get description() {
+    return this.locationForm.get('description');
+  }
+
   get formPending() {
     return this.locationForm.pending;
   }
 
-  createCity() {
+  createOrEditLocation() {
+    if (this.inEditMode) {
+      this.editLocation();
+    } else {
+      this.createLocation();
+    }
+  }
+
+  editLocation() {
     const { cityId } = this.dialogData;
     const name = this.locationName?.value;
-    const address = this.locationForm.get('address')?.value;
-    const coordinates =
-      this.locationForm.get('coordinates')?.value ?? undefined;
-    const description =
-      this.locationForm.get('description')?.value ?? undefined;
+    const address = this.address?.value;
+    const coordinates = this.coordinates?.value ?? undefined;
+    const description = this.description?.value ?? undefined;
+
+    if (
+      isDefined(cityId) &&
+      isDefined(this.dialogData.editInfo) &&
+      isDefined(name) &&
+      isDefined(address)
+    ) {
+      const location = {
+        id: this.dialogData.editInfo.id,
+        cityId,
+        name,
+        address,
+        coordinates,
+        description,
+      };
+
+      this.store.dispatch(CountryActions.editLocation({ location }));
+      this.dialogRef.close();
+    }
+  }
+
+  createLocation() {
+    const { cityId } = this.dialogData;
+    const name = this.locationName?.value;
+    const address = this.address?.value;
+    const coordinates = this.coordinates?.value ?? undefined;
+    const description = this.description?.value ?? undefined;
 
     if (isDefined(cityId) && isDefined(name) && isDefined(address)) {
       const location = {
