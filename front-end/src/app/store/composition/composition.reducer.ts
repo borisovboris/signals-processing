@@ -26,9 +26,11 @@ export const compositionReducer = createReducer(
     CompositionActions.resetCompositions,
     CompositionActions.compositionCreated,
     CompositionActions.compositionDeleted,
+    CompositionActions.compositionEdited,
     (state) => ({
       ...state,
       compositions: [],
+      filters: { ...state.filters, offset: 0 },
     })
   ),
   on(CompositionActions.getDetails, (state, { id }) => {

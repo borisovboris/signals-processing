@@ -20,9 +20,12 @@ import com.signalsprocessing.engine.models.DeviceStatus;
 import com.signalsprocessing.engine.models.LinkedComposition;
 import com.signalsprocessing.engine.models.LinkedCompositionId;
 import com.signalsprocessing.engine.models.Location;
+import com.signalsprocessing.engine.services.transfer.BaseCompositionDTO;
 import com.signalsprocessing.engine.services.transfer.BaseDeviceDTO;
 import com.signalsprocessing.engine.services.transfer.CompositionFiltersDTO;
+import com.signalsprocessing.engine.services.transfer.EditedCompositionDTO;
 import com.signalsprocessing.engine.services.transfer.EditedDeviceDTO;
+import com.signalsprocessing.engine.services.transfer.LabeledValueDTO;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
@@ -84,7 +87,7 @@ public class CompositionService {
                 }
 
                 Predicate finalCriteria = cb.and(predicates.toArray(new Predicate[0]));
-                initialQuery.where(finalCriteria);
+                initialQuery.where(finalCriteria).orderBy(cb.asc(root.get("code")));
 
                 int offset = FilterUtility.getOffset(filters.getOffset());
 
@@ -130,7 +133,7 @@ public class CompositionService {
                 return composition;
         }
 
-        public List<CompositionTypeDTO> getCompositionTypes(NameFilterDTO filters) {
+        public List<LabeledValueDTO> getCompositionTypes(NameFilterDTO filters) {
                 CriteriaBuilder cb = entityManager.getCriteriaBuilder();
                 CriteriaQuery<CompositionType> criteriaQuery = cb.createQuery(CompositionType.class);
                 Root<CompositionType> root = criteriaQuery.from(CompositionType.class);
@@ -145,16 +148,16 @@ public class CompositionService {
                                 .createQuery(initialQuery)
                                 .setMaxResults(CompositionService.LIMIT);
 
-                List<CompositionTypeDTO> list = query
+                List<LabeledValueDTO> list = query
                                 .getResultList()
                                 .stream()
-                                .map(entity -> new CompositionTypeDTO(entity.id, entity.name))
+                                .map(entity -> new LabeledValueDTO(entity.id, entity.name))
                                 .toList();
 
                 return list;
         }
 
-        public List<CompositionStatusDTO> getCompositionStatuses(NameFilterDTO filters) {
+        public List<LabeledValueDTO> getCompositionStatuses(NameFilterDTO filters) {
                 CriteriaBuilder cb = entityManager.getCriteriaBuilder();
                 CriteriaQuery<CompositionStatus> criteriaQuery = cb.createQuery(CompositionStatus.class);
                 Root<CompositionStatus> root = criteriaQuery.from(CompositionStatus.class);
@@ -170,10 +173,10 @@ public class CompositionService {
                                 .createQuery(initialQuery)
                                 .setMaxResults(CompositionService.LIMIT);
 
-                List<CompositionStatusDTO> list = query
+                List<LabeledValueDTO> list = query
                                 .getResultList()
                                 .stream()
-                                .map(entity -> new CompositionStatusDTO(entity.id, entity.name))
+                                .map(entity -> new LabeledValueDTO(entity.id, entity.name))
                                 .toList();
 
                 return list;
@@ -189,14 +192,15 @@ public class CompositionService {
 
         public CompositionDTO mapComposition(Composition composition) {
                 String code = composition.code;
-                String locationName = composition.location.name;
-                Long locationId = composition.location.id;
+                LabeledValueDTO location = new LabeledValueDTO(composition.location.id, composition.location.name);
+                LabeledValueDTO type = new LabeledValueDTO(composition.type.id, composition.type.name);
                 int devicesSize = composition.devices.size();
                 StatusDTO status = new StatusDTO(composition.status.id, composition.status.name,
                                 composition.status.isOperational,
                                 composition.status.isBroken, composition.status.inMaintenance);
 
-                return new CompositionDTO(composition.id, locationName, locationId, code, devicesSize, status);
+                return new CompositionDTO(composition.id, location, type, code, devicesSize, status,
+                                composition.coordinates, composition.description);
         }
 
         @Transactional
@@ -256,7 +260,7 @@ public class CompositionService {
                 entityManager.merge(device);
         }
 
-        public List<DeviceStatusDTO> getDeviceStatuses(NameFilterDTO filters) {
+        public List<LabeledValueDTO> getDeviceStatuses(NameFilterDTO filters) {
                 CriteriaBuilder cb = entityManager.getCriteriaBuilder();
                 CriteriaQuery<DeviceStatus> criteriaQuery = cb.createQuery(DeviceStatus.class);
                 Root<DeviceStatus> root = criteriaQuery.from(DeviceStatus.class);
@@ -271,10 +275,10 @@ public class CompositionService {
                                 .createQuery(initialQuery)
                                 .setMaxResults(CompositionService.LIMIT);
 
-                List<DeviceStatusDTO> list = query
+                List<LabeledValueDTO> list = query
                                 .getResultList()
                                 .stream()
-                                .map(entity -> new DeviceStatusDTO(entity.id, entity.name))
+                                .map(entity -> new LabeledValueDTO(entity.id, entity.name))
                                 .toList();
 
                 return list;
@@ -305,18 +309,31 @@ public class CompositionService {
         }
 
         @Transactional
-        public void createComposition(NewCompositionDTO newComposition) {
-                Location location = entityManager.getReference(Location.class, newComposition.locationId);
-                CompositionStatus status = entityManager.getReference(CompositionStatus.class, newComposition.statusId);
-                CompositionType type = entityManager.getReference(CompositionType.class, newComposition.typeId);
-
+        public void createComposition(BaseCompositionDTO newComposition) {
                 Composition composition = new Composition();
-                composition.setCode(newComposition.code);
+
+                createOrEditComposition(newComposition, composition);
+        }
+
+        @Transactional
+        public void editComposition(EditedCompositionDTO editedComposition) {
+                Composition composition = entityManager.getReference(Composition.class, editedComposition.getId());
+
+                createOrEditComposition(editedComposition, composition);
+        }
+
+        @Transactional
+        public void createOrEditComposition(BaseCompositionDTO dto, Composition composition) {
+                Location location = entityManager.getReference(Location.class, dto.getLocationId());
+                CompositionStatus status = entityManager.getReference(CompositionStatus.class, dto.getStatusId());
+                CompositionType type = entityManager.getReference(CompositionType.class, dto.getTypeId());
+
+                composition.setCode(dto.getCode());
                 composition.setLocation(location);
                 composition.setStatus(status);
                 composition.setType(type);
-                composition.setDescription(newComposition.description);
-                composition.setCoordinates(newComposition.coordinates);
+                composition.setDescription(dto.getDescription());
+                composition.setCoordinates(dto.getCoordinates());
 
                 entityManager.merge(composition);
         }
@@ -423,10 +440,13 @@ public class CompositionService {
                 return list;
         }
 
-        public record CompositionDTO(@NotNull long id, @NotNull String locationName, @NotNull Long locationId,
+        public record CompositionDTO(@NotNull long id, @NotNull LabeledValueDTO location,
+                        @NotNull LabeledValueDTO type,
                         @NotNull String code,
                         @NotNull int devicesSize,
-                        @NotNull StatusDTO status) {
+                        @NotNull StatusDTO status,
+                        @Nullable String coordinates,
+                        @Nullable String description) {
         }
 
         public record StatusDTO(@NotNull Long id, @NotNull String name, @NotNull boolean isOperational,
@@ -455,19 +475,5 @@ public class CompositionService {
         }
 
         public record DeviceDateStatusDTO(@NotNull Long occurrences, @NotNull LocalDate date) {
-        }
-
-        public record CompositionTypeDTO(@NotNull Long id, @NotNull String name) {
-        }
-
-        public record CompositionStatusDTO(@NotNull Long id, @NotNull String name) {
-        }
-
-        public record DeviceStatusDTO(@NotNull Long id, @NotNull String name) {
-        }
-
-        public record NewCompositionDTO(@NotNull String code, @NotNull Long locationId, @NotNull Long typeId,
-                        @NotNull Long statusId,
-                        @Nullable String coordinates, @Nullable String description) {
         }
 }

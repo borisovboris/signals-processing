@@ -19,6 +19,8 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
+import { BaseCompositionDTO } from '../model/baseCompositionDTO';
+// @ts-ignore
 import { BaseDeviceDTO } from '../model/baseDeviceDTO';
 // @ts-ignore
 import { CompositionDTO } from '../model/compositionDTO';
@@ -27,23 +29,19 @@ import { CompositionDetailsDTO } from '../model/compositionDetailsDTO';
 // @ts-ignore
 import { CompositionFiltersDTO } from '../model/compositionFiltersDTO';
 // @ts-ignore
-import { CompositionStatusDTO } from '../model/compositionStatusDTO';
-// @ts-ignore
-import { CompositionTypeDTO } from '../model/compositionTypeDTO';
-// @ts-ignore
 import { DeviceDTO } from '../model/deviceDTO';
 // @ts-ignore
 import { DeviceDetailsDTO } from '../model/deviceDetailsDTO';
 // @ts-ignore
-import { DeviceStatusDTO } from '../model/deviceStatusDTO';
+import { EditedCompositionDTO } from '../model/editedCompositionDTO';
 // @ts-ignore
 import { EditedDeviceDTO } from '../model/editedDeviceDTO';
+// @ts-ignore
+import { LabeledValueDTO } from '../model/labeledValueDTO';
 // @ts-ignore
 import { LinkedCompositionsDTO } from '../model/linkedCompositionsDTO';
 // @ts-ignore
 import { NameFilterDTO } from '../model/nameFilterDTO';
-// @ts-ignore
-import { NewCompositionDTO } from '../model/newCompositionDTO';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -299,16 +297,16 @@ export class CompositionsService {
     }
 
     /**
-     * @param newCompositionDTO 
+     * @param baseCompositionDTO 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createComposition(newCompositionDTO: NewCompositionDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any>;
-    public createComposition(newCompositionDTO: NewCompositionDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpResponse<any>>;
-    public createComposition(newCompositionDTO: NewCompositionDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpEvent<any>>;
-    public createComposition(newCompositionDTO: NewCompositionDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any> {
-        if (newCompositionDTO === null || newCompositionDTO === undefined) {
-            throw new Error('Required parameter newCompositionDTO was null or undefined when calling createComposition.');
+    public createComposition(baseCompositionDTO: BaseCompositionDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any>;
+    public createComposition(baseCompositionDTO: BaseCompositionDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpResponse<any>>;
+    public createComposition(baseCompositionDTO: BaseCompositionDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpEvent<any>>;
+    public createComposition(baseCompositionDTO: BaseCompositionDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any> {
+        if (baseCompositionDTO === null || baseCompositionDTO === undefined) {
+            throw new Error('Required parameter baseCompositionDTO was null or undefined when calling createComposition.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -354,7 +352,7 @@ export class CompositionsService {
         return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: newCompositionDTO,
+                body: baseCompositionDTO,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -533,6 +531,72 @@ export class CompositionsService {
         return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param editedCompositionDTO 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public editComposition(editedCompositionDTO: EditedCompositionDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any>;
+    public editComposition(editedCompositionDTO: EditedCompositionDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpResponse<any>>;
+    public editComposition(editedCompositionDTO: EditedCompositionDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpEvent<any>>;
+    public editComposition(editedCompositionDTO: EditedCompositionDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any> {
+        if (editedCompositionDTO === null || editedCompositionDTO === undefined) {
+            throw new Error('Required parameter editedCompositionDTO was null or undefined when calling editComposition.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/edit-composition`;
+        return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: editedCompositionDTO,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -736,9 +800,9 @@ export class CompositionsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public readCompositionStatuses(filters: NameFilterDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<CompositionStatusDTO>>;
-    public readCompositionStatuses(filters: NameFilterDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<CompositionStatusDTO>>>;
-    public readCompositionStatuses(filters: NameFilterDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<CompositionStatusDTO>>>;
+    public readCompositionStatuses(filters: NameFilterDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<LabeledValueDTO>>;
+    public readCompositionStatuses(filters: NameFilterDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<LabeledValueDTO>>>;
+    public readCompositionStatuses(filters: NameFilterDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<LabeledValueDTO>>>;
     public readCompositionStatuses(filters: NameFilterDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (filters === null || filters === undefined) {
             throw new Error('Required parameter filters was null or undefined when calling readCompositionStatuses.');
@@ -782,7 +846,7 @@ export class CompositionsService {
         }
 
         let localVarPath = `/read-composition-statuses`;
-        return this.httpClient.request<Array<CompositionStatusDTO>>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Array<LabeledValueDTO>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -800,9 +864,9 @@ export class CompositionsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public readCompositionTypes(filters: NameFilterDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<CompositionTypeDTO>>;
-    public readCompositionTypes(filters: NameFilterDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<CompositionTypeDTO>>>;
-    public readCompositionTypes(filters: NameFilterDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<CompositionTypeDTO>>>;
+    public readCompositionTypes(filters: NameFilterDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<LabeledValueDTO>>;
+    public readCompositionTypes(filters: NameFilterDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<LabeledValueDTO>>>;
+    public readCompositionTypes(filters: NameFilterDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<LabeledValueDTO>>>;
     public readCompositionTypes(filters: NameFilterDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (filters === null || filters === undefined) {
             throw new Error('Required parameter filters was null or undefined when calling readCompositionTypes.');
@@ -846,7 +910,7 @@ export class CompositionsService {
         }
 
         let localVarPath = `/read-composition-types`;
-        return this.httpClient.request<Array<CompositionTypeDTO>>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Array<LabeledValueDTO>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -985,9 +1049,9 @@ export class CompositionsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public readDeviceStatuses(filters: NameFilterDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<DeviceStatusDTO>>;
-    public readDeviceStatuses(filters: NameFilterDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<DeviceStatusDTO>>>;
-    public readDeviceStatuses(filters: NameFilterDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<DeviceStatusDTO>>>;
+    public readDeviceStatuses(filters: NameFilterDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<LabeledValueDTO>>;
+    public readDeviceStatuses(filters: NameFilterDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<LabeledValueDTO>>>;
+    public readDeviceStatuses(filters: NameFilterDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<LabeledValueDTO>>>;
     public readDeviceStatuses(filters: NameFilterDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (filters === null || filters === undefined) {
             throw new Error('Required parameter filters was null or undefined when calling readDeviceStatuses.');
@@ -1031,7 +1095,7 @@ export class CompositionsService {
         }
 
         let localVarPath = `/read-device-statuses`;
-        return this.httpClient.request<Array<DeviceStatusDTO>>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Array<LabeledValueDTO>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,

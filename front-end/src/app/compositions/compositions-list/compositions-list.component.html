@@ -28,7 +28,7 @@
   <mat-card class="list">
     <div class="heading">
       <h2>Compositions</h2>
-      <button mat-raised-button color="accent" (click)="openCountryForm()">
+      <button mat-raised-button color="accent" (click)="openCompositionCreationForm()">
         Add composition
       </button>
     </div>
@@ -66,6 +66,7 @@
             </p>
             <app-list-actions
               (delete)="deleteComposition(composition.id)"
+              (edit)="openCompositionEditForm(composition)"
             ></app-list-actions>
           </div>
         </div>

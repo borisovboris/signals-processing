@@ -13,17 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.signalsprocessing.engine.services.CompositionService;
 import com.signalsprocessing.engine.services.CompositionService.CompositionDTO;
 import com.signalsprocessing.engine.services.CompositionService.CompositionDetailsDTO;
-import com.signalsprocessing.engine.services.CompositionService.CompositionStatusDTO;
-import com.signalsprocessing.engine.services.CompositionService.CompositionTypeDTO;
 import com.signalsprocessing.engine.services.CompositionService.DeviceDTO;
-import com.signalsprocessing.engine.services.CompositionService.DeviceDateStatusDTO;
 import com.signalsprocessing.engine.services.CompositionService.DeviceDetailsDTO;
-import com.signalsprocessing.engine.services.CompositionService.DeviceStatusDTO;
 import com.signalsprocessing.engine.services.CompositionService.LinkedCompositionsDTO;
-import com.signalsprocessing.engine.services.CompositionService.NewCompositionDTO;
+import com.signalsprocessing.engine.services.transfer.BaseCompositionDTO;
 import com.signalsprocessing.engine.services.transfer.BaseDeviceDTO;
 import com.signalsprocessing.engine.services.transfer.CompositionFiltersDTO;
+import com.signalsprocessing.engine.services.transfer.EditedCompositionDTO;
 import com.signalsprocessing.engine.services.transfer.EditedDeviceDTO;
+import com.signalsprocessing.engine.services.transfer.LabeledValueDTO;
 import com.signalsprocessing.engine.shared.NameFilterDTO;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -59,13 +57,13 @@ public class CompositionsController {
 
     @GetMapping("read-composition-statuses")
     @ResponseBody
-    public List<CompositionStatusDTO> readCompositionStatuses(NameFilterDTO filters) {
+    public List<LabeledValueDTO> readCompositionStatuses(NameFilterDTO filters) {
         return service.getCompositionStatuses(filters);
     }
 
     @GetMapping("read-composition-types")
     @ResponseBody
-    public List<CompositionTypeDTO> readCompositionTypes(NameFilterDTO filters) {
+    public List<LabeledValueDTO> readCompositionTypes(NameFilterDTO filters) {
         return service.getCompositionTypes(filters);
     }
 
@@ -89,7 +87,7 @@ public class CompositionsController {
 
     @GetMapping("read-device-statuses")
     @ResponseBody
-    public List<DeviceStatusDTO> readDeviceStatuses(NameFilterDTO filters) {
+    public List<LabeledValueDTO> readDeviceStatuses(NameFilterDTO filters) {
         return service.getDeviceStatuses(filters);
     }
 
@@ -110,8 +108,13 @@ public class CompositionsController {
     }
 
     @PostMapping("create-composition")
-    public void createComposition(@RequestBody NewCompositionDTO newComposition) {
+    public void createComposition(@RequestBody BaseCompositionDTO newComposition) {
         service.createComposition(newComposition);
+    }
+
+    @PutMapping("edit-composition")
+    public void editComposition(@RequestBody EditedCompositionDTO editedComposition) {
+        service.editComposition(editedComposition);
     }
 
     @PostMapping("link-compositions")

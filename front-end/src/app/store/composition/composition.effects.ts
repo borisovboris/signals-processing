@@ -17,6 +17,7 @@ export class CompositionEffects {
         CompositionActions.getCompositions,
         CompositionActions.compositionCreated,
         CompositionActions.compositionDeleted,
+        CompositionActions.compositionEdited,
       ),
       withLatestFrom(this.store.select(compositionFilters)),
       switchMap(([_, filters]) =>
@@ -86,17 +87,29 @@ export class CompositionEffects {
     )
   );
 
-  deleteComposition = createEffect(() =>
-  this.actions$.pipe(
-    ofType(CompositionActions.deleteComposition),
-    switchMap(({ id }) =>
-      this.compositionService.deleteComposition(id).pipe(
-        map(() => CompositionActions.compositionDeleted()),
-        catchError(() => EMPTY)
+  editComposition = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CompositionActions.editComposition),
+      switchMap(({ composition }) =>
+        this.compositionService.editComposition(composition).pipe(
+          map(() => CompositionActions.compositionEdited()),
+          catchError(() => EMPTY)
+        )
       )
     )
-  )
-);
+  );
+
+  deleteComposition = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CompositionActions.deleteComposition),
+      switchMap(({ id }) =>
+        this.compositionService.deleteComposition(id).pipe(
+          map(() => CompositionActions.compositionDeleted()),
+          catchError(() => EMPTY)
+        )
+      )
+    )
+  );
 
   linkCompositions = createEffect(() =>
     this.actions$.pipe(

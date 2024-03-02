@@ -1,5 +1,6 @@
 import { FormControl, FormGroupDirective, NgForm } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { LabeledValue, isNumericLabeledValue } from './autocomplete-chips/autocomplete.model';
 
 export function isDefined<T>(
   arg: T | null | undefined
@@ -26,8 +27,26 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 
 export function stringsLike(first: any, second: any): boolean {
   if (typeof first !== 'string' || typeof second !== 'string') {
-    return false;
+    return true;
   }
 
   return (first as string).toLowerCase() === (second as string).toLowerCase();
+}
+
+export function getNullOrValue<T>(value: T | undefined): T | null {
+  if (value === undefined) {
+    return null;
+  }
+
+  return value;
+}
+
+export function getStatusValue(
+  input: LabeledValue<number> | string | null | undefined
+): number | null | string | undefined{
+  if (isNumericLabeledValue(input)) {
+    return input.value;
+  }
+
+  return input;
 }

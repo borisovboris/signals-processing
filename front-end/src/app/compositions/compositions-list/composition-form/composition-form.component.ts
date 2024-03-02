@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -15,7 +16,11 @@ import {
   switchMap,
   take,
 } from 'rxjs';
-import { LabeledValue, isNumericLabeledValue, labeledValueValidator } from '../../../shared/autocomplete-chips/autocomplete.model';
+import {
+  LabeledValue,
+  isNumericLabeledValue,
+  labeledValueValidator,
+} from '../../../shared/autocomplete-chips/autocomplete.model';
 import {
   AbstractControl,
   AsyncValidatorFn,
@@ -35,6 +40,24 @@ import { CommonModule } from '@angular/common';
 import { SingleAutocompleteComponent } from '../../../shared/single-autocomplete/single-autocomplete.component';
 import { MaterialModule } from '../../../material/material.module';
 import { CompositionActions } from '../../../store/composition/composition.actions';
+import { DIALOG_DATA } from '../../../shared/services/dialog.service';
+import {
+  getNullOrValue,
+  getStatusValue,
+  stringsLike,
+} from '../../../shared/utils';
+
+export interface CompositionDialogData {
+  editInfo?: {
+    id: number;
+    code: string;
+    location: LabeledValue<number>;
+    type: LabeledValue<number>;
+    status: LabeledValue<number>;
+    coordinates?: string;
+    description?: string;
+  };
+}
 
 @Component({
   selector: 'app-composition-form',
@@ -50,23 +73,29 @@ import { CompositionActions } from '../../../store/composition/composition.actio
   styleUrl: './composition-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CompositionFormComponent {
-
-
-  myCustomValidator(): AsyncValidatorFn {
+export class CompositionFormComponent implements AfterViewInit {
+  uniqueCodeValidator(): AsyncValidatorFn {
     return (control) =>
       control.valueChanges.pipe(
         debounceTime(400),
         distinctUntilChanged(),
-        filter(_ => isNumericLabeledValue(control.get('locationCtrl')?.value)),
-        switchMap(() =>
-          this.compositionService.checkIfCompositionExists(
-            control.get('locationCtrl')?.value.value,
-            control.get('code')?.value
-          )
+        filter(() => isNumericLabeledValue(control.get('locationCtrl')?.value)),
+        switchMap((value) =>
+          this.compositionService
+            .checkIfCompositionExists(
+              control.get('locationCtrl')?.value.value,
+              control.get('code')?.value
+            )
+            .pipe(map((exists) => [exists, value]))
         ),
-        map((exists: boolean) => {
-          if (exists) {
+        map(([exists, value]) => {
+          if (
+            exists &&
+            !stringsLike(
+              control.get('code')?.value,
+              this.dialogData?.editInfo?.code
+            )
+          ) {
             control.get('code')?.setErrors({ locationExists: true });
           } else {
             delete control.get('code')?.errors?.['notAnOption'];
@@ -80,7 +109,10 @@ export class CompositionFormComponent {
       );
   }
 
+  dialogData: CompositionDialogData | undefined =
+    this.injector.get(DIALOG_DATA);
   dialogRef: DialogReference = this.injector.get(DialogReference);
+  inEditMode = false;
 
   locations$: BehaviorSubject<LabeledValue<number>[]> = new BehaviorSubject<
     LabeledValue<number>[]
@@ -94,7 +126,8 @@ export class CompositionFormComponent {
   >([]);
   typeOptions$ = this.types$.asObservable();
   typeCtrl: FormControl<LabeledValue<number> | string | null> = new FormControl(
-    '', [labeledValueValidator],
+    '',
+    [labeledValueValidator]
   );
 
   statuses$: BehaviorSubject<LabeledValue<number>[]> = new BehaviorSubject<
@@ -110,7 +143,7 @@ export class CompositionFormComponent {
         code: new FormControl<string>('', [Validators.required]),
         locationCtrl: this.locationCtrl,
       },
-      { asyncValidators: [this.myCustomValidator()] }
+      { asyncValidators: [this.uniqueCodeValidator()] }
     ),
     typeCtrl: this.typeCtrl,
     statusCtrl: this.statusCtrl,
@@ -125,8 +158,26 @@ export class CompositionFormComponent {
     private readonly countryService: CountriesService,
     private readonly changeRef: ChangeDetectorRef
   ) {
+    this.inEditMode = this.dialogData?.editInfo !== undefined;
   }
 
+  ngAfterViewInit() {
+    if (this.dialogData?.editInfo !== undefined) {
+      this.code?.setValue(this.dialogData.editInfo?.code);
+      this.location?.setValue(this.dialogData.editInfo?.location);
+      this.type?.setValue(this.dialogData.editInfo?.type);
+      this.status?.setValue(this.dialogData.editInfo?.status);
+      this.coordinates?.setValue(
+        getNullOrValue(this.dialogData.editInfo?.coordinates)
+      );
+      this.description?.setValue(
+        getNullOrValue(this.dialogData.editInfo?.description)
+      );
+
+      this.form.markAllAsTouched();
+      this.form.updateValueAndValidity;
+    }
+  }
 
   onLocationInput(text: string) {
     this.countryService
@@ -143,22 +194,14 @@ export class CompositionFormComponent {
   onStatusInput(text: string) {
     this.compositionService
       .readCompositionStatuses({ name: text })
-      .pipe(
-        map((statuses) =>
-          statuses.map((c) => ({ label: c.name, value: c.id }))
-        ),
-        take(1)
-      )
+      .pipe(take(1))
       .subscribe((data) => this.statuses$.next(data));
   }
 
   onTypeInput(text: string) {
     this.compositionService
       .readCompositionTypes({ name: text })
-      .pipe(
-        map((types) => types.map((c) => ({ label: c.name, value: c.id }))),
-        take(1)
-      )
+      .pipe(take(1))
       .subscribe((data) => this.types$.next(data));
   }
 
@@ -167,20 +210,77 @@ export class CompositionFormComponent {
   }
 
   codeExists() {
-   return this.form.get('nestedForm')?.get('code')?.hasError('locationExists');
+    return this.code?.hasError('locationExists');
+  }
+
+  get code() {
+    return this.form.get('nestedForm')?.get('code');
+  }
+
+  get location() {
+    return this.form.get('nestedForm')?.get('locationCtrl');
+  }
+
+  get coordinates() {
+    return this.form.get('coordinates');
+  }
+
+  get description() {
+    return this.form.get('description');
+  }
+
+  get type() {
+    return this.form.get('typeCtrl');
+  }
+
+  get status() {
+    return this.form.get('statusCtrl');
+  }
+
+  createOrEditComposition() {
+    if(this.inEditMode) {
+      this.editComposition();
+    } else {
+      this.createComposition();
+    }
+  }
+
+  editComposition() {
+    const { code, coordinates, description, location, type, status } =
+      this.getCompositionData();
+    const id = this.dialogData?.editInfo?.id;
+
+    if (
+      code &&
+      id &&
+      isNumericLabeledValue(location) &&
+      isNumericLabeledValue(type) &&
+      isNumericLabeledValue(status)
+    ) {
+      this.store.dispatch(
+        CompositionActions.editComposition({
+          composition: {
+            id,
+            code,
+            coordinates,
+            description,
+            statusId: status.value,
+            typeId: type.value,
+            locationId: location.value,
+          },
+        })
+      );
+    }
+
+    this.dialogRef.close(true);
   }
 
   createComposition() {
-    const code = this.form.get('nestedForm')?.get('code')?.value ?? undefined;
-    const coordinates = this.form.get('coordination')?.value ?? undefined;
-    const description = this.form.get('description')?.value ?? undefined;
-
-    const location = this.form.get('nestedForm')?.get('locationCtrl')?.value;
-    const type = this.form?.get('typeCtrl')?.value;
-    const status = this.form?.get('statusCtrl')?.value;
+    const { code, coordinates, description, location, type, status } =
+      this.getCompositionData();
 
     if (
-      code !== undefined &&
+      code &&
       isNumericLabeledValue(location) &&
       isNumericLabeledValue(type) &&
       isNumericLabeledValue(status)
@@ -199,6 +299,51 @@ export class CompositionFormComponent {
       );
     }
 
-    this.dialogRef.close();
+    this.dialogRef.close(true);
+  }
+
+  getCompositionData() {
+    const code = this.code?.value ?? undefined;
+    const coordinates = this.coordinates?.value ?? undefined;
+    const description = this.description?.value ?? undefined;
+    const location = this.location?.value;
+    const type = this.type?.value;
+    const status = this.status?.value;
+
+    return { code, coordinates, description, location, type, status };
+  }
+
+  compositionChangedThroughEdit() {
+    if (this.dialogData?.editInfo === undefined) {
+      return true;
+    }
+
+    const {
+      code: codeCtrl,
+      coordinates: coordinatesCtrl,
+      description: descriptionCtrl,
+      location: locationCtrl,
+      type: typeCtrl,
+      status: statusCtrl,
+    } = this.getCompositionData();
+
+    const { code, coordinates, description, location, type, status } =
+      this.dialogData.editInfo;
+
+    const codeChanged = !stringsLike(code, codeCtrl);
+    const coordinatesChanged = !stringsLike(coordinates, coordinatesCtrl);
+    const descriptionChanged = !stringsLike(description, descriptionCtrl);
+    const locationChanged = location.value !== getStatusValue(locationCtrl);
+    const typeChanged = type.value !== getStatusValue(typeCtrl);
+    const statusChanged = status.value !== getStatusValue(statusCtrl);
+
+    return (
+      codeChanged ||
+      coordinatesChanged ||
+      descriptionChanged ||
+      locationChanged ||
+      typeChanged ||
+      statusChanged
+    );
   }
 }

@@ -15,16 +15,23 @@ import {
   ScrollingModule,
 } from '@angular/cdk/scrolling';
 import { AutocompleteChipsComponent } from '../../shared/autocomplete-chips/autocomplete-chips.component';
-import { BehaviorSubject, debounceTime, map, take } from 'rxjs';
+import { BehaviorSubject, debounceTime, filter, map, take } from 'rxjs';
 import { DialogService } from '../../shared/services/dialog.service';
-import { CompositionFormComponent } from './composition-form/composition-form.component';
+import {
+  CompositionDialogData,
+  CompositionFormComponent,
+} from './composition-form/composition-form.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { CountriesService } from '../../../../generated-sources/openapi';
+import {
+  CompositionDTO,
+  CountriesService,
+} from '../../../../generated-sources/openapi';
 import { LabeledValue } from '../../shared/autocomplete-chips/autocomplete.model';
 import { fadeIn } from '../../shared/animations';
 import { BatchList } from '../../shared/batch-list';
 import { ListActionsComponent } from '../../shared/list-actions/list-actions.component';
+import { DialogReference } from '../../shared/services/dialog-reference';
 
 @Component({
   selector: 'app-compositions-list',
@@ -204,12 +211,45 @@ export class CompositionsListComponent
     this.router.navigate([`compositions`, id]);
   }
 
-  openCountryForm() {
-    this.dialogService.open(CompositionFormComponent);
+  openCompositionEditForm(composition: CompositionDTO) {
+    const data: CompositionDialogData = {
+      editInfo: {
+        id: composition.id,
+        code: composition.code,
+        location: composition.location,
+        type: composition.type,
+        status: {
+          value: composition.status.id,
+          label: composition.status.name,
+        },
+        coordinates: composition.coordinates,
+        description: composition.description,
+      },
+    };
+
+    const dialogRef = this.dialogService.open(CompositionFormComponent, {
+      data,
+    });
+    this.onDialogClosed(dialogRef);
+  }
+
+  openCompositionCreationForm() {
+    const dialogRef = this.dialogService.open(CompositionFormComponent);
+    this.onDialogClosed(dialogRef);
   }
 
   deleteComposition(id: number) {
     this.store.dispatch(CompositionActions.deleteComposition({ id }));
     this.offset = 0;
+  }
+
+  onDialogClosed(ref: DialogReference) {
+    ref
+      .afterClosed()
+      .pipe(
+        take(1),
+        filter((completed) => completed === true)
+      )
+      .subscribe((_) => (this.offset = 0));
   }
 }

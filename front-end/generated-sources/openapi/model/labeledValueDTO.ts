@@ -9,18 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { StatusDTO } from './statusDTO';
-import { LabeledValueDTO } from './labeledValueDTO';
 
 
-export interface CompositionDTO { 
-    id: number;
-    location: LabeledValueDTO;
-    type: LabeledValueDTO;
-    code: string;
-    devicesSize: number;
-    status: StatusDTO;
-    coordinates?: string;
-    description?: string;
+export interface LabeledValueDTO { 
+    value: number;
+    label: string;
 }
 

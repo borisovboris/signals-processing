@@ -1,12 +1,11 @@
 <mat-card>
   <form [formGroup]="form">
-    <h1>Add composition</h1>
+    <h1>{{ inEditMode ? "Edit composition" : "Add composition" }}</h1>
     <div formGroupName="nestedForm">
       <mat-form-field class="example-full-width">
         <mat-label>Code</mat-label>
         <input formControlName="code" matInput />
-        <mat-error
-          *ngIf="codeExists()"
+        <mat-error *ngIf="codeExists()"
           >Already exists for this location</mat-error
         >
       </mat-form-field>
@@ -44,10 +43,14 @@
         type="button"
         mat-raised-button
         color="accent"
-        [disabled]="form.invalid || formPending === true"
-        (click)="createComposition()"
+        [disabled]="
+          form.invalid ||
+          formPending === true ||
+          !compositionChangedThroughEdit()
+        "
+        (click)="createOrEditComposition()"
       >
-        Add
+        {{ inEditMode ? "Edit" : "Add" }}
       </button>
     </div>
   </form>

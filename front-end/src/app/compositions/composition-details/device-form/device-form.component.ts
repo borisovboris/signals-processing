@@ -39,7 +39,7 @@ import {
 } from '../../../../../generated-sources/openapi';
 import { SingleAutocompleteComponent } from '../../../shared/single-autocomplete/single-autocomplete.component';
 import { CommonModule } from '@angular/common';
-import { stringsLike } from '../../../shared/utils';
+import { getStatusValue, stringsLike } from '../../../shared/utils';
 
 export interface CreateEditDevice {
   compositionId: number;
@@ -175,9 +175,6 @@ export class DeviceFormComponent implements AfterViewInit {
     this.compositionService
       .readDeviceStatuses({ name: text })
       .pipe(
-        map((statuses) =>
-          statuses.map((c) => ({ label: c.name, value: c.id }))
-        ),
         take(1)
       )
       .subscribe((data) => this.statuses$.next(data));
@@ -270,18 +267,8 @@ export class DeviceFormComponent implements AfterViewInit {
     const nameChanged =
       deviceName.toLowerCase() !== this.deviceName.value?.toLowerCase();
     const statusChanged =
-      status.value !== this.getStatusValue(this.deviceStatus.value);
+      status.value !== getStatusValue(this.deviceStatus.value);
 
     return codeChanged || nameChanged || statusChanged;
-  }
-
-  getStatusValue(
-    input: LabeledValue<number> | string | null
-  ): number | null | string {
-    if (isNumericLabeledValue(input)) {
-      return input.value;
-    }
-
-    return input;
   }
 }
