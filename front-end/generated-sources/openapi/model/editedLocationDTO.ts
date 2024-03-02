@@ -15,6 +15,7 @@ export interface EditedLocationDTO {
     cityId: number;
     name: string;
     address: string;
+    isOperational: boolean;
     coordinates?: string;
     description?: string;
     id: number;

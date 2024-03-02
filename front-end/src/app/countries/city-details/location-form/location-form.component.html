@@ -33,11 +33,13 @@
       />
     </mat-form-field>
 
+    <mat-slide-toggle formControlName="isOperational">Operational</mat-slide-toggle>
+
     <div class="actions">
       <button
         mat-raised-button
         color="accent"
-        [disabled]="locationForm.invalid || formPending"
+        [disabled]="locationForm.invalid || formPending || !locationChangedThroughEdit()"
       >
         {{ inEditMode ? "Edit" : "Add" }}
       </button>

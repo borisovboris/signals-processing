@@ -40,6 +40,7 @@ export interface LocationDialogData {
     id: number;
     name: string;
     address: string;
+    isOperational: boolean;
     coordinates?: string;
     description?: string;
   };
@@ -93,18 +94,11 @@ export class LocationFormComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     if (this.dialogData.editInfo !== undefined) {
-      this.locationForm
-        .get('locationName')
-        ?.setValue(this.dialogData.editInfo.name);
-      this.locationForm
-        .get('address')
-        ?.setValue(this.dialogData.editInfo.address);
-      this.locationForm
-        .get('coordinates')
-        ?.setValue(this.dialogData.editInfo.coordinates ?? null);
-      this.locationForm
-        .get('description')
-        ?.setValue(this.dialogData.editInfo.description ?? null);
+      this.locationName?.setValue(this.dialogData.editInfo.name);
+      this.address?.setValue(this.dialogData.editInfo.address);
+      this.isOperational?.setValue(this.dialogData.editInfo.isOperational);
+      this.coordinates?.setValue(this.dialogData.editInfo.coordinates ?? null);
+      this.description?.setValue(this.dialogData.editInfo.description ?? null);
 
       this.locationForm.markAllAsTouched();
       this.locationForm.updateValueAndValidity();
@@ -121,6 +115,7 @@ export class LocationFormComponent implements AfterViewInit {
     }),
     coordinates: new FormControl<string>(''),
     description: new FormControl<string>(''),
+    isOperational: new FormControl<boolean>(false, { nonNullable: true }),
   });
 
   get locationName() {
@@ -137,6 +132,10 @@ export class LocationFormComponent implements AfterViewInit {
 
   get description() {
     return this.locationForm.get('description');
+  }
+
+  get isOperational() {
+    return this.locationForm.get('isOperational');
   }
 
   get formPending() {
@@ -157,6 +156,7 @@ export class LocationFormComponent implements AfterViewInit {
     const address = this.address?.value;
     const coordinates = this.coordinates?.value ?? undefined;
     const description = this.description?.value ?? undefined;
+    const isOperational = this.isOperational?.value ?? false;
 
     if (
       isDefined(cityId) &&
@@ -171,6 +171,7 @@ export class LocationFormComponent implements AfterViewInit {
         address,
         coordinates,
         description,
+        isOperational,
       };
 
       this.store.dispatch(CountryActions.editLocation({ location }));
@@ -184,6 +185,7 @@ export class LocationFormComponent implements AfterViewInit {
     const address = this.address?.value;
     const coordinates = this.coordinates?.value ?? undefined;
     const description = this.description?.value ?? undefined;
+    const isOperational = this.isOperational?.value ?? false;
 
     if (isDefined(cityId) && isDefined(name) && isDefined(address)) {
       const location = {
@@ -192,10 +194,21 @@ export class LocationFormComponent implements AfterViewInit {
         address,
         coordinates,
         description,
+        isOperational,
       };
 
       this.store.dispatch(CountryActions.createLocation({ location }));
       this.dialogRef.close();
     }
+  }
+
+  locationChangedThroughEdit() {
+    const nameChanged = this.dialogData.editInfo?.name !== this.locationName?.value;
+    const addressChanged = this.dialogData.editInfo?.address !== this.address?.value;
+    const coordinatesChanged = this.dialogData.editInfo?.coordinates !== this.coordinates?.value;
+    const descriptionChanged = this.dialogData.editInfo?.description !== this.description?.value;
+    const isOperationalChanged = this.dialogData.editInfo?.isOperational !== this.isOperational?.value;
+
+    return nameChanged || addressChanged || coordinatesChanged || descriptionChanged || isOperationalChanged;
   }
 }

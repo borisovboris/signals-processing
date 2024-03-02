@@ -12,17 +12,21 @@ public class BaseLocationDTO {
     @NotNull
     private String address;
 
+    @NotNull
+    private boolean isOperational;
+
     private String coordinates;
 
     private String description;
 
     public BaseLocationDTO(Long cityId, String name, String address, String coordinates,
-            String description) {
+            String description, boolean isOperational) {
         this.cityId = cityId;
         this.name = name;
         this.address = address;
         this.coordinates = coordinates;
         this.description = description;
+        this.isOperational = isOperational;
     }
 
     public Long getCityId() {
@@ -63,6 +67,14 @@ public class BaseLocationDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean getIsOperational() {
+        return isOperational;
+    }
+
+    public void setIsOperational(boolean isOperational) {
+        this.isOperational = isOperational;
     }
 
 }

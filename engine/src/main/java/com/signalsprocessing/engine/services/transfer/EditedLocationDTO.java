@@ -7,8 +7,8 @@ public class EditedLocationDTO extends BaseLocationDTO {
     private Long id;
 
     public EditedLocationDTO(Long id, Long cityId, String name, String address, String coordinates,
-            String description) {
-        super(cityId, name, address, coordinates, description);
+            String description, boolean isOperational) {
+        super(cityId, name, address, coordinates, description, isOperational);
         this.id = id;
     }
 

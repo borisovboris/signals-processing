@@ -280,6 +280,7 @@ public class CountryService {
                 location.setName(dto.getName());
                 location.setAddress(dto.getAddress());
                 location.setCoordinates(dto.getCoordinates());
+                location.setIsOperational(dto.getIsOperational());
 
                 entityManager.merge(location);
         }

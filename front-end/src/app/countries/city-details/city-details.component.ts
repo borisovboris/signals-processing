@@ -74,6 +74,7 @@ export class CityDetailsComponent {
           address: location.address,
           coordinates: location.coordinates,
           description: location.description,
+          isOperational: location.isOperational,
         },
       };
 
