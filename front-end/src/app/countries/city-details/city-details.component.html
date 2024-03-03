@@ -2,52 +2,57 @@
   <mat-card>
     <div class="heading">
       <h2>Locations in {{ locations.city.name }}</h2>
-      <button mat-raised-button color="accent" (click)="openLocationCreationForm()">
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="openLocationCreationForm()"
+      >
         Add location
       </button>
     </div>
-    <div class="columns">
-      <p>Name</p>
-      <p>Address</p>
-      <p>Status</p>
-      <p>Compositions</p>
-      <p>Actions</p>
-    </div>
-    <div class="list-wrapper">
-      <cdk-virtual-scroll-viewport
-        CdkScrollable
-        [itemSize]="68"
-        class="example-viewport"
-      >
-        <div
-          class="row-wrapper"
-          *cdkVirtualFor="let location of locations.locations"
+    <div class="table" @fadeIn>
+      <div class="columns">
+        <p>Name</p>
+        <p>Address</p>
+        <p>Status</p>
+        <p>Compositions</p>
+        <p>Actions</p>
+      </div>
+      <div class="list-wrapper">
+        <cdk-virtual-scroll-viewport
+          CdkScrollable
+          [itemSize]="68"
         >
           <div
-            class="row mat-elevation-z2"
-            [class.not-operational]="!location.isOperational"
-            (click)="
-              goToLocationCompositions(
-                locations.city.id,
-                locations.city.name,
-                location.id,
-                location.name
-              )
-            "
+            class="row-wrapper"
+            *cdkVirtualFor="let location of locations.locations"
           >
-            <p>{{ location.name }}</p>
-            <p>{{ location.address }}</p>
-            <p>
-              {{ location.isOperational ? "Operational" : "Not operational" }}
-            </p>
-            <p>{{ location.compositionsSize }}</p>
-            <app-list-actions
-              (delete)="deleteLocation(location.id)"
-              (edit)="openLocationEditForm(location)"
-            ></app-list-actions>
+            <div
+              class="row mat-elevation-z2"
+              [class.not-operational]="!location.isOperational"
+              (click)="
+                goToLocationCompositions(
+                  locations.city.id,
+                  locations.city.name,
+                  location.id,
+                  location.name
+                )
+              "
+            >
+              <p>{{ location.name }}</p>
+              <p>{{ location.address }}</p>
+              <p>
+                {{ location.isOperational ? "Operational" : "Not operational" }}
+              </p>
+              <p>{{ location.compositionsSize }}</p>
+              <app-list-actions
+                (delete)="deleteLocation(location.id)"
+                (edit)="openLocationEditForm(location)"
+              ></app-list-actions>
+            </div>
           </div>
-        </div>
-      </cdk-virtual-scroll-viewport>
+        </cdk-virtual-scroll-viewport>
+      </div>
     </div>
   </mat-card>
 </div>

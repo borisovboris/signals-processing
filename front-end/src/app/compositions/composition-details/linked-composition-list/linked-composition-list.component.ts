@@ -11,10 +11,12 @@ import {
   LinkCompositionFormComponent,
 } from '../link-composition-form/link-composition-form.component';
 import { CompositionActions } from '../../../store/composition/composition.actions';
+import { fadeIn } from '../../../shared/animations';
 
 @Component({
   selector: 'app-linked-composition-list',
   standalone: true,
+  animations: [fadeIn],
   imports: [MaterialModule, ScrollingModule, CommonModule],
   templateUrl: './linked-composition-list.component.html',
   styleUrl: './linked-composition-list.component.scss',

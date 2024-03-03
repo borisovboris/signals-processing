@@ -28,49 +28,54 @@
   <mat-card class="list">
     <div class="heading">
       <h2>Compositions</h2>
-      <button mat-raised-button color="accent" (click)="openCompositionCreationForm()">
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="openCompositionCreationForm()"
+      >
         Add composition
       </button>
     </div>
-    <div class="columns">
-      <p>Code</p>
-      <p>Devices</p>
-      <p>Status</p>
-      <p>Actions</p>
-    </div>
-    <div class="list-wrapper">
-      <cdk-virtual-scroll-viewport
-        CdkScrollable
-        [itemSize]="68"
-        class="example-viewport"
-        (scrolledIndexChange)="onScroll()"
-        @fadeIn
-      >
-        <div
-          class="row-wrapper"
-          *cdkVirtualFor="let composition of compositions;"
+    <div class="table" @fadeIn>
+      <div class="columns">
+        <p>Code</p>
+        <p>Devices</p>
+        <p>Status</p>
+        <p>Actions</p>
+      </div>
+      <div class="list-wrapper">
+        <cdk-virtual-scroll-viewport
+          CdkScrollable
+          [itemSize]="68"
+          class="example-viewport"
+          (scrolledIndexChange)="onScroll()"
         >
           <div
-            class="row mat-elevation-z2"
-            [class.not-operational]="!composition.status.isOperational"
-            (click)="goToDetails(composition.id)"
+            class="row-wrapper"
+            *cdkVirtualFor="let composition of compositions"
           >
-            <p>{{ composition.code }}</p>
-            <p>{{ composition.devicesSize }}</p>
-            <p>
-              {{
-                composition.status.isOperational
-                  ? "Operational"
-                  : "Not operational"
-              }}
-            </p>
-            <app-list-actions
-              (delete)="deleteComposition(composition.id)"
-              (edit)="openCompositionEditForm(composition)"
-            ></app-list-actions>
+            <div
+              class="row mat-elevation-z2"
+              [class.not-operational]="!composition.status.isOperational"
+              (click)="goToDetails(composition.id)"
+            >
+              <p>{{ composition.code }}</p>
+              <p>{{ composition.devicesSize }}</p>
+              <p>
+                {{
+                  composition.status.isOperational
+                    ? "Operational"
+                    : "Not operational"
+                }}
+              </p>
+              <app-list-actions
+                (delete)="deleteComposition(composition.id)"
+                (edit)="openCompositionEditForm(composition)"
+              ></app-list-actions>
+            </div>
           </div>
-        </div>
-      </cdk-virtual-scroll-viewport>
+        </cdk-virtual-scroll-viewport>
+      </div>
     </div>
   </mat-card>
 </div>

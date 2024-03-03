@@ -13,6 +13,7 @@ import {
 } from './location-form/location-form.component';
 import { ListActionsComponent } from '../../shared/list-actions/list-actions.component';
 import { LocationDTO } from '../../../../generated-sources/openapi';
+import { fadeIn } from '../../shared/animations';
 
 @Component({
   selector: 'app-city-details',
@@ -23,6 +24,7 @@ import { LocationDTO } from '../../../../generated-sources/openapi';
     ScrollingModule,
     ListActionsComponent,
   ],
+  animations: [fadeIn],
   templateUrl: './city-details.component.html',
   styleUrl: './city-details.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

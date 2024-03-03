@@ -7,31 +7,32 @@
       </button>
     </div>
     @if (cities.cities.length > 0) {
-    <div class="columns">
-      <p>Name</p>
-      <p>Actions</p>
-    </div>
-    <div class="list-wrapper">
-      <cdk-virtual-scroll-viewport
-        CdkScrollable
-        [itemSize]="68"
-        class="example-viewport"
-        (scrolledIndexChange)="onScroll()"
-      >
-        <div
-          class="row-wrapper"
-          *cdkVirtualFor="let city of cities.cities"
-          (click)="goToCity(city.id)"
+    <div class="table" @fadeIn @fadeOut>
+      <div class="columns">
+        <p>Name</p>
+        <p>Actions</p>
+      </div>
+      <div class="list-wrapper">
+        <cdk-virtual-scroll-viewport
+          CdkScrollable
+          [itemSize]="68"
+          (scrolledIndexChange)="onScroll()"
         >
-          <div class="row mat-elevation-z2">
-            <p>{{ city.name }}</p>
-            <app-list-actions
-              (delete)="deleteCity(city.id)"
-              (edit)="openCityEditForm(city)"
-            ></app-list-actions>
+          <div
+            class="row-wrapper"
+            *cdkVirtualFor="let city of cities.cities"
+            (click)="goToCity(city.id)"
+          >
+            <div class="row mat-elevation-z2">
+              <p>{{ city.name }}</p>
+              <app-list-actions
+                (delete)="deleteCity(city.id)"
+                (edit)="openCityEditForm(city)"
+              ></app-list-actions>
+            </div>
           </div>
-        </div>
-      </cdk-virtual-scroll-viewport>
+        </cdk-virtual-scroll-viewport>
+      </div>
     </div>
     } @else {
     <app-no-data></app-no-data>

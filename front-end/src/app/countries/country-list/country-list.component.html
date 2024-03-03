@@ -1,38 +1,46 @@
 <div class="wrapper">
   <mat-card>
-    <ng-container *ngIf="countries$ | async as countries">
       <div class="heading">
         <h2>Countries</h2>
-        <button mat-raised-button color="accent" (click)="openCountryFormForCreation()">
+        <button
+          mat-raised-button
+          color="accent"
+          (click)="openCountryFormForCreation()"
+        >
           Add country
         </button>
       </div>
-      <div class="columns">
-        <p>Name</p>
-        <p>Actions</p>
-      </div>
-      <div class="list-wrapper">
-        <cdk-virtual-scroll-viewport
-          CdkScrollable
-          [itemSize]="68"
-          class="example-viewport"
-          (scrolledIndexChange)="onScroll()"
-        >
-          <div
-            class="row-wrapper"
-            *cdkVirtualFor="let country of countries"
-            (click)="goToDetails(country.id)"
+
+      @if (countries !== undefined && countries.length > 0) {
+      <div class="table" @fadeIn>
+        <div class="columns">
+          <p>Name</p>
+          <p>Actions</p>
+        </div>
+        <div class="list-wrapper">
+          <cdk-virtual-scroll-viewport
+            CdkScrollable
+            [itemSize]="68"
+            (scrolledIndexChange)="onScroll()"
           >
-            <div class="row mat-elevation-z2">
-              <p>{{ country.name }}</p>
-              <app-list-actions
-                (delete)="deleteCountry(country.id)"
-                (edit)="openCountryFormForEdit(country.id, country.name)"
-              ></app-list-actions>
+            <div
+              class="row-wrapper"
+              *cdkVirtualFor="let country of countries;"
+              (click)="goToDetails(country.id)"
+            >
+              <div class="row mat-elevation-z2">
+                <p>{{ country.name }}</p>
+                <app-list-actions
+                  (delete)="deleteCountry(country.id)"
+                  (edit)="openCountryFormForEdit(country.id, country.name)"
+                ></app-list-actions>
+              </div>
             </div>
-          </div>
-        </cdk-virtual-scroll-viewport>
+          </cdk-virtual-scroll-viewport>
+        </div>
       </div>
-    </ng-container>
+    } @else {
+      <app-no-data></app-no-data>
+    }
   </mat-card>
 </div>

@@ -1,8 +1,11 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  DestroyRef,
   OnInit,
   ViewChild,
+  inject,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState, INITIAL_OFFSET } from '../../store/state';
@@ -25,6 +28,10 @@ import { BatchList } from '../../shared/batch-list';
 import { ListActionsComponent } from '../../shared/list-actions/list-actions.component';
 import { stringsLike } from '../../shared/utils';
 import { DialogReference } from '../../shared/services/dialog-reference';
+import { NoDataComponent } from '../../shared/no-data/no-data.component';
+import { fadeIn, fadeOut } from '../../shared/animations';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CountryDTO } from '../../../../generated-sources/openapi';
 
 @Component({
   selector: 'app-country-list',
@@ -35,7 +42,9 @@ import { DialogReference } from '../../shared/services/dialog-reference';
     ScrollingModule,
     RouterLink,
     ListActionsComponent,
+    NoDataComponent,
   ],
+  animations: [fadeIn],
   templateUrl: './country-list.component.html',
   styleUrl: './country-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -44,12 +53,15 @@ export class CountryListComponent extends BatchList implements OnInit {
   @ViewChild(CdkVirtualScrollViewport)
   viewport!: CdkVirtualScrollViewport;
 
-  countries$ = this.store.select(countries);
+  private readonly destroyedRef = inject(DestroyRef);
+
+  countries?: CountryDTO[];
 
   constructor(
     private readonly store: Store<AppState>,
     private readonly router: Router,
-    private readonly dialogService: DialogService
+    private readonly dialogService: DialogService,
+    private readonly changeRef: ChangeDetectorRef
   ) {
     super();
   }
@@ -57,6 +69,13 @@ export class CountryListComponent extends BatchList implements OnInit {
   ngOnInit() {
     this.store.dispatch(CountryActions.getCountries());
     this.scrolled$.pipe(debounceTime(300)).subscribe(() => this.getOffset());
+    this.store
+      .select(countries)
+      .pipe(takeUntilDestroyed(this.destroyedRef))
+      .subscribe((data) => {
+        this.countries = data;
+        this.changeRef.markForCheck();
+      });
   }
 
   getNewBatch() {

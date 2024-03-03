@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   DestroyRef,
   OnInit,
@@ -23,6 +24,7 @@ import { BehaviorSubject, debounceTime, filter, map, take } from 'rxjs';
 import { LabeledValue } from '../../shared/autocomplete-chips/autocomplete.model';
 import { AutocompleteChipsComponent } from '../../shared/autocomplete-chips/autocomplete-chips.component';
 import {
+  EventDTO,
   EventFiltersDTO,
   EventsService,
 } from '../../../../generated-sources/openapi';
@@ -30,6 +32,7 @@ import moment from 'moment';
 import { BatchList } from '../../shared/batch-list';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { fadeIn } from '../../shared/animations';
+import { NoDataComponent } from '../../shared/no-data/no-data.component';
 
 export enum ManualInsert {
   ANY = 'Any',
@@ -46,6 +49,7 @@ export enum ManualInsert {
     MaterialModule,
     AutocompleteChipsComponent,
     ReactiveFormsModule,
+    NoDataComponent,
   ],
   animations: [fadeIn],
   templateUrl: './event-list.component.html',
@@ -56,6 +60,7 @@ export class EventListComponent extends BatchList implements OnInit {
   destroyRef = inject(DestroyRef);
   @ViewChild(CdkVirtualScrollViewport)
   viewport!: CdkVirtualScrollViewport;
+  events?: EventDTO[];
 
   ManualInsert = ManualInsert;
   typesCtrl = new FormControl<string[]>([], { nonNullable: true });
@@ -71,8 +76,6 @@ export class EventListComponent extends BatchList implements OnInit {
   startDateCtrl = new FormControl<string | null>(null);
   endDateCtrl = new FormControl<string | null>(null);
 
-  events$ = this.store.select(events);
-
   form = new FormGroup({
     typesCtrl: this.typesCtrl,
     endDateCtrl: this.endDateCtrl,
@@ -84,14 +87,19 @@ export class EventListComponent extends BatchList implements OnInit {
     private readonly store: Store,
     private readonly router: Router,
     private readonly dialogService: DialogService,
-    private readonly eventService: EventsService
+    private readonly eventService: EventsService,
+    private readonly changeRef: ChangeDetectorRef,
   ) {
     super();
   }
 
   ngOnInit() {
     this.refetchEvents();
-    this.scrolled$.pipe(debounceTime(300)).subscribe(() => this.getOffset());
+    this.scrolled$.pipe(debounceTime(300), takeUntilDestroyed(this.destroyRef)).subscribe(() => this.getOffset());
+    this.store.select(events).pipe(takeUntilDestroyed(this.destroyRef)).subscribe((data) => {
+      this.events = data;
+      this.changeRef.markForCheck();
+    });
 
     this.form.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef), debounceTime(300))

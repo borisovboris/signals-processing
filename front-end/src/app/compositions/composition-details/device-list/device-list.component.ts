@@ -9,11 +9,13 @@ import { CreateEditDevice, DeviceFormComponent } from '../device-form/device-for
 import { CompositionDetailsDTO, DeviceDTO } from '../../../../../generated-sources/openapi';
 import { MaterialModule } from '../../../material/material.module';
 import { ListActionsComponent } from '../../../shared/list-actions/list-actions.component';
+import { fadeIn } from '../../../shared/animations';
 
 @Component({
   selector: 'app-device-list',
   standalone: true,
   imports: [MaterialModule, ScrollingModule, CommonModule, ListActionsComponent],
+  animations: [fadeIn],
   templateUrl: './device-list.component.html',
   styleUrl: './device-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
