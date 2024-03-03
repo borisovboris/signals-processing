@@ -6,6 +6,7 @@
         Add city
       </button>
     </div>
+    @if (cities.cities.length > 0) {
     <div class="columns">
       <p>Name</p>
       <p>Actions</p>
@@ -24,10 +25,16 @@
         >
           <div class="row mat-elevation-z2">
             <p>{{ city.name }}</p>
-            <app-list-actions (delete)="deleteCity(city.id)" (edit)="openCityEditForm(city)"></app-list-actions>
+            <app-list-actions
+              (delete)="deleteCity(city.id)"
+              (edit)="openCityEditForm(city)"
+            ></app-list-actions>
           </div>
         </div>
       </cdk-virtual-scroll-viewport>
     </div>
+    } @else {
+    <app-no-data></app-no-data>
+    }
   </mat-card>
 </div>

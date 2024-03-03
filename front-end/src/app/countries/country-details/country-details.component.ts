@@ -21,6 +21,8 @@ import { debounceTime, filter, take } from 'rxjs';
 import { ListActionsComponent } from '../../shared/list-actions/list-actions.component';
 import { CityDTO } from '../../../../generated-sources/openapi';
 import { DialogReference } from '../../shared/services/dialog-reference';
+import { NoDataComponent } from '../../shared/no-data/no-data.component';
+import { fadeIn, fadeOut } from '../../shared/animations';
 
 @Component({
   selector: 'app-country-details',
@@ -30,7 +32,9 @@ import { DialogReference } from '../../shared/services/dialog-reference';
     MaterialModule,
     ScrollingModule,
     ListActionsComponent,
+    NoDataComponent,
   ],
+  animations: [fadeIn, fadeOut],
   templateUrl: './country-details.component.html',
   styleUrl: './country-details.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

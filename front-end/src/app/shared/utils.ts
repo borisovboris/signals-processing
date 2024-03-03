@@ -2,6 +2,8 @@ import { FormControl, FormGroupDirective, NgForm } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { LabeledValue, isNumericLabeledValue } from './autocomplete-chips/autocomplete.model';
 
+export type NULLABLE_STRING = string | null | undefined;
+
 export function isDefined<T>(
   arg: T | null | undefined
 ): arg is T extends null | undefined ? never : T {
@@ -25,12 +27,12 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   }
 }
 
-export function stringsLike(first: any, second: any): boolean {
-  if (typeof first !== 'string' || typeof second !== 'string') {
-    return true;
-  }
+// Fix this when null and undefined are provided
+export function stringsLike(first: NULLABLE_STRING , second: NULLABLE_STRING): boolean {
+  first = first ?? '';
+  second = second ?? '';
 
-  return (first as string).toLowerCase() === (second as string).toLowerCase();
+  return first .toLowerCase() === second.toLowerCase();
 }
 
 export function getNullOrValue<T>(value: T | undefined): T | null {
