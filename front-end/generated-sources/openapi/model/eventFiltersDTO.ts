@@ -14,6 +14,7 @@
 export interface EventFiltersDTO { 
     offset?: number;
     eventTypeIds?: Array<number>;
+    deviceIds?: Array<number>;
     startDate?: string;
     endDate?: string;
     manuallyInserted?: boolean;

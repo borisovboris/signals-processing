@@ -52,6 +52,14 @@
         [textCtrl]="typeCtrl"
         (inputTextChanged)="handleTypeInput($event)"
       ></app-autocomplete-chips>
+      <app-autocomplete-chips
+        [options$]="deviceOptions$"
+        label="Devices"
+        placeholder="Device..."
+        [itemsCtrl]="devicesCtrl"
+        [textCtrl]="deviceCtrl"
+        (inputTextChanged)="handleDeviceInput($event)"
+      ></app-autocomplete-chips>
     </div>
   </mat-card>
 
@@ -63,34 +71,34 @@
       </button>
     </div>
     @if(events !== undefined && events.length > 0) {
-      <div class="table" @fadeIn>
-        <div class="columns">
-          <p>Type</p>
-          <p>Added on</p>
-          <p>Manual</p>
-        </div>
-          <div class="list-wrapper">
-            <cdk-virtual-scroll-viewport
-              CdkScrollable
-              [itemSize]="60"
-              (scrolledIndexChange)="onScroll()"
-            >
-              <div
-                class="row-wrapper"
-                *cdkVirtualFor="let event of events"
-                (click)="goToDetails(event.id)"
-              >
-                <div class="row mat-elevation-z2">
-                  <p>{{ event.typeName }}</p>
-                  <p>{{ event.eventCreationAt | date }}</p>
-                  <p>{{ event.manualInsert ? 'Yes' : 'No' }}</p>
-                </div>
-              </div>
-            </cdk-virtual-scroll-viewport>
-          </div>
+    <div class="table" @fadeIn>
+      <div class="columns">
+        <p>Type</p>
+        <p>Added on</p>
+        <p>Manual</p>
       </div>
+      <div class="list-wrapper">
+        <cdk-virtual-scroll-viewport
+          CdkScrollable
+          [itemSize]="60"
+          (scrolledIndexChange)="onScroll()"
+        >
+          <div
+            class="row-wrapper"
+            *cdkVirtualFor="let event of events"
+            (click)="goToDetails(event.id)"
+          >
+            <div class="row mat-elevation-z2">
+              <p>{{ event.typeName }}</p>
+              <p>{{ event.eventCreationAt | date }}</p>
+              <p>{{ event.manualInsert ? "Yes" : "No" }}</p>
+            </div>
+          </div>
+        </cdk-virtual-scroll-viewport>
+      </div>
+    </div>
     } @else {
-      <app-no-data></app-no-data>
+    <app-no-data></app-no-data>
     }
   </mat-card>
 </div>

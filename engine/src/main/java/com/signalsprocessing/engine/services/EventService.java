@@ -54,6 +54,12 @@ public class EventService {
             predicates.add(eventTypeInIds);
         }
 
+        if(filters.getDeviceIds().isPresent()) {
+            var deviceIds = root.get("devices").get("device").get("id");
+            Predicate deviceInIds = deviceIds.in(filters.getDeviceIds().get());
+            predicates.add(deviceInIds);
+        }
+
         if (filters.getStartDate().isPresent()) {
             var eventCreationDate = root.get("eventCreationAt").as(java.time.LocalDate.class);
             Predicate eventAfterDate = cb.greaterThanOrEqualTo(eventCreationDate,

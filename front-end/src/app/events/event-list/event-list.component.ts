@@ -24,6 +24,7 @@ import { BehaviorSubject, debounceTime, filter, map, take } from 'rxjs';
 import { LabeledValue } from '../../shared/autocomplete-chips/autocomplete.model';
 import { AutocompleteChipsComponent } from '../../shared/autocomplete-chips/autocomplete-chips.component';
 import {
+  CompositionsService,
   EventDTO,
   EventFiltersDTO,
   EventsService,
@@ -63,12 +64,20 @@ export class EventListComponent extends BatchList implements OnInit {
   events?: EventDTO[];
 
   ManualInsert = ManualInsert;
+
   typesCtrl = new FormControl<string[]>([], { nonNullable: true });
   typeCtrl = new FormControl<string>('', { nonNullable: true });
   types$: BehaviorSubject<LabeledValue<number>[]> = new BehaviorSubject<
     LabeledValue<number>[]
   >([]);
   typeOptions$ = this.types$.asObservable();
+
+  devicesCtrl = new FormControl<string[]>([], { nonNullable: true });
+  deviceCtrl = new FormControl<string>('', { nonNullable: true });
+  devices$: BehaviorSubject<LabeledValue<number>[]> = new BehaviorSubject<
+    LabeledValue<number>[]
+  >([]);
+  deviceOptions$ = this.devices$.asObservable();
 
   manualInsertCtrl = new FormControl<ManualInsert>(ManualInsert.ANY, {
     nonNullable: true,
@@ -78,6 +87,7 @@ export class EventListComponent extends BatchList implements OnInit {
 
   form = new FormGroup({
     typesCtrl: this.typesCtrl,
+    devicesCtrl: this.devicesCtrl,
     endDateCtrl: this.endDateCtrl,
     startDateCtrl: this.startDateCtrl,
     manualInsertCtrl: this.manualInsertCtrl,
@@ -88,6 +98,7 @@ export class EventListComponent extends BatchList implements OnInit {
     private readonly router: Router,
     private readonly dialogService: DialogService,
     private readonly eventService: EventsService,
+    private readonly compositionService: CompositionsService,
     private readonly changeRef: ChangeDetectorRef,
   ) {
     super();
@@ -135,6 +146,18 @@ export class EventListComponent extends BatchList implements OnInit {
       .subscribe((data) => this.types$.next(data));
   }
 
+  handleDeviceInput(text: string) {
+    const deviceIds = this.getDeviceIds();
+
+    this.compositionService
+      .readDevices({ name: text, exludedItemIds: deviceIds })
+      .pipe(
+        map((devices) => devices.map((d) => ({ label: d.name, value: d.id }))),
+        take(1)
+      )
+      .subscribe((data) => this.devices$.next(data));
+  }
+
   refetchEvents() {
     this.offset = 0;
     this.store.dispatch(EventActions.resetEvents());
@@ -154,12 +177,17 @@ export class EventListComponent extends BatchList implements OnInit {
     return this.typesCtrl.value.map((t) => Number(t));
   }
 
+  getDeviceIds() {
+    return this.devicesCtrl.value.map((t) => Number(t));
+  }
+
   getNewBatch() {
     this.getEvents();
   }
 
   getEvents() {
     const eventTypeIds = this.getEventTypeIds();
+    const deviceIds = this.getDeviceIds();
     const startDate =
       this.startDateCtrl.value === null
         ? undefined
@@ -174,6 +202,7 @@ export class EventListComponent extends BatchList implements OnInit {
 
     const filters: EventFiltersDTO = {
       eventTypeIds,
+      deviceIds,
       startDate,
       endDate,
       manuallyInserted,

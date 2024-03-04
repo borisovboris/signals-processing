@@ -14,6 +14,9 @@ public class EventFiltersDTO extends OffsetConstraint {
     @Nullable
     private List<Long> eventTypeIds;
 
+    @Nullable
+    List<Long> deviceIds;
+
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     @Nullable
     private LocalDate startDate;
@@ -25,10 +28,11 @@ public class EventFiltersDTO extends OffsetConstraint {
     @Nullable
     private Boolean manuallyInserted;
 
-    public EventFiltersDTO(@Nullable List<Long> eventTypeIds, @Nullable LocalDate startDate,
-            @Nullable LocalDate endDate, @Nullable Boolean manuallyInserted, @Nullable Integer offset) {
+    public EventFiltersDTO(List<Long> eventTypeIds, List<Long> deviceIds, LocalDate startDate,
+            LocalDate endDate, Boolean manuallyInserted, Integer offset) {
         super(offset);
         this.eventTypeIds = eventTypeIds;
+        this.deviceIds = deviceIds;
         this.startDate = startDate;
         this.endDate = endDate;
         this.manuallyInserted = manuallyInserted;
@@ -36,6 +40,10 @@ public class EventFiltersDTO extends OffsetConstraint {
 
     public Optional<List<Long>> getEventTypeIds() {
         return Optional.ofNullable(eventTypeIds);
+    }
+
+    public Optional<List<Long>> getDeviceIds() {
+        return Optional.ofNullable(deviceIds);
     }
 
     public Optional<LocalDate> getStartDate() {
