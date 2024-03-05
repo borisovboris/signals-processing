@@ -39,8 +39,13 @@ model/locationsDTO.ts
 model/models.ts
 model/nameFilterDTO.ts
 model/newEventDTO.ts
+model/originDTO.ts
+model/originDeviceDTO.ts
+model/originDevicesDTO.ts
 model/signalDTO.ts
 model/signalDTO1.ts
 model/statusDTO.ts
+model/uploadedEventDTO.ts
+model/uploadedSignalDTO.ts
 param.ts
 variables.ts

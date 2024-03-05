@@ -35,4 +35,16 @@ public class Signal {
 
     @Column(insertable = false, updatable = false, nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
     public LocalDate creationAt;
+
+    public void setValue(BigDecimal value) {
+        this.value = value;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setDevice(Device device) {
+        this.device = device;
+    }
 }

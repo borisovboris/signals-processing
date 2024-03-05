@@ -1,0 +1,42 @@
+{
+  "$schema": "./signals-schema.json",
+  "signals": [
+    {
+      "description": "First signal",
+      "value": 0.88,
+      "sourceDevice": {
+        "country": "Bulgaria",
+        "city": "Sofia",
+        "location": "Mall of Sofia",
+        "composition": "REVOLVING_DOOR",
+        "name": "Camera"
+      },
+      "events": [
+        {
+          "name": "Start device",
+          "affectedDevices": [
+            {
+              "country": "Bulgaria",
+              "city": "Sofia",
+              "location": "Mall of Sofia",
+              "composition": "REVOLVING_DOOR",
+              "names": ["Camera", "Motor"]
+            }
+          ]
+        },
+        {
+          "name": "Stop device",
+          "affectedDevices": [
+            {
+              "country": "Bulgaria",
+              "city": "Sofia",
+              "location": "Mall of Sofia",
+              "composition": "REVOLVING_DOOR",
+              "names": ["Camera", "Motor"]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

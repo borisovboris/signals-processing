@@ -4,6 +4,7 @@ import {
   EventDetailsDTO,
   EventFiltersDTO,
   NewEventDTO,
+  UploadedSignalDTO,
 } from '../../../../generated-sources/openapi';
 
 export const EventActions = createActionGroup({
@@ -18,5 +19,7 @@ export const EventActions = createActionGroup({
     'Event created': props<any>(),
     'Delete event': props<{ id: number }>(),
     'Event deleted': props<any>(),
+    'Upload signals': props<{ signals: UploadedSignalDTO[] }>(),
+    'Signals uploaded': props<any>(),
   },
 });

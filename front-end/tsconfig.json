@@ -2,6 +2,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "resolveJsonModule": true,
     "paths": {
       "@app": ["./generated-sources/api"],
       "@model": ["./generated-sources/model"],

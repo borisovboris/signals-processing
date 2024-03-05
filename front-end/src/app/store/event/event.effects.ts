@@ -10,7 +10,11 @@ import { eventFilters } from './event.selectors';
 export class EventEffects {
   loadEvents = createEffect(() =>
     this.actions$.pipe(
-      ofType(EventActions.getEvents, EventActions.eventCreated, EventActions.eventDeleted),
+      ofType(
+        EventActions.getEvents,
+        EventActions.eventCreated,
+        EventActions.eventDeleted
+      ),
       withLatestFrom(this.store.select(eventFilters)),
       switchMap(([_, filters]) =>
         this.eventsService.readEvents(filters).pipe(
@@ -46,11 +50,23 @@ export class EventEffects {
   );
 
   deleteEvent = createEffect(() =>
+    this.actions$.pipe(
+      ofType(EventActions.deleteEvent),
+      switchMap(({ id }) =>
+        this.eventsService.deleteEvent(id).pipe(
+          map((details) => EventActions.eventDeleted()),
+          catchError(() => EMPTY)
+        )
+      )
+    )
+  );
+
+  uploadSignals = createEffect(() =>
   this.actions$.pipe(
-    ofType(EventActions.deleteEvent),
-    switchMap(({ id }) =>
-      this.eventsService.deleteEvent(id).pipe(
-        map((details) => EventActions.eventDeleted()),
+    ofType(EventActions.uploadSignals),
+    switchMap(({ signals }) =>
+      this.eventsService.uploadSignals(signals).pipe(
+        map((details) => EventActions.signalsUploaded()),
         catchError(() => EMPTY)
       )
     )

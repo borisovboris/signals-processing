@@ -66,9 +66,14 @@
   <mat-card class="list">
     <div class="heading">
       <h2>Events</h2>
-      <button mat-raised-button color="accent" (click)="openEventForm()">
-        Add manual event
-      </button>
+      <div>
+        <button mat-raised-button color="accent" (click)="openEventForm()">
+          Add manual event
+        </button>
+        <button mat-raised-button color="accent" (click)="openDialogForUploadingSignals()">
+          Upload signals
+        </button>
+      </div>
     </div>
     @if(events !== undefined && events.length > 0) {
     <div class="table" @fadeIn>

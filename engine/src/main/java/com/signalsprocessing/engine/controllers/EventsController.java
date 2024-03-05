@@ -18,6 +18,7 @@ import com.signalsprocessing.engine.services.EventService.EventDTO;
 import com.signalsprocessing.engine.services.EventService.EventDetailsDTO;
 import com.signalsprocessing.engine.services.EventService.EventTypeDTO;
 import com.signalsprocessing.engine.services.EventService.NewEventDTO;
+import com.signalsprocessing.engine.services.transfer.UploadedSignalDTO;
 import com.signalsprocessing.engine.shared.NameFilterDTO;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -57,5 +58,11 @@ public class EventsController {
     @ResponseBody
     public void deleteEvent(@PathVariable("id") Long id) {
         service.deleteEvent(id);
+    }
+
+    @PostMapping("upload-signals")
+    @ResponseBody
+    public void uploadSignals(@RequestBody List<UploadedSignalDTO> signals) {
+        service.uploadSignals(signals);
     }
 }

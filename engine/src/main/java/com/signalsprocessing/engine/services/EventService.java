@@ -17,6 +17,11 @@ import com.signalsprocessing.engine.models.EventDeviceId;
 import com.signalsprocessing.engine.models.EventType;
 import com.signalsprocessing.engine.models.Signal;
 import com.signalsprocessing.engine.services.CompositionService.DeviceDTO;
+import com.signalsprocessing.engine.services.transfer.OriginDTO;
+import com.signalsprocessing.engine.services.transfer.OriginDeviceDTO;
+import com.signalsprocessing.engine.services.transfer.OriginDevicesDTO;
+import com.signalsprocessing.engine.services.transfer.UploadedEventDTO;
+import com.signalsprocessing.engine.services.transfer.UploadedSignalDTO;
 import com.signalsprocessing.engine.shared.FilterUtility;
 import com.signalsprocessing.engine.shared.NameFilterDTO;
 
@@ -54,7 +59,7 @@ public class EventService {
             predicates.add(eventTypeInIds);
         }
 
-        if(filters.getDeviceIds().isPresent()) {
+        if (filters.getDeviceIds().isPresent()) {
             var deviceIds = root.get("devices").get("device").get("id");
             Predicate deviceInIds = deviceIds.in(filters.getDeviceIds().get());
             predicates.add(deviceInIds);
@@ -90,6 +95,14 @@ public class EventService {
         List<EventDTO> events = query.getResultList().stream().map(e -> mapEvent(e)).toList();
 
         return events;
+    }
+
+    public EventType getEventTypeByName(String name) {
+        TypedQuery<EventType> eventQuery = entityManager
+                .createQuery("SELECT et FROM EventType et WHERE et.name = :name", EventType.class)
+                .setParameter("name", name);
+
+        return eventQuery.getSingleResult();
     }
 
     public EventDetailsDTO getEventDetails(long id) {
@@ -129,6 +142,70 @@ public class EventService {
                 .toList();
 
         return list;
+    }
+
+    @Transactional
+    public void uploadSignals(List<UploadedSignalDTO> uploadedSignals) {
+        for (UploadedSignalDTO uploadedSignal : uploadedSignals) {
+            Device sourceDevice = getDevice(uploadedSignal.getSourceDevice().getName(),
+                    uploadedSignal.getSourceDevice().getOrigin());
+
+            Signal signal = new Signal();
+            signal.setDevice(sourceDevice);
+            signal.setDescription(uploadedSignal.getDescription());
+            signal.setValue(uploadedSignal.getValue());
+            entityManager.persist(signal);
+
+            for (UploadedEventDTO event : uploadedSignal.getEvents()) {
+                generateEvent(event, signal);
+            }
+        }
+    }
+
+    @Transactional
+    public void generateEvent(UploadedEventDTO uploadedEvent, Signal signal) {
+        for(OriginDevicesDTO devicesFromOrigin : uploadedEvent.getAffectedDevices()) {
+            
+            List<String> deviceNames = devicesFromOrigin.getNames();
+            EventType eventType = getEventTypeByName(uploadedEvent.getName());
+    
+            Event event = new Event();
+            event.setType(eventType);
+            event.setManualInsert(false);
+            event.setSignal(signal);
+    
+            for (String deviceName : deviceNames) {
+                Device device = getDevice(deviceName, devicesFromOrigin.getOrigin());
+    
+                EventDevice eventDevice = new EventDevice();
+                EventDeviceId id = new EventDeviceId(event.id, device.id);
+                eventDevice.setId(id);
+                eventDevice.setDevice(device);
+                eventDevice.setEvent(event);
+    
+                entityManager.persist(eventDevice);
+            }
+        }
+
+    }
+
+    @Transactional
+    public Device getDevice(String deviceName, OriginDTO origin) {
+        TypedQuery<Device> query = entityManager
+                .createQuery(
+                        "SELECT d from Device d WHERE d.name = :deviceName " +
+                                "AND d.composition.code = :compositionName " +
+                                "AND d.composition.location.name = :locationName " +
+                                "AND d.composition.location.city.name = :cityName " +
+                                "AND d.composition.location.city.country.name = :countryName",
+                        Device.class)
+                .setParameter("deviceName", deviceName)
+                .setParameter("compositionName", origin.getComposition())
+                .setParameter("locationName", origin.getLocation())
+                .setParameter("cityName", origin.getCity())
+                .setParameter("countryName", origin.getCountry());
+
+        return query.getSingleResult();
     }
 
     @Transactional

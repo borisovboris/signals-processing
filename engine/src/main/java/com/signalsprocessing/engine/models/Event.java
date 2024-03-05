@@ -51,4 +51,9 @@ public class Event {
     public Optional<Signal> getSignal() {
         return Optional.ofNullable(this.signal);
     }
+
+    public void setSignal(Signal signal) {
+        this.signal = signal;
+    }
+
 }

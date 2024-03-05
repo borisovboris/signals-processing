@@ -251,6 +251,7 @@ INSERT INTO signal(id, device_id, value)
 VALUES
 (1, 3, 1),
 (2, 3, 0);
+ALTER SEQUENCE signal_id_seq RESTART WITH 1000;
 
 INSERT INTO event(id, type_id, signal_id)
 VALUES

@@ -34,6 +34,7 @@ import { BatchList } from '../../shared/batch-list';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { fadeIn } from '../../shared/animations';
 import { NoDataComponent } from '../../shared/no-data/no-data.component';
+import { UploadSignalsComponent } from '../upload-signals/upload-signals.component';
 
 export enum ManualInsert {
   ANY = 'Any',
@@ -51,6 +52,7 @@ export enum ManualInsert {
     AutocompleteChipsComponent,
     ReactiveFormsModule,
     NoDataComponent,
+    UploadSignalsComponent,
   ],
   animations: [fadeIn],
   templateUrl: './event-list.component.html',
@@ -99,18 +101,23 @@ export class EventListComponent extends BatchList implements OnInit {
     private readonly dialogService: DialogService,
     private readonly eventService: EventsService,
     private readonly compositionService: CompositionsService,
-    private readonly changeRef: ChangeDetectorRef,
+    private readonly changeRef: ChangeDetectorRef
   ) {
     super();
   }
 
   ngOnInit() {
     this.refetchEvents();
-    this.scrolled$.pipe(debounceTime(300), takeUntilDestroyed(this.destroyRef)).subscribe(() => this.getOffset());
-    this.store.select(events).pipe(takeUntilDestroyed(this.destroyRef)).subscribe((data) => {
-      this.events = data;
-      this.changeRef.markForCheck();
-    });
+    this.scrolled$
+      .pipe(debounceTime(300), takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.getOffset());
+    this.store
+      .select(events)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((data) => {
+        this.events = data;
+        this.changeRef.markForCheck();
+      });
 
     this.form.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef), debounceTime(300))
@@ -132,6 +139,10 @@ export class EventListComponent extends BatchList implements OnInit {
       .subscribe((_) => {
         this.offset = 0;
       });
+  }
+
+  openDialogForUploadingSignals() {
+    this.dialogService.open(UploadSignalsComponent);
   }
 
   handleTypeInput(text: string) {
