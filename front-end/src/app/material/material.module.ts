@@ -13,6 +13,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [],
@@ -31,6 +32,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatButtonToggleModule,
     MatDatepickerModule,
     MatTooltipModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     MatTabsModule,
@@ -46,6 +48,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatButtonToggleModule,
     MatDatepickerModule,
     MatTooltipModule,
+    MatProgressSpinnerModule
   ],
 })
 export class MaterialModule {}

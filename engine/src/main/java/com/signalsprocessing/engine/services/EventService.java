@@ -194,13 +194,13 @@ public class EventService {
         TypedQuery<Device> query = entityManager
                 .createQuery(
                         "SELECT d from Device d WHERE d.name = :deviceName " +
-                                "AND d.composition.code = :compositionName " +
+                                "AND d.composition.code = :compositionCode " +
                                 "AND d.composition.location.name = :locationName " +
                                 "AND d.composition.location.city.name = :cityName " +
                                 "AND d.composition.location.city.country.name = :countryName",
                         Device.class)
                 .setParameter("deviceName", deviceName)
-                .setParameter("compositionName", origin.getComposition())
+                .setParameter("compositionCode", origin.getComposition())
                 .setParameter("locationName", origin.getLocation())
                 .setParameter("cityName", origin.getCity())
                 .setParameter("countryName", origin.getCountry());

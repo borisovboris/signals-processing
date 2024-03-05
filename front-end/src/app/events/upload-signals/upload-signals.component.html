@@ -1,3 +1,11 @@
 <mat-card>
-    <input type="file" #uploads  (change)="onChange(uploads.files)">
+  <h1>Upload .json file with signals</h1>
+  <div class="centered-container">
+    @if(!loading) {
+        <input type="file" #uploads (change)="onChange(uploads.files)" />
+        } @else {
+        <mat-progress-spinner [color]="'accent'" [mode]="'indeterminate'">
+        </mat-progress-spinner>
+        }
+  </div>
 </mat-card>

@@ -38,6 +38,7 @@ export interface EventState {
   events: EventDTO[];
   details?: EventDetailsDTO;
   filters: EventFiltersDTO;
+  uploadingSignalsInProgress: boolean;
 }
 
 export interface AppState {

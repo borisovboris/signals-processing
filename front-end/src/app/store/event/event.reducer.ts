@@ -5,6 +5,7 @@ import { EventActions } from './event.actions';
 export const initialState: EventState = {
   events: [],
   filters: {},
+  uploadingSignalsInProgress: false,
 };
 
 export const eventReducer = createReducer(
@@ -21,5 +22,7 @@ export const eventReducer = createReducer(
   on(EventActions.eventsFetched, (state, { events }) => ({
     ...state,
     events: [...state.events.slice(), ...events],
-  }))
+  })),
+  on(EventActions.uploadSignals, (state) => ({ ...state, uploadingSignalsInProgress: true })),
+  on(EventActions.signalsUploaded, (state) => ({ ...state, uploadingSignalsInProgress: false })),
 );

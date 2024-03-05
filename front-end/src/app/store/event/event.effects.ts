@@ -13,7 +13,8 @@ export class EventEffects {
       ofType(
         EventActions.getEvents,
         EventActions.eventCreated,
-        EventActions.eventDeleted
+        EventActions.eventDeleted,
+        EventActions.signalsUploaded,
       ),
       withLatestFrom(this.store.select(eventFilters)),
       switchMap(([_, filters]) =>
