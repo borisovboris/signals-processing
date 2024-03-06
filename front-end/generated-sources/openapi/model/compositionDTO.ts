@@ -17,6 +17,7 @@ export interface CompositionDTO {
     id: number;
     location: LabeledValueDTO;
     type: LabeledValueDTO;
+    city: LabeledValueDTO;
     code: string;
     devicesSize: number;
     status: StatusDTO;

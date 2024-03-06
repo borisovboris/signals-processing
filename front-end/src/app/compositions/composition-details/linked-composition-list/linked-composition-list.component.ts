@@ -42,7 +42,7 @@ export class LinkedCompositionListComponent {
 
     const data: LinkCompositionData = {
       compositionId: this.compositionId,
-      locations: [this.details.composition.location.value],
+      cities: [this.details.composition.city.value],
       excludedCompositions: [currentComposition, ...relatedCompositions],
     };
 

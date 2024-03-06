@@ -194,12 +194,13 @@ public class CompositionService {
                 String code = composition.code;
                 LabeledValueDTO location = new LabeledValueDTO(composition.location.id, composition.location.name);
                 LabeledValueDTO type = new LabeledValueDTO(composition.type.id, composition.type.name);
+                LabeledValueDTO city = new LabeledValueDTO(composition.location.city.id, composition.location.city.name);
                 int devicesSize = composition.devices.size();
                 StatusDTO status = new StatusDTO(composition.status.id, composition.status.name,
                                 composition.status.isOperational,
                                 composition.status.isBroken, composition.status.inMaintenance);
 
-                return new CompositionDTO(composition.id, location, type, code, devicesSize, status,
+                return new CompositionDTO(composition.id, location, type, city, code, devicesSize, status,
                                 composition.coordinates, composition.description);
         }
 
@@ -442,6 +443,7 @@ public class CompositionService {
 
         public record CompositionDTO(@NotNull long id, @NotNull LabeledValueDTO location,
                         @NotNull LabeledValueDTO type,
+                        @NotNull LabeledValueDTO city,
                         @NotNull String code,
                         @NotNull int devicesSize,
                         @NotNull StatusDTO status,

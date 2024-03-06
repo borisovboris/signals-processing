@@ -18,7 +18,7 @@ import { LabeledValue, isNumericLabeledValue, labeledValueValidator } from '../.
 
 export interface LinkCompositionData {
   compositionId: number;
-  locations: number[];
+  cities: number[];
   excludedCompositions: number[];
 }
 
@@ -57,10 +57,10 @@ export class LinkCompositionFormComponent {
   ) {}
 
   onUserInput(text: string) {
-    const { locations, excludedCompositions } = this.dialogData;
+    const { cities, excludedCompositions } = this.dialogData;
     this.service
       .readCompositions({
-        locations,
+        cities,
         excludedCompositions,
         code: text,
       })
