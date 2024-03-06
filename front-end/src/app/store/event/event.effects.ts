@@ -5,6 +5,7 @@ import { EventsService } from '../../../../generated-sources/openapi';
 import { EventActions } from './event.actions';
 import { EMPTY, catchError, map, switchMap, withLatestFrom } from 'rxjs';
 import { eventFilters } from './event.selectors';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class EventEffects {
@@ -14,7 +15,7 @@ export class EventEffects {
         EventActions.getEvents,
         EventActions.eventCreated,
         EventActions.eventDeleted,
-        EventActions.signalsUploaded,
+        EventActions.signalsUploaded
       ),
       withLatestFrom(this.store.select(eventFilters)),
       switchMap(([_, filters]) =>
@@ -55,7 +56,7 @@ export class EventEffects {
       ofType(EventActions.deleteEvent),
       switchMap(({ id }) =>
         this.eventsService.deleteEvent(id).pipe(
-          map((details) => EventActions.eventDeleted()),
+          map(() => EventActions.eventDeleted()),
           catchError(() => EMPTY)
         )
       )
@@ -63,20 +64,27 @@ export class EventEffects {
   );
 
   uploadSignals = createEffect(() =>
-  this.actions$.pipe(
-    ofType(EventActions.uploadSignals),
-    switchMap(({ signals }) =>
-      this.eventsService.uploadSignals(signals).pipe(
-        map((details) => EventActions.signalsUploaded()),
-        catchError(() => EMPTY)
+    this.actions$.pipe(
+      ofType(EventActions.uploadSignals),
+      switchMap(({ signals }) =>
+        this.eventsService.uploadSignals(signals).pipe(
+          map(() => {
+            this.snackBar.open('Signals uploaded ✔', undefined, {
+              duration: 3000,
+              panelClass: ['snackbar-accent-color-text'],
+            });
+            return EventActions.signalsUploaded();
+          }),
+          catchError(() => EMPTY)
+        )
       )
     )
-  )
-);
+  );
 
   constructor(
     private actions$: Actions,
     private eventsService: EventsService,
-    private store: Store
+    private store: Store,
+    private snackBar: MatSnackBar
   ) {}
 }

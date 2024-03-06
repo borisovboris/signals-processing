@@ -1,7 +1,5 @@
 import {
   ApplicationConfig,
-  LOCALE_ID,
-  Provider,
   importProvidersFrom,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
