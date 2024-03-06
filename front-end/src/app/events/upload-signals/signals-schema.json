@@ -44,6 +44,9 @@
                 "name": {
                   "type": "string"
                 },
+                "newDevicesStatusName": {
+                  "type": "string"
+                },
                 "affectedDevices": {
                   "type": "array",
                   "items": {

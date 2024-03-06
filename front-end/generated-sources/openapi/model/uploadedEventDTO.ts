@@ -15,5 +15,6 @@ import { OriginDevicesDTO } from './originDevicesDTO';
 export interface UploadedEventDTO { 
     name: string;
     affectedDevices: Array<OriginDevicesDTO>;
+    newDevicesStatusName?: string;
 }
 

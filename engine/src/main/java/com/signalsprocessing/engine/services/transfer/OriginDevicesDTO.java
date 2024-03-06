@@ -17,5 +17,4 @@ public class OriginDevicesDTO extends OriginDTO {
         return names;
     }
 
-    
 }

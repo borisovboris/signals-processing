@@ -175,8 +175,19 @@ public class EventService {
             event.setManualInsert(false);
             event.setSignal(signal);
 
+            DeviceStatus newDeviceStatus = null;
+
+            if (uploadedEvent.getNewDevicesStatusName().isPresent()) {
+                newDeviceStatus = getDeviceStatusByName(
+                        uploadedEvent.getNewDevicesStatusName().get());
+            }
+
             for (String deviceName : deviceNames) {
                 Device device = getDevice(deviceName, devicesFromOrigin.getOrigin());
+
+                if (newDeviceStatus != null) {
+                    device.setStatus(newDeviceStatus);
+                }
 
                 EventDevice eventDevice = new EventDevice();
                 EventDeviceId id = new EventDeviceId(event.id, device.id);
@@ -188,6 +199,14 @@ public class EventService {
             }
         }
 
+    }
+
+    public DeviceStatus getDeviceStatusByName(String name) {
+        TypedQuery<DeviceStatus> eventQuery = entityManager
+                .createQuery("SELECT ds FROM DeviceStatus ds WHERE ds.name = :name", DeviceStatus.class)
+                .setParameter("name", name);
+
+        return eventQuery.getSingleResult();
     }
 
     @Transactional
@@ -220,7 +239,7 @@ public class EventService {
 
         DeviceStatus newDeviceStatus = null;
 
-        if(newEvent.newDevicesStatusId != null) {
+        if (newEvent.newDevicesStatusId != null) {
             newDeviceStatus = entityManager.getReference(DeviceStatus.class, newEvent.newDevicesStatusId);
         }
 
@@ -229,7 +248,7 @@ public class EventService {
         event.setManualInsert(true);
 
         for (Device device : devices) {
-            if(newDeviceStatus != null) {
+            if (newDeviceStatus != null) {
                 device.setStatus(newDeviceStatus);
             }
 
