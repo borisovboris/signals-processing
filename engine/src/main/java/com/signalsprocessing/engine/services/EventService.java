@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import com.signalsprocessing.engine.models.Device;
+import com.signalsprocessing.engine.models.DeviceStatus;
 import com.signalsprocessing.engine.models.Event;
 import com.signalsprocessing.engine.models.EventDevice;
 import com.signalsprocessing.engine.models.EventDeviceId;
@@ -164,25 +165,25 @@ public class EventService {
 
     @Transactional
     public void generateEvent(UploadedEventDTO uploadedEvent, Signal signal) {
-        for(OriginDevicesDTO devicesFromOrigin : uploadedEvent.getAffectedDevices()) {
-            
+        for (OriginDevicesDTO devicesFromOrigin : uploadedEvent.getAffectedDevices()) {
+
             List<String> deviceNames = devicesFromOrigin.getNames();
             EventType eventType = getEventTypeByName(uploadedEvent.getName());
-    
+
             Event event = new Event();
             event.setType(eventType);
             event.setManualInsert(false);
             event.setSignal(signal);
-    
+
             for (String deviceName : deviceNames) {
                 Device device = getDevice(deviceName, devicesFromOrigin.getOrigin());
-    
+
                 EventDevice eventDevice = new EventDevice();
                 EventDeviceId id = new EventDeviceId(event.id, device.id);
                 eventDevice.setId(id);
                 eventDevice.setDevice(device);
                 eventDevice.setEvent(event);
-    
+
                 entityManager.persist(eventDevice);
             }
         }
@@ -217,11 +218,21 @@ public class EventService {
                 .setParameter("deviceIds", newEvent.deviceIds);
         List<Device> devices = query.getResultList();
 
+        DeviceStatus newDeviceStatus = null;
+
+        if(newEvent.newDevicesStatusId != null) {
+            newDeviceStatus = entityManager.getReference(DeviceStatus.class, newEvent.newDevicesStatusId);
+        }
+
         Event event = new Event();
         event.setType(type);
         event.setManualInsert(true);
 
         for (Device device : devices) {
+            if(newDeviceStatus != null) {
+                device.setStatus(newDeviceStatus);
+            }
+
             EventDevice eventDevice = new EventDevice();
             EventDeviceId id = new EventDeviceId(event.id, device.id);
             eventDevice.setId(id);
@@ -260,7 +271,8 @@ public class EventService {
     public record SignalDTO(@NotNull long id, @NotNull BigDecimal value, @NotNull LocalDate creationAt) {
     }
 
-    public record NewEventDTO(@NotNull long eventTypeId, @NotNull List<Long> deviceIds) {
+    public record NewEventDTO(@NotNull long eventTypeId, @Nullable Long newDevicesStatusId,
+            @NotNull List<Long> deviceIds) {
     }
 
     public record EventTypeDTO(@NotNull long id, @NotNull String name) {

@@ -43,7 +43,7 @@ import { CompositionActions } from '../../../store/composition/composition.actio
 import { DIALOG_DATA } from '../../../shared/services/dialog.service';
 import {
   getNullOrValue,
-  getStatusValue,
+  getLabeledValue,
   stringsLike,
 } from '../../../shared/utils';
 
@@ -333,9 +333,9 @@ export class CompositionFormComponent implements AfterViewInit {
     const codeChanged = !stringsLike(code, codeCtrl);
     const coordinatesChanged = !stringsLike(coordinates, coordinatesCtrl);
     const descriptionChanged = !stringsLike(description, descriptionCtrl);
-    const locationChanged = location.value !== getStatusValue(locationCtrl);
-    const typeChanged = type.value !== getStatusValue(typeCtrl);
-    const statusChanged = status.value !== getStatusValue(statusCtrl);
+    const locationChanged = location.value !== getLabeledValue(locationCtrl);
+    const typeChanged = type.value !== getLabeledValue(typeCtrl);
+    const statusChanged = status.value !== getLabeledValue(statusCtrl);
 
     return (
       codeChanged ||

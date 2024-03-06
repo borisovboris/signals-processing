@@ -7,6 +7,12 @@
       [options$]="typeOptions$"
       (userTextInput)="onEventTypeInput($event)"
     ></app-single-autocomplete>
+    <app-single-autocomplete
+    [label]="'New devices status'"
+    [ctrl]="devicesStatusCtrl"
+    [options$]="deviceStatusesOptions$"
+    (userTextInput)="onDeviceStatusInput($event)"
+  ></app-single-autocomplete>
     <app-autocomplete-chips
       [required]="true"
       [options$]="deviceOptions$"

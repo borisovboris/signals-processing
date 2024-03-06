@@ -43,12 +43,12 @@ export function getNullOrValue<T>(value: T | undefined): T | null {
   return value;
 }
 
-export function getStatusValue(
+export function getLabeledValue(
   input: LabeledValue<number> | string | null | undefined
-): number | null | string | undefined{
+): number | undefined {
   if (isNumericLabeledValue(input)) {
     return input.value;
   }
 
-  return input;
+  return undefined;
 }

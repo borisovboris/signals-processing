@@ -44,7 +44,6 @@ export class SingleAutocompleteComponent {
 
   ngOnInit() {
     this.userTextInput.emit('');
-    
   }
 
   ngAfterViewInit() {

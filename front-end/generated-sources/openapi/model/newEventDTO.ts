@@ -13,6 +13,7 @@
 
 export interface NewEventDTO { 
     eventTypeId: number;
+    newDevicesStatusId?: number;
     deviceIds: Array<number>;
 }
 

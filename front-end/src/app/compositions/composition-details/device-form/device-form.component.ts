@@ -39,7 +39,7 @@ import {
 } from '../../../../../generated-sources/openapi';
 import { SingleAutocompleteComponent } from '../../../shared/single-autocomplete/single-autocomplete.component';
 import { CommonModule } from '@angular/common';
-import { getStatusValue, stringsLike } from '../../../shared/utils';
+import { getLabeledValue, stringsLike } from '../../../shared/utils';
 
 export interface CreateEditDevice {
   compositionId: number;
@@ -267,7 +267,7 @@ export class DeviceFormComponent implements AfterViewInit {
     const nameChanged =
       deviceName.toLowerCase() !== this.deviceName.value?.toLowerCase();
     const statusChanged =
-      status.value !== getStatusValue(this.deviceStatus.value);
+      status.value !== getLabeledValue(this.deviceStatus.value);
 
     return codeChanged || nameChanged || statusChanged;
   }

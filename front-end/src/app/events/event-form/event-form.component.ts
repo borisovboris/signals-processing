@@ -22,6 +22,7 @@ import { AutocompleteChipsComponent } from '../../shared/autocomplete-chips/auto
 import { Store } from '@ngrx/store';
 import { EventActions } from '../../store/event/event.actions';
 import { DialogReference } from '../../shared/services/dialog-reference';
+import { getLabeledValue } from '../../shared/utils';
 
 @Component({
   selector: 'app-event-form',
@@ -57,6 +58,12 @@ export class EventFormComponent {
   >([]);
   typeOptions$ = this.types$.asObservable();
 
+  devicesStatusCtrl: FormControl<LabeledValue<number> | string | null> =
+    new FormControl('');
+  deviceStatuses$: BehaviorSubject<LabeledValue<number>[]> =
+    new BehaviorSubject<LabeledValue<number>[]>([]);
+  deviceStatusesOptions$ = this.deviceStatuses$.asObservable();
+
   devicesCtrl = new FormControl<string[]>([], { nonNullable: true });
   devices$: BehaviorSubject<LabeledValue<number>[]> = new BehaviorSubject<
     LabeledValue<number>[]
@@ -73,17 +80,18 @@ export class EventFormComponent {
       },
       [this.chipsRequiredValidator().bind(this)]
     ),
+    devicesStatusCtrl: this.devicesStatusCtrl,
   });
 
   constructor(
-    private readonly service: EventsService,
+    private readonly eventsService: EventsService,
     private readonly compositionService: CompositionsService,
     private store: Store,
     private dialogRef: DialogReference
   ) {}
 
   onEventTypeInput(text: string) {
-    this.service
+    this.eventsService
       .readEventTypes({ name: text })
       .pipe(
         map((types) => types.map((c) => ({ label: c.name, value: c.id }))),
@@ -92,9 +100,16 @@ export class EventFormComponent {
       .subscribe((data) => this.types$.next(data));
   }
 
+  onDeviceStatusInput(text: string) {
+    this.compositionService
+      .readDeviceStatuses({ name: text })
+      .pipe(take(1))
+      .subscribe((data) => this.deviceStatuses$.next(data));
+  }
+
   handleDeviceInput(text: string) {
     this.compositionService
-      .readDevices({ name: text, exludedItemIds: this.getSelectedDevices() })
+      .readDevices({ name: text, exludedItemIds: this.selectedDevices })
       .pipe(
         take(1),
         map((devices) =>
@@ -108,19 +123,24 @@ export class EventFormComponent {
     this.devices$.next([]);
   }
 
-  getSelectedDevices() {
+  get selectedDevices() {
     return this.devicesCtrl.value.map((d) => Number(d));
+  }
+
+  get newDevicesStatus() {
+    return this.devicesStatusCtrl.value;
   }
 
   createEvent() {
     const eventValue = this.eventTypeCtrl.value;
-    const deviceIds = this.getSelectedDevices();
 
     if (isNumericLabeledValue(eventValue)) {
       const event = {
         eventTypeId: eventValue.value,
-        deviceIds,
+        deviceIds: this.selectedDevices,
+        newDevicesStatusId: getLabeledValue(this.newDevicesStatus),
       };
+
       this.store.dispatch(EventActions.createEvent({ event }));
 
       this.dialogRef.close(true);
