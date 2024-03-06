@@ -22,7 +22,10 @@
           class="row-wrapper"
           *cdkVirtualFor="let composition of details.relatedCompositions"
         >
-          <div class="row mat-elevation-z2">
+          <div
+            class="row mat-elevation-z2"
+            [class.not-operational]="!composition.status.isOperational"
+          >
             <p>{{ composition.code }}</p>
             <p>{{ composition.devicesSize }}</p>
             <p>
