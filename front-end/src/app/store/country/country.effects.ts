@@ -40,7 +40,7 @@ export class CountryEffects {
         CountryActions.getCitiesOfCountry,
         CountryActions.cityCreated,
         CountryActions.cityDeleted,
-        CountryActions.cityEdited,
+        CountryActions.cityEdited
       ),
       withLatestFrom(this.store.select(cityFilters)),
       switchMap(([, filters]) => {
@@ -52,13 +52,25 @@ export class CountryEffects {
     )
   );
 
+  getCountry = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CountryActions.getCountry),
+      switchMap(({ id }) =>
+        this.countriesService.readCountry(id).pipe(
+          map((country) => CountryActions.countryFetched({ country })),
+          catchError(() => EMPTY)
+        )
+      )
+    )
+  );
+
   loadLocations = createEffect(() =>
     this.actions$.pipe(
       ofType(
         CountryActions.getLocations,
         CountryActions.locationCreated,
         CountryActions.locationDeleted,
-        CountryActions.locationEdited,
+        CountryActions.locationEdited
       ),
       switchMap(({ cityId }) =>
         this.countriesService.readLocationsOfCity(cityId).pipe(
@@ -117,17 +129,29 @@ export class CountryEffects {
     )
   );
 
-  editCity = createEffect(() =>
-  this.actions$.pipe(
-    ofType(CountryActions.editCity),
-    switchMap(({ city }) =>
-      this.countriesService.editCity(city).pipe(
-        map(() => CountryActions.cityEdited()),
-        catchError(() => EMPTY)
+  getCity = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CountryActions.getCity),
+      switchMap(({ id }) =>
+        this.countriesService.readCity(id).pipe(
+          map((city) => CountryActions.cityFetched({ city })),
+          catchError(() => EMPTY)
+        )
       )
     )
-  )
-);
+  );
+
+  editCity = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CountryActions.editCity),
+      switchMap(({ city }) =>
+        this.countriesService.editCity(city).pipe(
+          map(() => CountryActions.cityEdited()),
+          catchError(() => EMPTY)
+        )
+      )
+    )
+  );
 
   deleteCity = createEffect(() =>
     this.actions$.pipe(
@@ -156,18 +180,16 @@ export class CountryEffects {
   );
 
   editLocation = createEffect(() =>
-  this.actions$.pipe(
-    ofType(CountryActions.editLocation),
-    switchMap(({ location }) =>
-      this.countriesService.editLocation(location).pipe(
-        map(() =>
-          CountryActions.locationEdited({ cityId: location.cityId })
-        ),
-        catchError(() => EMPTY)
+    this.actions$.pipe(
+      ofType(CountryActions.editLocation),
+      switchMap(({ location }) =>
+        this.countriesService.editLocation(location).pipe(
+          map(() => CountryActions.locationEdited({ cityId: location.cityId })),
+          catchError(() => EMPTY)
+        )
       )
     )
-  )
-);
+  );
 
   deleteLocation = createEffect(() =>
     this.actions$.pipe(

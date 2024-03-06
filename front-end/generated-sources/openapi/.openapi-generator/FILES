@@ -14,7 +14,6 @@ model/baseCityDTO.ts
 model/baseCompositionDTO.ts
 model/baseDeviceDTO.ts
 model/baseLocationDTO.ts
-model/citiesDTO.ts
 model/citiesFiltersDTO.ts
 model/cityDTO.ts
 model/compositionDTO.ts
@@ -35,7 +34,6 @@ model/eventTypeDTO.ts
 model/labeledValueDTO.ts
 model/linkedCompositionsDTO.ts
 model/locationDTO.ts
-model/locationsDTO.ts
 model/models.ts
 model/nameFilterDTO.ts
 model/newEventDTO.ts

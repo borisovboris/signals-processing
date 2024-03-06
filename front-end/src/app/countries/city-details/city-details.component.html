@@ -1,7 +1,7 @@
-<div class="wrapper" *ngIf="locations$ | async as locations">
+<div class="wrapper">
   <mat-card>
-    <div class="heading">
-      <h2>Locations in {{ locations.city.name }}</h2>
+    <div class="heading" *ngIf="currentCity" @fadeIn>
+      <h2>Locations in {{ currentCity.name }}</h2>
       <button
         mat-raised-button
         color="accent"
@@ -10,6 +10,7 @@
         Add location
       </button>
     </div>
+    @if (locations !== undefined && locations.length > 0) {
     <div class="table" @fadeIn>
       <div class="columns">
         <p>Name</p>
@@ -19,25 +20,12 @@
         <p>Actions</p>
       </div>
       <div class="list-wrapper">
-        <cdk-virtual-scroll-viewport
-          CdkScrollable
-          [itemSize]="68"
-        >
-          <div
-            class="row-wrapper"
-            *cdkVirtualFor="let location of locations.locations"
-          >
+        <cdk-virtual-scroll-viewport CdkScrollable [itemSize]="68">
+          <div class="row-wrapper" *cdkVirtualFor="let location of locations">
             <div
               class="row mat-elevation-z2"
               [class.not-operational]="!location.isOperational"
-              (click)="
-                goToLocationCompositions(
-                  locations.city.id,
-                  locations.city.name,
-                  location.id,
-                  location.name
-                )
-              "
+              (click)="goToLocationCompositions(location.id, location.name)"
             >
               <p>{{ location.name }}</p>
               <p>{{ location.address }}</p>
@@ -54,5 +42,8 @@
         </cdk-virtual-scroll-viewport>
       </div>
     </div>
+    } @else {
+    <app-no-data></app-no-data>
+    }
   </mat-card>
 </div>

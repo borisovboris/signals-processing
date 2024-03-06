@@ -12,12 +12,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.signalsprocessing.engine.services.CountryService;
-import com.signalsprocessing.engine.services.CountryService.CitiesDTO;
 import com.signalsprocessing.engine.services.CountryService.CitiesFiltersDTO;
 import com.signalsprocessing.engine.services.CountryService.CityDTO;
 import com.signalsprocessing.engine.services.CountryService.CountryDTO;
 import com.signalsprocessing.engine.services.CountryService.LocationDTO;
-import com.signalsprocessing.engine.services.CountryService.LocationsDTO;
 import com.signalsprocessing.engine.services.transfer.BaseCityDTO;
 import com.signalsprocessing.engine.services.transfer.BaseLocationDTO;
 import com.signalsprocessing.engine.services.transfer.EditedCityDTO;
@@ -48,9 +46,15 @@ public class CountriesController {
         return service.getCountries(offset);
     }
 
+    @GetMapping("read-country/{id}")
+    @ResponseBody
+    public CountryDTO readCountry(@PathVariable Long id) {
+        return service.getCountry(id);
+    }
+
     @GetMapping("read-cities-of-country")
     @ResponseBody
-    public CitiesDTO readCitiesOfCountry(CitiesFiltersDTO filters) {
+    public List<CityDTO> readCitiesOfCountry(CitiesFiltersDTO filters) {
         return service.getCitiesOfCountry(filters);
     }
 
@@ -68,8 +72,14 @@ public class CountriesController {
 
     @GetMapping("read-locations-of-city/{id}")
     @ResponseBody
-    public LocationsDTO readLocationsOfCity(@PathVariable("id") Long id) {
+    public List<LocationDTO> readLocationsOfCity(@PathVariable("id") Long id) {
         return service.getLocationsOfCity(id);
+    }
+
+    @GetMapping("read-city/{id}")
+    @ResponseBody
+    public CityDTO readCity(@PathVariable("id") Long id) {
+        return service.getCity(id);
     }
 
     @GetMapping("country-exists/{name}")

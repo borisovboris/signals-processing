@@ -1,6 +1,6 @@
 import {
-  CitiesDTO,
   CitiesFiltersDTO,
+  CityDTO,
   CompositionDTO,
   CompositionDetailsDTO,
   CompositionFiltersDTO,
@@ -9,7 +9,7 @@ import {
   EventDTO,
   EventDetailsDTO,
   EventFiltersDTO,
-  LocationsDTO,
+  LocationDTO,
 } from '../../../generated-sources/openapi';
 
 export const INITIAL_OFFSET = 0;
@@ -20,8 +20,10 @@ export const COMPOSITION_STATE = 'compositionState';
 
 export interface CountryState {
   countries: CountryDTO[];
-  cities?: CitiesDTO;
-  locations?: LocationsDTO;
+  currentlyViewedCountry?: CountryDTO;
+  cities?: CityDTO[];
+  currentlyViewedCity?: CityDTO;
+  locations?: LocationDTO[];
   countriesOffset: number;
   cityFilters: CitiesFiltersDTO;
 }

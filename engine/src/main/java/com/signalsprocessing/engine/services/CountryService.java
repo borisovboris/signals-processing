@@ -39,7 +39,7 @@ public class CountryService {
                 this.entityManager = entityManager;
         }
 
-        public Country getCountry(long id) {
+        public Country getCountryEntity(long id) {
                 TypedQuery<Country> query = entityManager
                                 .createQuery("SELECT c from Country c WHERE c.id = :id", Country.class)
                                 .setParameter("id", id);
@@ -48,13 +48,30 @@ public class CountryService {
                 return country;
         }
 
-        public City getCity(long id) {
+        public City getCityEntity(long id) {
                 TypedQuery<City> query = entityManager
                                 .createQuery("SELECT ci from City ci WHERE ci.id = :id", City.class)
                                 .setParameter("id", id);
-                City city = query.getSingleResult();
+                return query.getSingleResult();
+        }
 
-                return city;
+        public CityDTO getCity(long id) {
+                City entity = getCityEntity(id);
+
+                return new CityDTO(entity.id, entity.name, entity.postalCode);
+        }
+
+        public Location getLocationEntity(long id) {
+                TypedQuery<Location> query = entityManager
+                                .createQuery("SELECT l from Location l WHERE l.id = :id", Location.class)
+                                .setParameter("id", id);
+                return query.getSingleResult();
+        }
+
+        public CountryDTO getCountry(long id) {
+                Country country = getCountryEntity(id);
+
+                return new CountryDTO(country.id, country.name);
         }
 
         public List<CityDTO> getCitiesLikeName(NameFilterDTO filters) {
@@ -157,10 +174,8 @@ public class CountryService {
                 return !query.getResultList().isEmpty();
         }
 
-        public CitiesDTO getCitiesOfCountry(CitiesFiltersDTO filters) {
+        public List<CityDTO> getCitiesOfCountry(CitiesFiltersDTO filters) {
                 Long countryId = filters.getCountryId();
-                Country country = getCountry(countryId);
-                CountryDTO countryDto = new CountryDTO(country.id, country.name);
                 Integer offset = FilterUtility.getOffset(filters.getOffset());
 
                 TypedQuery<City> query = entityManager
@@ -176,13 +191,10 @@ public class CountryService {
                                 .map(entity -> new CityDTO(entity.id, entity.name, entity.postalCode))
                                 .toList();
 
-                return new CitiesDTO(countryDto, list);
+                return list;
         }
 
-        public LocationsDTO getLocationsOfCity(long cityId) {
-                City city = getCity(cityId);
-                CityDTO cityDto = new CityDTO(city.id, city.name, city.postalCode);
-
+        public List<LocationDTO> getLocationsOfCity(long cityId) {
                 TypedQuery<Location> query = entityManager
                                 .createQuery("SELECT l from Location l WHERE l.city.id = :cityId", Location.class)
                                 .setParameter("cityId", cityId)
@@ -190,13 +202,10 @@ public class CountryService {
                 List<LocationDTO> list = query
                                 .getResultList()
                                 .stream()
-                                .map(entity -> new LocationDTO(entity.id, entity.code, entity.name, entity.address,
-                                                entity.coordinates,
-                                                entity.description, entity.creationAt, entity.isOperational,
-                                                entity.compositions.size()))
+                                .map(entity -> mapLocation(entity))
                                 .toList();
 
-                return new LocationsDTO(cityDto, list);
+                return list;
         }
 
         @Transactional
@@ -234,7 +243,7 @@ public class CountryService {
         }
 
         public void createOrEditCity(BaseCityDTO dto, City city) {
-                Country country = getCountry(dto.getCountryId());
+                Country country = getCountryEntity(dto.getCountryId());
 
                 city.setCountry(country);
                 city.setName(dto.getName());
@@ -273,7 +282,7 @@ public class CountryService {
         }
 
         private void createOrEditLocation(BaseLocationDTO dto, Location location) {
-                City city = getCity(dto.getCityId());
+                City city = getCityEntity(dto.getCityId());
 
                 location.setCity(city);
                 location.setCode(dto.getName());
@@ -283,6 +292,13 @@ public class CountryService {
                 location.setIsOperational(dto.getIsOperational());
 
                 entityManager.merge(location);
+        }
+
+        public LocationDTO mapLocation(Location entity) {
+                return new LocationDTO(entity.id, entity.code, entity.name, entity.address,
+                                entity.coordinates,
+                                entity.description, entity.creationAt, entity.isOperational,
+                                entity.compositions.size());
         }
 
         @Transactional
@@ -296,15 +312,9 @@ public class CountryService {
         public record CityDTO(@NotNull long id, @NotNull String name, @NotNull String postalCode) {
         }
 
-        public record CitiesDTO(@NotNull CountryDTO country, @NotNull List<CityDTO> cities) {
-        }
-
         public record LocationDTO(@NotNull long id, @NotNull String code, @NotNull String name, @NotNull String address,
                         String coordinates, String description, @NotNull LocalDate creationAt,
                         @NotNull boolean isOperational, @NotNull int compositionsSize) {
-        }
-
-        public record LocationsDTO(@NotNull CityDTO city, @NotNull List<LocationDTO> locations) {
         }
 
         public class CitiesFiltersDTO extends OffsetConstraint {

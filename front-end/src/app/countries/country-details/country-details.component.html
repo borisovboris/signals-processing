@@ -1,13 +1,14 @@
-<div class="wrapper" *ngIf="cities$ | async as cities">
+<div class="wrapper">
   <mat-card>
-    <div class="heading">
-      <h2>Cities in {{ cities.country.name }}</h2>
+    <div class="heading" *ngIf="currentCountry">
+      <h2 @fadeIn>Cities in {{ currentCountry.name }}</h2>
       <button mat-raised-button color="accent" (click)="openCityCreationForm()">
         Add city
       </button>
     </div>
-    @if (cities.cities.length > 0) {
-    <div class="table" @fadeIn @fadeOut>
+
+    @if (cities !== undefined && cities.length > 0) {
+    <div class="table" @fadeIn>
       <div class="columns">
         <p>Name</p>
         <p>Actions</p>
@@ -20,7 +21,7 @@
         >
           <div
             class="row-wrapper"
-            *cdkVirtualFor="let city of cities.cities"
+            *cdkVirtualFor="let city of cities"
             (click)="goToCity(city.id)"
           >
             <div class="row mat-elevation-z2">

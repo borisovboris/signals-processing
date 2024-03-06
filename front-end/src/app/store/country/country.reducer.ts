@@ -11,6 +11,7 @@ export const initialState: CountryState = {
 
 export const countriesPath = /^\/countries$/;
 export const citiesPath = /^\/countries\/[\d]+$/;
+export const locationsPath = /^\/countries\/cities\/[\d]+$/;
 
 export const countryReducer = createReducer(
   initialState,
@@ -48,16 +49,19 @@ export const countryReducer = createReducer(
     return { ...state, countries: finalCountries };
   }),
   on(CountryActions.citiesOfCountryFetched, (state, { cities }) => {
-    const currentCities = state.cities?.cities ?? [];
-    const finalCities = {
-      country: cities.country,
-      cities: [...currentCities, ...cities.cities],
-    };
+    const currentCities = state.cities ?? [];
+    const finalCities = [...currentCities, ...cities];
 
     return { ...state, cities: finalCities };
   }),
   on(CountryActions.locationsFetched, (state, { locations }) => {
     return { ...state, locations };
+  }),
+  on(CountryActions.countryFetched, (state, { country }) => {
+    return { ...state, currentlyViewedCountry: country }
+  }),
+  on(CountryActions.cityFetched, (state, { city }) => {
+    return { ...state, currentlyViewedCity: city }
   }),
   on(routerNavigationAction, (state, { payload }) => {
     return resetDataOnPageVisit(state, payload.event.url);
@@ -68,11 +72,15 @@ export const countryReducer = createReducer(
 // is going to be fetched
 function resetDataOnPageVisit(state: CountryState, url: string): CountryState {
   if (countriesPath.test(url)) {
-    return { ...state, countries: [] };
+    return { ...state, countries: [], currentlyViewedCity: undefined };
   }
 
   if (citiesPath.test(url)) {
-    return { ...state, cities: undefined };
+    return { ...state, cities: undefined, currentlyViewedCountry: undefined };
+  }
+
+  if(locationsPath.test(url)) {
+    return { ...state, currentlyViewedCity: undefined };
   }
 
   return state;

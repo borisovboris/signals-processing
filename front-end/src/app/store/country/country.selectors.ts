@@ -9,6 +9,22 @@ export const cities = createSelector(feature, (state) => state.cities);
 
 export const locations = createSelector(feature, (state) => state.locations);
 
-export const cityFilters = createSelector(feature, (state) => state.cityFilters);
+export const cityFilters = createSelector(
+  feature,
+  (state) => state.cityFilters
+);
 
-export const countriesOffset = createSelector(feature, (state) => state.countriesOffset);
+export const countriesOffset = createSelector(
+  feature,
+  (state) => state.countriesOffset
+);
+
+export const currentlyViewedCountry = createSelector(
+  feature,
+  (state) => state.currentlyViewedCountry
+);
+
+export const currentlyViewedCity = createSelector(
+  feature,
+  (state) => state.currentlyViewedCity
+);
