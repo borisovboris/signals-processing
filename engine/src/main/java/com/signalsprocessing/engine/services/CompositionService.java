@@ -117,20 +117,25 @@ public class CompositionService {
                 List<CompositionDTO> relatedCompositions = list.stream().map(lc -> {
                         return lc.firstComposition.id != id ? lc.firstComposition : lc.secondComposition;
                 }).map(rc -> mapComposition(rc)).toList();
-                Composition composition = getComposition(id);
+                Composition composition = getCompositionEntity(id);
                 List<DeviceDTO> devices = composition.devices.stream().map(d -> mapDevice(d))
                                 .sorted((o1, o2) -> o1.name.compareTo(o2.name)).toList();
 
-                return new CompositionDetailsDTO(mapComposition(composition), relatedCompositions, devices);
+                return new CompositionDetailsDTO(relatedCompositions, devices);
         }
 
-        public Composition getComposition(long id) {
+        public Composition getCompositionEntity(long id) {
                 TypedQuery<Composition> query = entityManager
                                 .createQuery("SELECT c from Composition c WHERE c.id = :id", Composition.class)
                                 .setParameter("id", id);
-                Composition composition = query.getSingleResult();
 
-                return composition;
+                return query.getSingleResult();
+        }
+
+        public CompositionDTO getComposition(Long id) {
+                Composition composition = getCompositionEntity(id);
+
+                return mapComposition(composition);
         }
 
         public List<LabeledValueDTO> getCompositionTypes(NameFilterDTO filters) {
@@ -194,7 +199,8 @@ public class CompositionService {
                 String code = composition.code;
                 LabeledValueDTO location = new LabeledValueDTO(composition.location.id, composition.location.name);
                 LabeledValueDTO type = new LabeledValueDTO(composition.type.id, composition.type.name);
-                LabeledValueDTO city = new LabeledValueDTO(composition.location.city.id, composition.location.city.name);
+                LabeledValueDTO city = new LabeledValueDTO(composition.location.city.id,
+                                composition.location.city.name);
                 int devicesSize = composition.devices.size();
                 StatusDTO status = new StatusDTO(composition.status.id, composition.status.name,
                                 composition.status.isOperational,
@@ -206,8 +212,8 @@ public class CompositionService {
 
         @Transactional
         public void linkCompositions(LinkedCompositionsDTO link) {
-                Composition firstComposition = getComposition(link.firstId);
-                Composition secondComposition = getComposition(link.secondId);
+                Composition firstComposition = getCompositionEntity(link.firstId);
+                Composition secondComposition = getCompositionEntity(link.secondId);
                 LinkedCompositionId id = new LinkedCompositionId(link.firstId, link.secondId);
                 LinkedComposition linkedComposition = new LinkedComposition();
 
@@ -459,7 +465,7 @@ public class CompositionService {
         public record LinkedCompositions(Composition firstComposition, Composition secondComposition) {
         }
 
-        public record CompositionDetailsDTO(@NotNull CompositionDTO composition,
+        public record CompositionDetailsDTO(
                         @NotNull List<CompositionDTO> relatedCompositions,
                         @NotNull List<DeviceDTO> devices) {
         }

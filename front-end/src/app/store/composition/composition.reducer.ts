@@ -4,6 +4,7 @@ import { CompositionActions } from './composition.actions';
 import { routerNavigationAction } from '@ngrx/router-store';
 
 export const compositionsPath = /^\/compositions$/;
+export const compositionDetailsPath = /^\/compositions\/[\d]+$/;
 
 export const initialState: CompositionState = {
   compositions: [],
@@ -57,6 +58,9 @@ export const compositionReducer = createReducer(
       deviceDetails,
     };
   }),
+  on(CompositionActions.compositionFetched, (state, { composition }) => {
+    return { ...state, currentlyViewedComposition: composition };
+  }),
   on(routerNavigationAction, (state, { payload }) => {
     return resetDataOnPageVisit(state, payload.event.url);
   })
@@ -68,6 +72,14 @@ function resetDataOnPageVisit(
 ): CompositionState {
   if (compositionsPath.test(url)) {
     return { ...state, compositions: [] };
+  }
+
+  if (compositionDetailsPath.test(url)) {
+    return {
+      ...state,
+      currentlyViewedComposition: undefined,
+      details: undefined,
+    };
   }
 
   return state;

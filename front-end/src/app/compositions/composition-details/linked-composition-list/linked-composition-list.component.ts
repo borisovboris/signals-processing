@@ -5,26 +5,30 @@ import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { DialogService } from '../../../shared/services/dialog.service';
-import { CompositionDetailsDTO } from '../../../../../generated-sources/openapi';
+import {
+  CompositionDTO,
+  CompositionDetailsDTO,
+} from '../../../../../generated-sources/openapi';
 import {
   LinkCompositionData,
   LinkCompositionFormComponent,
 } from '../link-composition-form/link-composition-form.component';
 import { CompositionActions } from '../../../store/composition/composition.actions';
 import { fadeIn } from '../../../shared/animations';
+import { NoDataComponent } from '../../../shared/no-data/no-data.component';
 
 @Component({
   selector: 'app-linked-composition-list',
   standalone: true,
   animations: [fadeIn],
-  imports: [MaterialModule, ScrollingModule, CommonModule],
+  imports: [MaterialModule, ScrollingModule, CommonModule, NoDataComponent],
   templateUrl: './linked-composition-list.component.html',
   styleUrl: './linked-composition-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LinkedCompositionListComponent {
-  @Input() compositionId?: number;
-  @Input() details?: CompositionDetailsDTO;
+  @Input() composition?: CompositionDTO;
+  @Input() linkedCompositions?: CompositionDTO[];
 
   constructor(
     private readonly store: Store,
@@ -33,16 +37,19 @@ export class LinkedCompositionListComponent {
   ) {}
 
   openLinkCompositionForm() {
-    if (this.details === undefined || this.compositionId === undefined) {
+    if (
+      this.linkedCompositions === undefined ||
+      this.composition === undefined
+    ) {
       return;
     }
 
-    let relatedCompositions = this.details.relatedCompositions.map((c) => c.id);
-    let currentComposition = this.details.composition.id;
+    let relatedCompositions = this.linkedCompositions.map((c) => c.id);
+    let currentComposition = this.composition.id;
 
     const data: LinkCompositionData = {
-      compositionId: this.compositionId,
-      cities: [this.details.composition.city.value],
+      compositionId: currentComposition,
+      cities: [this.composition.city.value],
       excludedCompositions: [currentComposition, ...relatedCompositions],
     };
 
@@ -50,10 +57,10 @@ export class LinkedCompositionListComponent {
   }
 
   unlinkCompositions(linkedCompositionId: number) {
-    if (this.compositionId !== undefined) {
+    if (this.composition !== undefined) {
       this.store.dispatch(
         CompositionActions.unlinkCompositions({
-          firstId: this.compositionId,
+          firstId: this.composition.id,
           secondId: linkedCompositionId,
         })
       );

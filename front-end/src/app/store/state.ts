@@ -32,6 +32,7 @@ export interface CompositionState {
   compositions?: CompositionDTO[];
   details?: CompositionDetailsDTO;
   currentlyViewedCompositionId?: number;
+  currentlyViewedComposition?: CompositionDTO;
   deviceDetails?: DeviceDetailsDTO;
   filters: CompositionFiltersDTO;
 }

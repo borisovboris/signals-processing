@@ -17,7 +17,7 @@ export class CompositionEffects {
         CompositionActions.getCompositions,
         CompositionActions.compositionCreated,
         CompositionActions.compositionDeleted,
-        CompositionActions.compositionEdited,
+        CompositionActions.compositionEdited
       ),
       withLatestFrom(this.store.select(compositionFilters)),
       switchMap(([_, filters]) =>
@@ -69,6 +69,18 @@ export class CompositionEffects {
       switchMap(({ device }) =>
         this.compositionService.editDevice(device).pipe(
           map(() => CompositionActions.deviceEdited()),
+          catchError(() => EMPTY)
+        )
+      )
+    )
+  );
+
+  getComposition = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CompositionActions.getComposition),
+      switchMap(({ id }) =>
+        this.compositionService.readComposition(id).pipe(
+          map((composition) => CompositionActions.compositionFetched({ composition })),
           catchError(() => EMPTY)
         )
       )

@@ -4,40 +4,42 @@
     Add device
   </button>
 </div>
-<ng-container *ngIf="details !== undefined">
-  <div class="table" @fadeIn>
-    <div class="columns">
-      <p>Name</p>
-      <p>Added on</p>
-      <p>Status</p>
-      <p>Actions</p>
-    </div>
-    <div class="list-wrapper">
-      <cdk-virtual-scroll-viewport
-        CdkScrollable
-        [itemSize]="68"
-        class="example-viewport"
-      >
-        <div class="row-wrapper" *cdkVirtualFor="let device of details.devices">
-          <div
-            class="row mat-elevation-z2"
-            [class.not-operational]="!device.status.isOperational"
-            (click)="goToDevice(device.id)"
-          >
-            <p>{{ device.name }}</p>
-            <p>{{ device.creationAt | date }}</p>
-            <p>
-              {{
-                device.status.isOperational ? "Operational" : "Not operational"
-              }}
-            </p>
-            <app-list-actions
-              (edit)="openDeviceFormForEdit(device)"
-              (delete)="deleteDevice(device.id)"
-            ></app-list-actions>
-          </div>
-        </div>
-      </cdk-virtual-scroll-viewport>
-    </div>
+@if( devices !== undefined && devices.length > 0 ) {
+<div class="table" @fadeIn>
+  <div class="columns">
+    <p>Name</p>
+    <p>Added on</p>
+    <p>Status</p>
+    <p>Actions</p>
   </div>
-</ng-container>
+  <div class="list-wrapper">
+    <cdk-virtual-scroll-viewport
+      CdkScrollable
+      [itemSize]="68"
+      class="example-viewport"
+    >
+      <div class="row-wrapper" *cdkVirtualFor="let device of devices">
+        <div
+          class="row mat-elevation-z2"
+          [class.not-operational]="!device.status.isOperational"
+          (click)="goToDevice(device.id)"
+        >
+          <p>{{ device.name }}</p>
+          <p>{{ device.creationAt | date }}</p>
+          <p>
+            {{
+              device.status.isOperational ? "Operational" : "Not operational"
+            }}
+          </p>
+          <app-list-actions
+            (edit)="openDeviceFormForEdit(device)"
+            (delete)="deleteDevice(device.id)"
+          ></app-list-actions>
+        </div>
+      </div>
+    </cdk-virtual-scroll-viewport>
+  </div>
+</div>
+} @else {
+<app-no-data></app-no-data>
+}

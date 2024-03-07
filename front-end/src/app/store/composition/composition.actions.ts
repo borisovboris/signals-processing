@@ -8,7 +8,6 @@ import {
   DeviceDetailsDTO,
   EditedCompositionDTO,
   EditedDeviceDTO,
-
 } from '../../../../generated-sources/openapi';
 
 export const CompositionActions = createActionGroup({
@@ -16,6 +15,8 @@ export const CompositionActions = createActionGroup({
   events: {
     'Get Compositions': (filters: CompositionFiltersDTO = {}) => ({ filters }),
     'Compositions Fetched': props<{ compositions: CompositionDTO[] }>(),
+    'Get composition': props<{ id: number }>(),
+    'Composition fetched': props<{ composition: CompositionDTO }>(),
     'Reset compositions': props<any>(),
     'Get Details': props<{ id: number }>(),
     'Details Fetched': props<{ details: CompositionDetailsDTO }>(),

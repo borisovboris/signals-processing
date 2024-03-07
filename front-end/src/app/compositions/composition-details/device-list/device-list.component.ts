@@ -10,11 +10,12 @@ import { CompositionDetailsDTO, DeviceDTO } from '../../../../../generated-sourc
 import { MaterialModule } from '../../../material/material.module';
 import { ListActionsComponent } from '../../../shared/list-actions/list-actions.component';
 import { fadeIn } from '../../../shared/animations';
+import { NoDataComponent } from '../../../shared/no-data/no-data.component';
 
 @Component({
   selector: 'app-device-list',
   standalone: true,
-  imports: [MaterialModule, ScrollingModule, CommonModule, ListActionsComponent],
+  imports: [MaterialModule, ScrollingModule, CommonModule, ListActionsComponent, NoDataComponent],
   animations: [fadeIn],
   templateUrl: './device-list.component.html',
   styleUrl: './device-list.component.scss',
@@ -22,7 +23,7 @@ import { fadeIn } from '../../../shared/animations';
 })
 export class DeviceListComponent {
   @Input() compositionId?: number;
-  @Input() details?: CompositionDetailsDTO;
+  @Input() devices?: DeviceDTO[];
   
   constructor(
     private readonly store: Store,

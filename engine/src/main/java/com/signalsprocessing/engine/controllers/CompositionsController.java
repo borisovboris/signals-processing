@@ -45,6 +45,11 @@ public class CompositionsController {
         return service.readCompositions(filters);
     }
 
+    @GetMapping("read-composition/{id}")
+    public CompositionDTO readComposition(@PathVariable long id) {
+        return service.getComposition(id);
+    }
+
     @GetMapping("read-composition-details/{id}")
     public CompositionDetailsDTO readCompositionDetails(@PathVariable long id) {
         return service.getCompositionDetails(id);

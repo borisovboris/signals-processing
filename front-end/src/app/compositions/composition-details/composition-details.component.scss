@@ -1,21 +1,42 @@
-.wrapper {
+@use "sass:map";
+@import "./colors";
+
+:host {
   display: flex;
+  flex-direction: column;
   padding: 0 5vw;
   height: 100%;
 
-  mat-card:first-child {
-    margin-right: 15px;
-  }
-
-  mat-card:last-child {
-    margin-left: 15px;
-  }
-
-  .devices {
+  .details {
     flex: 1;
+    justify-content: center;
+    margin-bottom: 20px;
+    background-color: map.get($primary, 50);
+
+    h2 {
+      margin-bottom: 0;
+      margin-left: 15px;
+    }
   }
 
-  .related-compositions {
-    flex: 1;
+  .lists {
+    flex: 7;
+    display: flex;
+
+    mat-card:first-child {
+      margin-right: 15px;
+    }
+
+    mat-card:last-child {
+      margin-left: 15px;
+    }
+
+    .devices {
+      flex: 1;
+    }
+
+    .related-compositions {
+      flex: 1;
+    }
   }
 }

@@ -22,3 +22,5 @@ export const compositionFilters = createSelector(
 );
 
 export const deviceDetails = createSelector(feature, (state) => state.deviceDetails);
+
+export const currentlyViewedComposition = createSelector(feature, (state) => state.currentlyViewedComposition);

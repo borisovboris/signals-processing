@@ -1,15 +1,23 @@
-<div class="wrapper" *ngIf="details">
+<mat-card class="details">
+  <h2 *ngIf="currentComposition" @fadeIn>
+    Details for {{ currentComposition.code }} ({{
+      currentComposition.city.label
+    }}, {{ currentComposition.location.label }})
+  </h2>
+</mat-card>
+
+<div class="lists" *ngIf="details">
   <mat-card class="devices">
     <app-device-list
       [compositionId]="compositionId"
-      [details]="details"
+      [devices]="details.devices"
     ></app-device-list>
   </mat-card>
 
   <mat-card class="related-compositions">
     <app-linked-composition-list
-      [compositionId]="compositionId"
-      [details]="details"
+      [composition]="currentComposition"
+      [linkedCompositions]="details.relatedCompositions"
     ></app-linked-composition-list>
   </mat-card>
 </div>
