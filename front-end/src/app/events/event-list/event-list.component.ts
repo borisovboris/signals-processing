@@ -35,6 +35,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { fadeIn } from '../../shared/animations';
 import { NoDataComponent } from '../../shared/no-data/no-data.component';
 import { UploadSignalsComponent } from '../upload-signals/upload-signals.component';
+import { createLabeledValueForDevice } from '../../shared/utils';
 
 export enum ManualInsert {
   ANY = 'Any',
@@ -163,7 +164,7 @@ export class EventListComponent extends BatchList implements OnInit {
     this.compositionService
       .readDevices({ name: text, exludedItemIds: deviceIds })
       .pipe(
-        map((devices) => devices.map((d) => ({ label: d.name, value: d.id }))),
+        map((devices) => devices.map((d) => createLabeledValueForDevice(d))),
         take(1)
       )
       .subscribe((data) => this.devices$.next(data));

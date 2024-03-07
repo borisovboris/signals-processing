@@ -22,7 +22,7 @@ import { AutocompleteChipsComponent } from '../../shared/autocomplete-chips/auto
 import { Store } from '@ngrx/store';
 import { EventActions } from '../../store/event/event.actions';
 import { DialogReference } from '../../shared/services/dialog-reference';
-import { getLabeledValue } from '../../shared/utils';
+import { createLabeledValueForDevice, getLabeledValue } from '../../shared/utils';
 
 @Component({
   selector: 'app-event-form',
@@ -113,7 +113,7 @@ export class EventFormComponent {
       .pipe(
         take(1),
         map((devices) =>
-          devices.map((device) => ({ label: device.name, value: device.id }))
+          devices.map((device) => createLabeledValueForDevice(device))
         )
       )
       .subscribe((data) => this.devices$.next(data));

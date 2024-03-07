@@ -6,7 +6,10 @@ import { SingleAutocompleteComponent } from '../../../shared/single-autocomplete
 import { MaterialModule } from '../../../material/material.module';
 import { DIALOG_DATA } from '../../../shared/services/dialog.service';
 import { DialogReference } from '../../../shared/services/dialog-reference';
-import { CompositionsService } from '../../../../../generated-sources/openapi';
+import {
+  CompositionDTO,
+  CompositionsService,
+} from '../../../../../generated-sources/openapi';
 import { CompositionActions } from '../../../store/composition/composition.actions';
 import {
   FormControl,
@@ -14,7 +17,11 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { LabeledValue, isNumericLabeledValue, labeledValueValidator } from '../../../shared/autocomplete-chips/autocomplete.model';
+import {
+  LabeledValue,
+  isNumericLabeledValue,
+  labeledValueValidator,
+} from '../../../shared/autocomplete-chips/autocomplete.model';
 
 export interface LinkCompositionData {
   compositionId: number;
@@ -43,7 +50,8 @@ export class LinkCompositionFormComponent {
     new BehaviorSubject<LabeledValue<number>[]>([]);
   options$ = this.compositionTypes$.asObservable();
   nameCtrl: FormControl<LabeledValue<number> | string | null> = new FormControl(
-    '', [labeledValueValidator]
+    '',
+    [labeledValueValidator]
   );
 
   form = new FormGroup({
@@ -66,7 +74,7 @@ export class LinkCompositionFormComponent {
       })
       .pipe(
         map((compositions) =>
-          compositions.map((c) => ({ label: c.code, value: c.id }))
+          compositions.map((c) => this.getLabeledValueForComposition(c))
         ),
         take(1)
       )
@@ -86,5 +94,11 @@ export class LinkCompositionFormComponent {
     }
 
     this.dialogRef.close();
+  }
+
+  getLabeledValueForComposition(composition: CompositionDTO): LabeledValue<number> {
+    const label = `${composition.code} (${composition.location.label})`;
+
+    return { label, value: composition.id };
   }
 }

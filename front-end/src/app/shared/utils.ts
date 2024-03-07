@@ -1,6 +1,7 @@
 import { FormControl, FormGroupDirective, NgForm } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { LabeledValue, isNumericLabeledValue } from './autocomplete-chips/autocomplete.model';
+import { DeviceDTO } from '../../../generated-sources/openapi';
 
 export type NULLABLE_STRING = string | null | undefined;
 
@@ -51,4 +52,10 @@ export function getLabeledValue(
   }
 
   return undefined;
+}
+
+export function createLabeledValueForDevice(device: DeviceDTO): LabeledValue<number> {
+  const label = `${device.name} (${device.compositionCode})`;
+
+  return { label, value: device.id };
 }
