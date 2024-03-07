@@ -10,11 +10,12 @@ import moment from 'moment';
 import { CommonModule } from '@angular/common';
 import { deviceDetails } from '../../store/composition/composition.selectors';
 import { fadeIn } from '../../shared/animations';
+import { NoDataComponent } from '../../shared/no-data/no-data.component';
 
 @Component({
   selector: 'app-device-details',
   standalone: true,
-  imports: [MaterialModule, CommonModule],
+  imports: [MaterialModule, CommonModule, NoDataComponent],
   animations: [fadeIn],
   templateUrl: './device-details.component.html',
   styleUrl: './device-details.component.scss',
