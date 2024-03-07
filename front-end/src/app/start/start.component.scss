@@ -1,0 +1,23 @@
+@use "sass:map";
+@import './colors';
+
+:host {
+  @import './dimensions';
+  
+  display: inline-block;
+  width: 100%;
+  height: calc(100% - $page-padding-top - $page-padding-bottom);
+  padding-top: $page-padding-top;
+  padding-bottom: $page-padding-bottom;
+  background-color: map.get($primary, 100);
+
+  .navbar {
+    position: fixed;
+    top: 0; 
+    width: 100%; 
+    height: $navbar-height;
+    background-color: #ffffff;
+    z-index: 1000;
+  }
+
+}

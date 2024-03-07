@@ -1,0 +1,18 @@
+<div class="navbar mat-elevation-z2">
+  <nav mat-tab-nav-bar [tabPanel]="tabPanel">
+    @for (link of links; track link.path) {
+    <a
+      mat-tab-link
+      [routerLink]="link.path"
+      (click)="activeLink = link.path"
+      [active]="activeLink == link.path"
+    >
+    {{ link.label }}
+    </a>
+    }
+  </nav>
+</div>
+
+<mat-tab-nav-panel #tabPanel>
+  <router-outlet></router-outlet>
+</mat-tab-nav-panel>

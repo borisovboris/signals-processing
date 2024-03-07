@@ -1,0 +1,5 @@
+@import './auth';
+
+:host {
+   @include auth-page;
+}
