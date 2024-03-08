@@ -9,9 +9,34 @@
   justify-content: center;
 
   .card {
-    height: 400px;
+    height: 300px;
     width: 300px;
     background-color: #ffffff;
     border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    h1 {
+      margin-left: 20px;
+      margin-top: 15px;
+    }
+
+    .action-button {
+      display: flex;
+      justify-content: flex-end;
+
+      button {
+        margin-right: 15px;
+        margin-bottom: 15px;
+      }
+    }
+
+    .fields {
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
   }
 }

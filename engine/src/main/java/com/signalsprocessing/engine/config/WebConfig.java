@@ -9,10 +9,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
     protected static final Logger parentLogger = LogManager.getLogger();
+    
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**").allowedMethods("GET", "PUT", "POST", "DELETE", 
-        "PATCH", "OPTIONS", "HEAD");;
+        "PATCH", "OPTIONS", "HEAD");
     }
 }

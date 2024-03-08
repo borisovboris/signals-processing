@@ -1,2 +1,21 @@
 <div class="card mat-elevation-z8" @fadeIn>
+  <div class="fields-wrapper">
+    <h1>Register account</h1>
+    <form class="fields" [formGroup]="form">
+      <mat-form-field>
+        <mat-label>Username</mat-label>
+        <input formControlName="username" matInput />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input formControlName="password" matInput />
+      </mat-form-field>
+    </form>
+  </div>
+
+  <div class="action-button">
+    <button mat-raised-button color="accent" [disabled]="form.invalid" (click)="registerUser()">
+      Register
+    </button>
+  </div>
 </div>

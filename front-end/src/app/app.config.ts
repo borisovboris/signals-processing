@@ -12,6 +12,7 @@ import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { MatNativeDateModule } from '@angular/material/core';
 import { provideRouterStore, routerReducer } from '@ngrx/router-store';
+import { AuthEffects } from './store/auth/auth.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,7 +22,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideStore({ router: routerReducer }),
     provideRouterStore(),
-    provideEffects(),
+    provideEffects([AuthEffects]),
     provideStoreDevtools(),
   ],
 };

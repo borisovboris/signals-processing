@@ -1,2 +1,22 @@
 <div class="card mat-elevation-z8" @fadeIn>
-</div>
+    <div class="fields-wrapper">
+      <h1>Login into account</h1>
+      <div class="fields">
+        <mat-form-field>
+          <mat-label>Username</mat-label>
+          <input matInput />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Password</mat-label>
+          <input matInput />
+        </mat-form-field>
+      </div>
+    </div>
+  
+    <div class="action-button">
+      <button mat-raised-button color="accent" [disabled]="false">
+        Login
+      </button>
+    </div>
+  </div>
+  

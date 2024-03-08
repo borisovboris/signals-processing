@@ -32,3 +32,4 @@ export * from './signalDTO1';
 export * from './statusDTO';
 export * from './uploadedEventDTO';
 export * from './uploadedSignalDTO';
+export * from './userDTO';

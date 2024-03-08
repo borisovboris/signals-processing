@@ -2,6 +2,7 @@
 README.md
 api.module.ts
 api/api.ts
+api/auth.service.ts
 api/compositions.service.ts
 api/countries.service.ts
 api/events.service.ts
@@ -45,5 +46,6 @@ model/signalDTO1.ts
 model/statusDTO.ts
 model/uploadedEventDTO.ts
 model/uploadedSignalDTO.ts
+model/userDTO.ts
 param.ts
 variables.ts
