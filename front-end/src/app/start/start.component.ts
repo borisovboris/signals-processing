@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnInit,
-  inject,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   NavigationEnd,
@@ -11,10 +6,10 @@ import {
   RouterLink,
   RouterOutlet,
 } from '@angular/router';
-import { SignalsService } from '../../../generated-sources/openapi';
 import { MaterialModule } from '../material/material.module';
 import { AppRoute, isRoute, routePaths } from '../routing/routing.model';
 import { filter } from 'rxjs/operators';
+import { TokenService } from '../auth/token.service';
 
 export interface LabeledRoute {
   label: string;
@@ -50,14 +45,14 @@ export class StartComponent implements OnInit {
   title = 'signals-processing';
 
   constructor(
-    readonly service: SignalsService,
-    private router: Router
+    private router: Router,
+    private readonly tokenService: TokenService
   ) {}
 
   ngOnInit(): void {
     const currentPath = this.getPathFromUrl(this.router.url);
 
-    if(isRoute(currentPath)) {
+    if (isRoute(currentPath)) {
       this.activeLink = currentPath;
     }
 
@@ -73,8 +68,6 @@ export class StartComponent implements OnInit {
           }
         }
       });
-
-    this.service.createSignal({ id: 2 }).subscribe((data) => console.log(data));
   }
 
   getPathFromUrl(url: string): string | undefined {
@@ -85,5 +78,10 @@ export class StartComponent implements OnInit {
     }
 
     return undefined;
+  }
+
+  logOut() {
+    this.tokenService.deleteAuthToken();
+    this.router.navigateByUrl('/login');
   }
 }

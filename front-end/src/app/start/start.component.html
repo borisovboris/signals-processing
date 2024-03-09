@@ -7,10 +7,15 @@
       (click)="activeLink = link.path"
       [active]="activeLink == link.path"
     >
-    {{ link.label }}
+      {{ link.label }}
     </a>
     }
   </nav>
+  <div class="logout">
+    <button mat-mini-fab matTooltip="Log out" (click)="logOut()">
+      <mat-icon>exit_to_app</mat-icon>
+    </button>
+  </div>
 </div>
 
 <mat-tab-nav-panel #tabPanel>

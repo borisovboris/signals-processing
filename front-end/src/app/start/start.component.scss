@@ -1,10 +1,10 @@
 @use "sass:map";
-@import './colors';
+@import "./colors";
 
 :host {
-  @import './dimensions';
-  
-  display: inline-block;
+  @import "./dimensions";
+
+  display: block;
   width: 100%;
   height: calc(100% - $page-padding-top - $page-padding-bottom);
   padding-top: $page-padding-top;
@@ -13,11 +13,22 @@
 
   .navbar {
     position: fixed;
-    top: 0; 
-    width: 100%; 
+    top: 0;
+    width: 100%;
     height: $navbar-height;
     background-color: #ffffff;
     z-index: 1000;
-  }
+    display: flex;
 
+    nav {
+      flex: 12;
+    }
+
+    .logout {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
 }
