@@ -4,6 +4,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.signalsprocessing.engine.services.AuthService;
@@ -23,7 +24,14 @@ public class AuthController {
     }
 
     @PostMapping("register-user")
+    @ResponseBody
     public void registerUser(@RequestBody UserDTO user) {
         service.registerUser(user);
+    }
+
+    @PostMapping(value = "login-user", produces ="text/plain")
+    @ResponseBody
+    public String loginUser(@RequestBody UserDTO user) {
+        return service.loginUser(user);
     }
 }

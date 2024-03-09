@@ -5,33 +5,24 @@ import java.nio.CharBuffer;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
+import com.signalsprocessing.engine.config.TokenProvider;
 import com.signalsprocessing.engine.models.User;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
 
 @ComponentScan
 @Component
 public class AuthService {
-    private EntityManager entityManager;
     private PasswordEncoder encoder;
+    private UserService userService;
+    private final TokenProvider tokenProvider;
 
-    public AuthService(EntityManager entityManager, PasswordEncoder passwordEncoder) {
-        this.entityManager = entityManager;
+    public AuthService(PasswordEncoder passwordEncoder, UserService userService, TokenProvider tokenProvider) {
         this.encoder = passwordEncoder;
-    }
-
-    public boolean checkIfUserExists(String username) {
-        TypedQuery<User> query = entityManager
-                .createQuery("SELECT u from User u WHERE lower(u.name) = lower(:username) ",
-                        User.class)
-                .setParameter("username", username);
-
-        return !query.getResultList().isEmpty();
+        this.userService = userService;
+        this.tokenProvider = tokenProvider;
     }
 
     @Transactional
@@ -43,11 +34,19 @@ public class AuthService {
             newUser.setUsername(user.username);
             newUser.setPassword(encryptedPass);
 
-            entityManager.persist(newUser);
+           this.userService.saveUser(newUser);
     }
 
-    public void login(UserDTO user) {
+    public String loginUser(UserDTO userDto) {
+        User user = this.userService.getUser(userDto.username());
 
+        boolean passwordMatch = encoder.matches(CharBuffer.wrap(userDto.password()), user.password);
+
+        if(!passwordMatch) {
+            throw new RuntimeException("Wrong username or password");
+        }
+
+        return tokenProvider.createToken(userDto);
     }
 
     public record UserDTO(@NotNull String username, @NotNull String password) {}

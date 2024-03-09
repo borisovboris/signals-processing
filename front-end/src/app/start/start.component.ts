@@ -12,7 +12,6 @@ import {
   RouterOutlet,
 } from '@angular/router';
 import { SignalsService } from '../../../generated-sources/openapi';
-import { HttpClient } from '@angular/common/http';
 import { MaterialModule } from '../material/material.module';
 import { AppRoute, isRoute, routePaths } from '../routing/routing.model';
 import { filter } from 'rxjs/operators';
@@ -56,7 +55,6 @@ export class StartComponent implements OnInit {
 
   constructor(
     readonly service: SignalsService,
-    readonly client: HttpClient,
     private router: Router
   ) {}
 

@@ -6,5 +6,7 @@ export const AuthActions = createActionGroup({
   events: {
     'Register user': props<{ user: UserDTO }>(),
     'User registered': props<any>(),
+    'Login user': props<{ user: UserDTO }>(),
+    'User logged': props<{ token: string }>(),
   },
 });

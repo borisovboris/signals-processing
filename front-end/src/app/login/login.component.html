@@ -1,22 +1,26 @@
 <div class="card mat-elevation-z8" @fadeIn>
-    <div class="fields-wrapper">
-      <h1>Login into account</h1>
-      <div class="fields">
-        <mat-form-field>
-          <mat-label>Username</mat-label>
-          <input matInput />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Password</mat-label>
-          <input matInput />
-        </mat-form-field>
-      </div>
+  <form [formGroup]="form" class="fields-wrapper">
+    <h1>Login into account</h1>
+    <div class="fields">
+      <mat-form-field>
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" />
+      </mat-form-field>
     </div>
-  
-    <div class="action-button">
-      <button mat-raised-button color="accent" [disabled]="false">
-        Login
-      </button>
-    </div>
+  </form>
+
+  <div class="action-button">
+    <button
+      mat-raised-button
+      color="accent"
+      [disabled]="false"
+      (click)="login()"
+    >
+      Login
+    </button>
   </div>
-  
+</div>
