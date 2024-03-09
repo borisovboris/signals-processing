@@ -6,6 +6,8 @@ import { EMPTY, catchError, map, of, switchMap, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthActions } from './auth.actions';
 import { TokenService } from '../../auth/token.service';
+import { SnackbarService } from '../../shared/snackbar.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthEffects {
@@ -16,6 +18,7 @@ export class AuthEffects {
         this.authService.loginUser(user).pipe(
           map((token) => {
             this.tokenService.setAuthToken(token);
+            this.router.navigateByUrl('/countries');
             return AuthActions.userLogged({ token });
           }),
           catchError(() => EMPTY)
@@ -29,22 +32,23 @@ export class AuthEffects {
       ofType(AuthActions.registerUser),
       switchMap(({ user }) =>
         this.authService.registerUser(user).pipe(
-          map(() => AuthActions.userRegistered()),
+          map(() => {
+            this.router.navigateByUrl('/login');
+            this.snackbarService.open('User created');
+            return AuthActions.userRegistered();
+          }),
           catchError(() => EMPTY)
         )
       )
     )
   );
 
-  something() {
-    return of('hhh');
-  }
-
   constructor(
     private actions$: Actions,
     private authService: AuthService,
     private tokenService: TokenService,
     private store: Store,
-    private snackBar: MatSnackBar
+    private snackbarService: SnackbarService,
+    private router: Router
   ) {}
 }

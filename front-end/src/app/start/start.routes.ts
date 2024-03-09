@@ -1,11 +1,13 @@
 import { Routes } from '@angular/router';
 import { AppRoute } from '../routing/routing.model';
 import { StartComponent } from './start.component';
+import { authGuard } from '../auth/auth.guard';
 
 export const START_ROUTES: Routes = [
   {
     path: '',
     component: StartComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: AppRoute.HOME,

@@ -5,7 +5,7 @@ import { EventsService } from '../../../../generated-sources/openapi';
 import { EventActions } from './event.actions';
 import { EMPTY, catchError, map, switchMap, withLatestFrom } from 'rxjs';
 import { eventFilters } from './event.selectors';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarService } from '../../shared/snackbar.service';
 
 @Injectable()
 export class EventEffects {
@@ -69,10 +69,7 @@ export class EventEffects {
       switchMap(({ signals }) =>
         this.eventsService.uploadSignals(signals).pipe(
           map(() => {
-            this.snackBar.open('Signals uploaded ✔', undefined, {
-              duration: 3000,
-              panelClass: ['snackbar-accent-color-text'],
-            });
+            this.snackbarService.open('Signals uploaded ✔');
             return EventActions.signalsUploaded();
           }),
           catchError(() => EMPTY)
@@ -85,6 +82,6 @@ export class EventEffects {
     private actions$: Actions,
     private eventsService: EventsService,
     private store: Store,
-    private snackBar: MatSnackBar
+    private snackbarService: SnackbarService
   ) {}
 }

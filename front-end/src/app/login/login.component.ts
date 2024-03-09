@@ -2,12 +2,19 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MaterialModule } from '../material/material.module';
 import { AuthActions } from '../store/auth/auth.actions';
 import { Store } from '@ngrx/store';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { fadeIn } from '../shared/animations';
 
 @Component({
   selector: 'app-login',
   standalone: true,
+  animations: [fadeIn],
   imports: [CommonModule, MaterialModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',

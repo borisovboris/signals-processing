@@ -5,10 +5,12 @@ import java.util.List;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -19,9 +21,8 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class JWTAuthFilter extends OncePerRequestFilter {
     private final TokenProvider tokenProvider;
-    private final List<AntPathRequestMatcher> excludedMatchers = 
-    List.of(new AntPathRequestMatcher("/swagger-ui"),
-            new AntPathRequestMatcher("/v3/api-docs"), 
+    private final List<AntPathRequestMatcher> excludedMatchers = List.of(new AntPathRequestMatcher("/swagger-ui"),
+            new AntPathRequestMatcher("/v3/api-docs"),
             new AntPathRequestMatcher("/register-user"),
             new AntPathRequestMatcher("/login-user"));
 
@@ -34,7 +35,8 @@ public class JWTAuthFilter extends OncePerRequestFilter {
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
-        if(request.getMethod().equals("OPTIONS")) {
+        // OPTIONS requests are not supposed to carry Authorizations header
+        if (request.getMethod().equals("OPTIONS")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -48,7 +50,14 @@ public class JWTAuthFilter extends OncePerRequestFilter {
                     && "Bearer".equals(authElements[0]);
 
             if (tokenExists) {
-                boolean tokenIsValid = this.tokenProvider.validateToken(authElements[1]);
+                boolean tokenIsValid = false;
+
+                try {
+                    tokenIsValid = this.tokenProvider.validateToken(authElements[1]);
+                } catch (Exception e) {
+
+                }
+
                 if (tokenIsValid) {
                     authorizationSuccessful = true;
                 }
@@ -56,7 +65,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
         }
 
         if (!authorizationSuccessful) {
-            throw new RuntimeException("Authorizing header missing");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
         }
 
         filterChain.doFilter(request, response);
