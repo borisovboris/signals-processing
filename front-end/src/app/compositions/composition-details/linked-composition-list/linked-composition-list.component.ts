@@ -7,7 +7,6 @@ import { Router } from '@angular/router';
 import { DialogService } from '../../../shared/services/dialog.service';
 import {
   CompositionDTO,
-  CompositionDetailsDTO,
 } from '../../../../../generated-sources/openapi';
 import {
   LinkCompositionData,

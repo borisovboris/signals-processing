@@ -2,26 +2,19 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   OnInit,
+  inject,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { CommonModule } from '@angular/common';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import {
-  CreateEditDevice,
-  DeviceFormComponent,
-} from './device-form/device-form.component';
-import {
-  LinkCompositionData,
-  LinkCompositionFormComponent,
-} from './link-composition-form/link-composition-form.component';
 import { MaterialModule } from '../../material/material.module';
 import {
   CompositionDTO,
   CompositionDetailsDTO,
-  DeviceDTO,
 } from '../../../../generated-sources/openapi';
 import { DialogService } from '../../shared/services/dialog.service';
 import { isDefined } from '../../shared/utils';
@@ -31,6 +24,7 @@ import { DeviceListComponent } from './device-list/device-list.component';
 import { LinkedCompositionListComponent } from './linked-composition-list/linked-composition-list.component';
 import { filter, take } from 'rxjs';
 import { fadeIn } from '../../shared/animations';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-composition-details',
@@ -48,6 +42,7 @@ import { fadeIn } from '../../shared/animations';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CompositionDetailsComponent implements OnInit {
+  private destroyRef = inject(DestroyRef);
   details?: CompositionDetailsDTO;
   currentComposition?: CompositionDTO;
   compositionId?: number;
@@ -76,8 +71,7 @@ export class CompositionDetailsComponent implements OnInit {
     this.store
       .select(details)
       .pipe(
-        filter((details) => details !== undefined),
-        take(1)
+       takeUntilDestroyed(this.destroyRef)
       )
       .subscribe((details) => {
         this.details = details;
