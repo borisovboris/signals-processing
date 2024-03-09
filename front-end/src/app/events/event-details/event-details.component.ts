@@ -6,11 +6,14 @@ import { MaterialModule } from '../../material/material.module';
 import { CommonModule } from '@angular/common';
 import { eventDetails } from '../../store/event/event.selectors';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { NoDataComponent } from '../../shared/no-data/no-data.component';
+import { fadeIn } from '../../shared/animations';
 
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [MaterialModule, CommonModule, ScrollingModule],
+  imports: [MaterialModule, CommonModule, ScrollingModule, NoDataComponent],
+  animations: [fadeIn],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

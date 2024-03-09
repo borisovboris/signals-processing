@@ -2,35 +2,65 @@
   <ng-container *ngIf="details$ | async as details">
     <mat-card class="event-details">
       <h2>Event details</h2>
-      <p>Name: {{ details.event.typeName }}</p>
-      <p>Manually created: {{ details.event.manualInsert }}</p>
+      <div @fadeIn>
+        <p><span class="bold">Name:</span> {{ details.event.typeName }}</p>
+        <p>
+          <span class="bold">Manually created:</span>
+          {{ details.event.manualInsert ? "Yes" : "No" }}
+        </p>
+        <p>
+          <span class="bold">Event created at:</span>
+          {{ details.event.eventCreationAt | date }}
+        </p>
+      </div>
     </mat-card>
 
     <mat-card class="affected-devices">
       <h2>Affected devices</h2>
-      <div class="columns">
-        <p>Name</p>
-        <p>Added on</p>
-        <p>Status</p>
-      </div>
-      <cdk-virtual-scroll-viewport
-        CdkScrollable
-        [itemSize]="60"
-        class="example-viewport"
-      >
-        <div class="row-wrapper" *cdkVirtualFor="let device of details.affectedDevices">
-          <div class="row mat-elevation-z2">
-            <p>{{ device.name }}</p>
-            <p>{{ device.creationAt | date }}</p>
-            <p>{{ device.status.isOperational ? 'Operational' : 'Not operational' }}</p>
-          </div>
+      @if(details.affectedDevices.length > 0) {
+      <div class="table" @fadeIn>
+        <div class="columns">
+          <p>Name</p>
+          <p>Added on</p>
+          <p>Status</p>
         </div>
-      </cdk-virtual-scroll-viewport>
+        <div class="list-wrapper">
+          <cdk-virtual-scroll-viewport
+            CdkScrollable
+            [itemSize]="60"
+            class="example-viewport"
+          >
+            <div
+              class="row-wrapper"
+              *cdkVirtualFor="let device of details.affectedDevices"
+            >
+              <div class="row mat-elevation-z2">
+                <p>{{ device.name }}</p>
+                <p>{{ device.creationAt | date }}</p>
+                <p>
+                  {{
+                    device.status.isOperational
+                      ? "Operational"
+                      : "Not operational"
+                  }}
+                </p>
+              </div>
+            </div>
+          </cdk-virtual-scroll-viewport>
+        </div>
+      </div>
+      } @else {
+      <app-no-data></app-no-data>
+      }
     </mat-card>
 
     <mat-card class="signal">
       <h2>Signal</h2>
-      <p>Value: {{ details.signal?.value }}</p>
+      @if (details.signal !== null && details.signal !== undefined) {
+      <p @fadeIn><span class="bold">Value:</span> {{ details.signal.value }}</p>
+      } @else {
+      <app-no-data></app-no-data>
+      }
     </mat-card>
   </ng-container>
 </div>

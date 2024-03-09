@@ -432,7 +432,7 @@ public class CompositionService {
 
                 Predicate[] filterPredicates = FilterUtility.getFilterPredicates(filters, cb, root);
                 Predicate finalCriteria = cb.and(filterPredicates);
-                initialQuery.where(finalCriteria);
+                initialQuery.orderBy(cb.asc(root.get("name"))).where(finalCriteria);
 
                 TypedQuery<Device> query = entityManager
                                 .createQuery(initialQuery)

@@ -1,8 +1,11 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  DestroyRef,
   ViewChild,
+  inject,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -32,6 +35,7 @@ import { fadeIn } from '../../shared/animations';
 import { BatchList } from '../../shared/batch-list';
 import { ListActionsComponent } from '../../shared/list-actions/list-actions.component';
 import { DialogReference } from '../../shared/services/dialog-reference';
+import { NoDataComponent } from '../../shared/no-data/no-data.component';
 
 @Component({
   selector: 'app-compositions-list',
@@ -43,6 +47,7 @@ import { DialogReference } from '../../shared/services/dialog-reference';
     ScrollingModule,
     ReactiveFormsModule,
     ListActionsComponent,
+    NoDataComponent
   ],
   animations: [fadeIn],
   templateUrl: './compositions-list.component.html',
@@ -73,9 +78,10 @@ export class CompositionsListComponent
   >([]);
   locationOptions$ = this.locations$.asObservable();
 
-  compositions$ = this.store.select(compositions);
+  compositions?: CompositionDTO[];
   cityNames: string[] = [];
   locationNames: string[] = [];
+  private destroyRef = inject(DestroyRef);
 
   sidepanelForm = new FormGroup({
     citiesCtrl: this.citiesCtrl,
@@ -89,13 +95,24 @@ export class CompositionsListComponent
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly dialogService: DialogService,
-    private readonly service: CountriesService
+    private readonly service: CountriesService,
+    private readonly changeRef: ChangeDetectorRef
   ) {
     super();
   }
 
   ngOnInit(): void {
-    this.scrolled$.pipe(debounceTime(300)).subscribe(() => this.getOffset());
+    this.scrolled$
+      .pipe(debounceTime(300), takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.getOffset());
+
+    this.store
+      .select(compositions)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((data) => {
+        this.compositions = data;
+        this.changeRef.markForCheck();
+      });
   }
 
   handleCityInput(text: string) {

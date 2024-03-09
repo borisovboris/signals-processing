@@ -1,4 +1,4 @@
-<div class="wrapper" *ngIf="compositions$ | async as compositions">
+<div class="wrapper">
   <mat-card class="sidebar">
     <h2>Filters</h2>
     <form [formGroup]="sidepanelForm" @fadeIn>
@@ -36,6 +36,7 @@
         Add composition
       </button>
     </div>
+    @if(compositions !== undefined && compositions.length > 0) {
     <div class="table" @fadeIn>
       <div class="columns">
         <p>Code</p>
@@ -77,5 +78,8 @@
         </cdk-virtual-scroll-viewport>
       </div>
     </div>
+    } @else {
+    <app-no-data></app-no-data>
+    }
   </mat-card>
 </div>

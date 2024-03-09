@@ -5,16 +5,11 @@
 @include columns;
 
 .wrapper {
-
   padding: 0 5vw;
   height: 100%;
 
   display: flex;
   flex-direction: row;
-
-  .example-viewport {
-    min-height: 100%;
-  }
 
   .event-details {
     flex: 1;
@@ -27,11 +22,17 @@
     margin: 0 15px;
     @include card;
     @include list-margin;
+    @include vertical-order;
   }
 
   .signal {
     flex: 1;
     @include card;
     @include list-margin;
+  }
+
+  .bold {
+    font-weight: 500;
+    font-size: 16px;
   }
 }
