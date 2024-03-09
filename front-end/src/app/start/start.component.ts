@@ -32,10 +32,6 @@ export interface LabeledRoute {
 export class StartComponent implements OnInit {
   links: LabeledRoute[] = [
     {
-      label: 'Home',
-      path: AppRoute.HOME,
-    },
-    {
       label: 'Countries',
       path: AppRoute.COUNTRIES,
     },

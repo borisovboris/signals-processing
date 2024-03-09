@@ -11,11 +11,12 @@ import { CommonModule } from '@angular/common';
 import { passwordRegx } from '../shared/auth-utils';
 import { Store } from '@ngrx/store';
 import { AuthActions } from '../store/auth/auth.actions';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, MaterialModule, ReactiveFormsModule],
+  imports: [CommonModule, MaterialModule, ReactiveFormsModule, RouterModule],
   animations: [fadeIn],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',

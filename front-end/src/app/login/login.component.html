@@ -1,26 +1,31 @@
-<div class="card mat-elevation-z8" @fadeIn>
-  <form [formGroup]="form" class="fields-wrapper">
-    <h1>Login into account</h1>
-    <div class="fields">
-      <mat-form-field>
-        <mat-label>Username</mat-label>
-        <input matInput formControlName="username" />
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Password</mat-label>
-        <input type="password" matInput formControlName="password" />
-      </mat-form-field>
-    </div>
-  </form>
+<div class="wrapper login">
+  <div class="card mat-elevation-z8" @fadeIn>
+    <form [formGroup]="form" class="fields-wrapper">
+      <h1>Log into account</h1>
+      <div class="fields">
+        <mat-form-field>
+          <mat-label>Username</mat-label>
+          <input matInput formControlName="username" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Password</mat-label>
+          <input type="password" matInput formControlName="password" />
+        </mat-form-field>
+      </div>
+    </form>
 
-  <div class="action-button">
-    <button
-      mat-raised-button
-      color="accent"
-      [disabled]="false"
-      (click)="login()"
-    >
-      Login
-    </button>
+    <div class="action-button">
+      <button mat-button [routerLink]="'/register'">
+        No account? Register here.
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        [disabled]="false"
+        (click)="login()"
+      >
+        Login
+      </button>
+    </div>
   </div>
 </div>

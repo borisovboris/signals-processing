@@ -10,12 +10,13 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { fadeIn } from '../shared/animations';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   animations: [fadeIn],
-  imports: [CommonModule, MaterialModule, ReactiveFormsModule],
+  imports: [CommonModule, MaterialModule, ReactiveFormsModule, RouterModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

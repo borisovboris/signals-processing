@@ -10,11 +10,6 @@ export const START_ROUTES: Routes = [
     canActivate: [authGuard],
     children: [
       {
-        path: AppRoute.HOME,
-        loadComponent: () =>
-          import('../home/home.component').then((mod) => mod.HomeComponent),
-      },
-      {
         path: AppRoute.COUNTRIES,
         loadChildren: () =>
           import('../countries/routes').then((mod) => mod.COUNTRIES_ROUTES),
@@ -33,7 +28,7 @@ export const START_ROUTES: Routes = [
       },
       {
         path: '**',
-        redirectTo: 'home',
+        redirectTo: AppRoute.COUNTRIES,
       },
     ],
   },
