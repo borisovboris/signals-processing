@@ -6,7 +6,6 @@ api/auth.service.ts
 api/compositions.service.ts
 api/countries.service.ts
 api/events.service.ts
-api/signals.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
@@ -42,7 +41,6 @@ model/originDTO.ts
 model/originDeviceDTO.ts
 model/originDevicesDTO.ts
 model/signalDTO.ts
-model/signalDTO1.ts
 model/statusDTO.ts
 model/uploadedEventDTO.ts
 model/uploadedSignalDTO.ts

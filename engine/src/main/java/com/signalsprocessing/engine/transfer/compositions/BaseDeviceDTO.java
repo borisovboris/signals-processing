@@ -1,4 +1,4 @@
-package com.signalsprocessing.engine.services.transfer;
+package com.signalsprocessing.engine.transfer.compositions;
 
 import jakarta.validation.constraints.NotNull;
 

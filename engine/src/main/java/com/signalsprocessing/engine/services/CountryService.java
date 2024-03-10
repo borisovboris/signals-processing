@@ -10,24 +10,23 @@ import org.springframework.transaction.annotation.Transactional;
 import com.signalsprocessing.engine.models.City;
 import com.signalsprocessing.engine.models.Country;
 import com.signalsprocessing.engine.models.Location;
-import com.signalsprocessing.engine.services.transfer.BaseCityDTO;
-import com.signalsprocessing.engine.services.transfer.BaseLocationDTO;
-import com.signalsprocessing.engine.services.transfer.EditedCityDTO;
-import com.signalsprocessing.engine.services.transfer.EditedLocationDTO;
 import com.signalsprocessing.engine.shared.FilterUtility;
 import com.signalsprocessing.engine.shared.NameFilterDTO;
-import com.signalsprocessing.engine.shared.OffsetConstraint;
+import com.signalsprocessing.engine.transfer.countries.BaseCityDTO;
+import com.signalsprocessing.engine.transfer.countries.BaseLocationDTO;
+import com.signalsprocessing.engine.transfer.countries.CitiesFiltersDTO;
+import com.signalsprocessing.engine.transfer.countries.CityDTO;
+import com.signalsprocessing.engine.transfer.countries.CountryDTO;
+import com.signalsprocessing.engine.transfer.countries.EditedCityDTO;
+import com.signalsprocessing.engine.transfer.countries.EditedLocationDTO;
+import com.signalsprocessing.engine.transfer.countries.LocationDTO;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import jakarta.validation.constraints.NotNull;
-
-import java.time.LocalDate;
 
 @Component
 @ComponentScan
@@ -218,8 +217,8 @@ public class CountryService {
 
         @Transactional
         public void editCountry(CountryDTO countryDto) {
-                Country country = entityManager.getReference(Country.class, countryDto.id);
-                country.setName(countryDto.name);
+                Country country = entityManager.getReference(Country.class, countryDto.id());
+                country.setName(countryDto.name());
 
                 entityManager.merge(country);
         }
@@ -304,29 +303,5 @@ public class CountryService {
         @Transactional
         public void deleteLocation(Long id) {
                 entityManager.remove(entityManager.getReference(Location.class, id));
-        }
-
-        public record CountryDTO(@NotNull long id, @NotNull String name) {
-        }
-
-        public record CityDTO(@NotNull long id, @NotNull String name, @NotNull String postalCode) {
-        }
-
-        public record LocationDTO(@NotNull long id, @NotNull String code, @NotNull String name, @NotNull String address,
-                        String coordinates, String description, @NotNull LocalDate creationAt,
-                        @NotNull boolean isOperational, @NotNull int compositionsSize) {
-        }
-
-        public class CitiesFiltersDTO extends OffsetConstraint {
-                private Long countryId;
-
-                public CitiesFiltersDTO(Long countryId, @Nullable Integer offset) {
-                        super(offset);
-                        this.countryId = countryId;
-                }
-
-                public Long getCountryId() {
-                        return countryId;
-                }
         }
 }

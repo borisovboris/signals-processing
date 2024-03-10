@@ -1,7 +1,21 @@
 package com.signalsprocessing.engine.services;
 
 import com.signalsprocessing.engine.shared.FilterUtility;
+import com.signalsprocessing.engine.shared.LabeledValueDTO;
 import com.signalsprocessing.engine.shared.NameFilterDTO;
+import com.signalsprocessing.engine.transfer.compositions.BaseCompositionDTO;
+import com.signalsprocessing.engine.transfer.compositions.BaseDeviceDTO;
+import com.signalsprocessing.engine.transfer.compositions.CompositionDTO;
+import com.signalsprocessing.engine.transfer.compositions.CompositionDetailsDTO;
+import com.signalsprocessing.engine.transfer.compositions.CompositionFiltersDTO;
+import com.signalsprocessing.engine.transfer.compositions.DeviceDTO;
+import com.signalsprocessing.engine.transfer.compositions.DeviceDateStatusDTO;
+import com.signalsprocessing.engine.transfer.compositions.DeviceDetailsDTO;
+import com.signalsprocessing.engine.transfer.compositions.EditedCompositionDTO;
+import com.signalsprocessing.engine.transfer.compositions.EditedDeviceDTO;
+import com.signalsprocessing.engine.transfer.compositions.LinkedCompositions;
+import com.signalsprocessing.engine.transfer.compositions.LinkedCompositionsDTO;
+import com.signalsprocessing.engine.transfer.compositions.StatusDTO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -20,21 +34,13 @@ import com.signalsprocessing.engine.models.DeviceStatus;
 import com.signalsprocessing.engine.models.LinkedComposition;
 import com.signalsprocessing.engine.models.LinkedCompositionId;
 import com.signalsprocessing.engine.models.Location;
-import com.signalsprocessing.engine.services.transfer.BaseCompositionDTO;
-import com.signalsprocessing.engine.services.transfer.BaseDeviceDTO;
-import com.signalsprocessing.engine.services.transfer.CompositionFiltersDTO;
-import com.signalsprocessing.engine.services.transfer.EditedCompositionDTO;
-import com.signalsprocessing.engine.services.transfer.EditedDeviceDTO;
-import com.signalsprocessing.engine.services.transfer.LabeledValueDTO;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import jakarta.validation.constraints.NotNull;
 
 @Component
 @ComponentScan
@@ -115,11 +121,11 @@ public class CompositionService {
 
                 List<LinkedCompositions> list = query.getResultList();
                 List<CompositionDTO> relatedCompositions = list.stream().map(lc -> {
-                        return lc.firstComposition.id != id ? lc.firstComposition : lc.secondComposition;
+                        return lc.firstComposition().id != id ? lc.firstComposition() : lc.secondComposition();
                 }).map(rc -> mapComposition(rc)).toList();
                 Composition composition = getCompositionEntity(id);
                 List<DeviceDTO> devices = composition.devices.stream().map(d -> mapDevice(d))
-                                .sorted((o1, o2) -> o1.name.compareTo(o2.name)).toList();
+                                .sorted((o1, o2) -> o1.name().compareTo(o2.name())).toList();
 
                 return new CompositionDetailsDTO(relatedCompositions, devices);
         }
@@ -212,9 +218,9 @@ public class CompositionService {
 
         @Transactional
         public void linkCompositions(LinkedCompositionsDTO link) {
-                Composition firstComposition = getCompositionEntity(link.firstId);
-                Composition secondComposition = getCompositionEntity(link.secondId);
-                LinkedCompositionId id = new LinkedCompositionId(link.firstId, link.secondId);
+                Composition firstComposition = getCompositionEntity(link.firstId());
+                Composition secondComposition = getCompositionEntity(link.secondId());
+                LinkedCompositionId id = new LinkedCompositionId(link.firstId(), link.secondId());
                 LinkedComposition linkedComposition = new LinkedComposition();
 
                 linkedComposition.setId(id);
@@ -232,8 +238,8 @@ public class CompositionService {
                                                 +
                                                 "OR (lc.firstComposition.id = :secondId AND lc.secondComposition.id = :firstId)",
                                 LinkedComposition.class)
-                                .setParameter("firstId", link.firstId)
-                                .setParameter("secondId", link.secondId);
+                                .setParameter("firstId", link.firstId())
+                                .setParameter("secondId", link.secondId());
 
                 LinkedComposition linkedCompositions = query.getSingleResult();
 
@@ -447,41 +453,4 @@ public class CompositionService {
                 return list;
         }
 
-        public record CompositionDTO(@NotNull long id, @NotNull LabeledValueDTO location,
-                        @NotNull LabeledValueDTO type,
-                        @NotNull LabeledValueDTO city,
-                        @NotNull String code,
-                        @NotNull int devicesSize,
-                        @NotNull StatusDTO status,
-                        @Nullable String coordinates,
-                        @Nullable String description) {
-        }
-
-        public record StatusDTO(@NotNull Long id, @NotNull String name, @NotNull boolean isOperational,
-                        @NotNull boolean isBroken,
-                        @NotNull boolean inMaintenance) {
-        }
-
-        public record LinkedCompositions(Composition firstComposition, Composition secondComposition) {
-        }
-
-        public record CompositionDetailsDTO(
-                        @NotNull List<CompositionDTO> relatedCompositions,
-                        @NotNull List<DeviceDTO> devices) {
-        }
-
-        public record DeviceDTO(@NotNull long id, @NotNull String name, @NotNull String code,
-                        @NotNull StatusDTO status, @NotNull LocalDate creationAt, @NotNull String compositionCode) {
-        }
-
-        public record LinkedCompositionsDTO(@NotNull long firstId, @NotNull long secondId) {
-        }
-
-        public record DeviceDetailsDTO(@NotNull DeviceDTO device, @NotNull CompositionDTO composition,
-                        @NotNull List<DeviceDateStatusDTO> timeline) {
-
-        }
-
-        public record DeviceDateStatusDTO(@NotNull Long occurrences, @NotNull LocalDate date) {
-        }
 }

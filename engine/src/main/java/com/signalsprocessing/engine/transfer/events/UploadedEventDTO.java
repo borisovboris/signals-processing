@@ -1,4 +1,4 @@
-package com.signalsprocessing.engine.services.transfer;
+package com.signalsprocessing.engine.transfer.events;
 
 import java.util.List;
 import java.util.Optional;

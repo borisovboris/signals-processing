@@ -5,11 +5,12 @@ import java.util.List;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.signalsprocessing.engine.auth.TokenProviderService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -19,14 +20,14 @@ import jakarta.servlet.http.HttpServletResponse;
 @ComponentScan
 @Component
 public class JWTAuthFilter extends OncePerRequestFilter {
-    private final TokenProvider tokenProvider;
+    private final TokenProviderService tokenProvider;
     private final List<AntPathRequestMatcher> excludedMatchers = List.of(new AntPathRequestMatcher("/swagger-ui"),
             new AntPathRequestMatcher("/v3/api-docs"),
             new AntPathRequestMatcher("/register-user"),
             new AntPathRequestMatcher("/login-user"),
             new AntPathRequestMatcher("/check-username-exists/**"));
 
-    public JWTAuthFilter(TokenProvider tokenProvider) {
+    public JWTAuthFilter(TokenProviderService tokenProvider) {
         this.tokenProvider = tokenProvider;
     }
 

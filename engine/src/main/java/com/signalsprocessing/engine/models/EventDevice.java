@@ -1,6 +1,5 @@
 package com.signalsprocessing.engine.models;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;

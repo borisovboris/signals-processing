@@ -28,7 +28,6 @@ export * from './originDTO';
 export * from './originDeviceDTO';
 export * from './originDevicesDTO';
 export * from './signalDTO';
-export * from './signalDTO1';
 export * from './statusDTO';
 export * from './uploadedEventDTO';
 export * from './uploadedSignalDTO';

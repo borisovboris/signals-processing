@@ -7,9 +7,6 @@ import java.util.Optional;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-
 import com.signalsprocessing.engine.models.Device;
 import com.signalsprocessing.engine.models.DeviceStatus;
 import com.signalsprocessing.engine.models.Event;
@@ -17,16 +14,20 @@ import com.signalsprocessing.engine.models.EventDevice;
 import com.signalsprocessing.engine.models.EventDeviceId;
 import com.signalsprocessing.engine.models.EventType;
 import com.signalsprocessing.engine.models.Signal;
-import com.signalsprocessing.engine.services.CompositionService.DeviceDTO;
-import com.signalsprocessing.engine.services.transfer.OriginDTO;
-import com.signalsprocessing.engine.services.transfer.OriginDeviceDTO;
-import com.signalsprocessing.engine.services.transfer.OriginDevicesDTO;
-import com.signalsprocessing.engine.services.transfer.UploadedEventDTO;
-import com.signalsprocessing.engine.services.transfer.UploadedSignalDTO;
 import com.signalsprocessing.engine.shared.FilterUtility;
 import com.signalsprocessing.engine.shared.NameFilterDTO;
+import com.signalsprocessing.engine.transfer.compositions.DeviceDTO;
+import com.signalsprocessing.engine.transfer.events.EventDTO;
+import com.signalsprocessing.engine.transfer.events.EventDetailsDTO;
+import com.signalsprocessing.engine.transfer.events.EventFiltersDTO;
+import com.signalsprocessing.engine.transfer.events.EventTypeDTO;
+import com.signalsprocessing.engine.transfer.events.NewEventDTO;
+import com.signalsprocessing.engine.transfer.events.OriginDTO;
+import com.signalsprocessing.engine.transfer.events.OriginDevicesDTO;
+import com.signalsprocessing.engine.transfer.events.SignalDTO;
+import com.signalsprocessing.engine.transfer.events.UploadedEventDTO;
+import com.signalsprocessing.engine.transfer.events.UploadedSignalDTO;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -34,7 +35,6 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
-import jakarta.validation.constraints.NotNull;
 
 @Component
 @ComponentScan
@@ -230,17 +230,17 @@ public class EventService {
 
     @Transactional
     public void createEvent(NewEventDTO newEvent) {
-        EventType type = entityManager.getReference(EventType.class, newEvent.eventTypeId);
+        EventType type = entityManager.getReference(EventType.class, newEvent.eventTypeId());
 
         TypedQuery<Device> query = entityManager
                 .createQuery("SELECT d FROM Device d WHERE d.id in :deviceIds", Device.class)
-                .setParameter("deviceIds", newEvent.deviceIds);
+                .setParameter("deviceIds", newEvent.deviceIds());
         List<Device> devices = query.getResultList();
 
         DeviceStatus newDeviceStatus = null;
 
-        if (newEvent.newDevicesStatusId != null) {
-            newDeviceStatus = entityManager.getReference(DeviceStatus.class, newEvent.newDevicesStatusId);
+        if (newEvent.newDevicesStatusId() != null) {
+            newDeviceStatus = entityManager.getReference(DeviceStatus.class, newEvent.newDevicesStatusId());
         }
 
         Event event = new Event();
@@ -277,23 +277,5 @@ public class EventService {
         }
 
         return new SignalDTO(signal.get().id, signal.get().value, signal.get().creationAt);
-    }
-
-    public record EventDTO(@NotNull long id, @NotNull String typeName,
-            @NotNull boolean manualInsert, @NotNull LocalDate eventCreationAt) {
-    }
-
-    public record EventDetailsDTO(@NotNull EventDTO event, @Nullable SignalDTO signal,
-            @NotNull List<DeviceDTO> affectedDevices) {
-    }
-
-    public record SignalDTO(@NotNull long id, @NotNull BigDecimal value, @NotNull LocalDate creationAt) {
-    }
-
-    public record NewEventDTO(@NotNull long eventTypeId, @Nullable Long newDevicesStatusId,
-            @NotNull List<Long> deviceIds) {
-    }
-
-    public record EventTypeDTO(@NotNull long id, @NotNull String name) {
     }
 }

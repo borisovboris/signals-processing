@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.signalsprocessing.engine.services.CountryService;
-import com.signalsprocessing.engine.services.CountryService.CitiesFiltersDTO;
-import com.signalsprocessing.engine.services.CountryService.CityDTO;
-import com.signalsprocessing.engine.services.CountryService.CountryDTO;
-import com.signalsprocessing.engine.services.CountryService.LocationDTO;
-import com.signalsprocessing.engine.services.transfer.BaseCityDTO;
-import com.signalsprocessing.engine.services.transfer.BaseLocationDTO;
-import com.signalsprocessing.engine.services.transfer.EditedCityDTO;
-import com.signalsprocessing.engine.services.transfer.EditedLocationDTO;
 import com.signalsprocessing.engine.shared.NameFilterDTO;
+import com.signalsprocessing.engine.transfer.countries.BaseCityDTO;
+import com.signalsprocessing.engine.transfer.countries.BaseLocationDTO;
+import com.signalsprocessing.engine.transfer.countries.CitiesFiltersDTO;
+import com.signalsprocessing.engine.transfer.countries.CityDTO;
+import com.signalsprocessing.engine.transfer.countries.CountryDTO;
+import com.signalsprocessing.engine.transfer.countries.EditedCityDTO;
+import com.signalsprocessing.engine.transfer.countries.EditedLocationDTO;
+import com.signalsprocessing.engine.transfer.countries.LocationDTO;
 
 import java.util.List;
 import java.util.Optional;

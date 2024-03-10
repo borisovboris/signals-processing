@@ -1,4 +1,4 @@
-package com.signalsprocessing.engine.config;
+package com.signalsprocessing.engine.auth;
 
 import java.util.Base64;
 import java.util.Date;
@@ -14,14 +14,14 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.signalsprocessing.engine.services.UserService;
-import com.signalsprocessing.engine.services.AuthService.UserDTO;
+import com.signalsprocessing.engine.transfer.user.UserDTO;
 
 import jakarta.annotation.PostConstruct;
 
 @ComponentScan
 @Component
 @ConfigurationPropertiesScan 
-public class TokenProvider {
+public class TokenProviderService {
     @Value("${jwt.secretKey}")
     private String secretKey;
 
@@ -34,7 +34,7 @@ public class TokenProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public TokenProvider(UserService userService) {
+    public TokenProviderService(UserService userService) {
         this.userService = userService;
     }
 

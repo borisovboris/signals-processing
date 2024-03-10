@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.signalsprocessing.engine.services.AuthService;
 import com.signalsprocessing.engine.services.UserService;
-import com.signalsprocessing.engine.services.AuthService.UserDTO;
+import com.signalsprocessing.engine.transfer.user.UserDTO;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 

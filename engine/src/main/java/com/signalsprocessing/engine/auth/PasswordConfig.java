@@ -1,4 +1,4 @@
-package com.signalsprocessing.engine.services;
+package com.signalsprocessing.engine.auth;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
