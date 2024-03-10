@@ -41,6 +41,7 @@
       <div class="columns">
         <p>Code</p>
         <p>Devices</p>
+        <p>Type</p>
         <p>Status</p>
         <p>Actions</p>
       </div>
@@ -62,6 +63,7 @@
             >
               <p>{{ composition.code }}</p>
               <p>{{ composition.devicesSize }}</p>
+              <p>{{ composition.type.label }}</p>
               <p>
                 {{
                   composition.status.isOperational
