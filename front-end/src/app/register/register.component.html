@@ -6,15 +6,27 @@
         <mat-form-field>
           <mat-label>Username</mat-label>
           <input formControlName="username" matInput />
+          <mat-error *ngIf="username.hasError('exists')"
+            >Username already exists</mat-error
+          >
         </mat-form-field>
         <mat-form-field>
           <mat-label>Password</mat-label>
           <input
             formControlName="password"
-            type="password"
+            [type]="hide ? 'password' : 'text'"
             autocomplete="off"
             matInput
           />
+          <mat-icon
+            matSuffix
+            (click)="$event.stopPropagation(); hide = !hide"
+            >{{ hide ? "visibility_off" : "visibility" }}</mat-icon
+          >
+          <mat-error *ngIf="password.hasError('pattern')"
+            >Should be at least 10 characters, contain a digit and capital
+            letter</mat-error
+          >
         </mat-form-field>
       </form>
     </div>
@@ -27,7 +39,7 @@
         type="button"
         mat-raised-button
         color="accent"
-        [disabled]="form.invalid"
+        [disabled]="form.invalid || formPending"
         (click)="registerUser()"
       >
         Register

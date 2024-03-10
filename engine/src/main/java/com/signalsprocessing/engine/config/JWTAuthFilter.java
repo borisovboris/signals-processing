@@ -10,7 +10,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -24,7 +23,8 @@ public class JWTAuthFilter extends OncePerRequestFilter {
     private final List<AntPathRequestMatcher> excludedMatchers = List.of(new AntPathRequestMatcher("/swagger-ui"),
             new AntPathRequestMatcher("/v3/api-docs"),
             new AntPathRequestMatcher("/register-user"),
-            new AntPathRequestMatcher("/login-user"));
+            new AntPathRequestMatcher("/login-user"),
+            new AntPathRequestMatcher("/check-username-exists/**"));
 
     public JWTAuthFilter(TokenProvider tokenProvider) {
         this.tokenProvider = tokenProvider;

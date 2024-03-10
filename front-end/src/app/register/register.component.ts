@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { fadeIn } from '../shared/animations';
 import { MaterialModule } from '../material/material.module';
 import {
+  AbstractControl,
+  AsyncValidatorFn,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -12,6 +14,16 @@ import { passwordRegx } from '../shared/auth-utils';
 import { Store } from '@ngrx/store';
 import { AuthActions } from '../store/auth/auth.actions';
 import { RouterModule } from '@angular/router';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  finalize,
+  first,
+  map,
+  of,
+  switchMap,
+} from 'rxjs';
+import { AuthService } from '../../../generated-sources/openapi';
 
 @Component({
   selector: 'app-register',
@@ -23,8 +35,33 @@ import { RouterModule } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterComponent {
-  constructor(private readonly store: Store) {}
+  uniqueUsernameValidator(): AsyncValidatorFn {
+    return (control: AbstractControl) =>
+      control.valueChanges.pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap((value) => {
+          return this.authService.checkIfUsernameExists(value);
+        }),
+        map((exists) => {
+          if (exists) {
+            return { exists: true };
+          }
 
+          return null;
+        }),
+        first(),
+        finalize(() => this.changeRef.markForCheck())
+      );
+  }
+
+  constructor(
+    private readonly store: Store,
+    private readonly authService: AuthService,
+    private readonly changeRef: ChangeDetectorRef,
+  ) {}
+
+  hide = true;
   readonly form = new FormGroup({
     username: new FormControl('', {
       validators: [
@@ -32,6 +69,7 @@ export class RegisterComponent {
         Validators.maxLength(20),
         Validators.minLength(3),
       ],
+      asyncValidators: [this.uniqueUsernameValidator()],
       nonNullable: true,
     }),
     password: new FormControl('', {
@@ -46,6 +84,10 @@ export class RegisterComponent {
 
   get password() {
     return this.form['controls']['password'];
+  }
+
+  get formPending() {
+    return this.form.pending;
   }
 
   registerUser() {

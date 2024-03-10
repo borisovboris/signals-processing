@@ -24,12 +24,14 @@ import { RouterModule } from '@angular/router';
 export class LoginComponent {
   constructor(private readonly store: Store) {}
 
+  hide = true;
   readonly form = new FormGroup({
     username: new FormControl('', {
       validators: [Validators.required],
       nonNullable: true,
     }),
     password: new FormControl('', {
+      validators: [Validators.required],
       nonNullable: true,
     }),
   });
