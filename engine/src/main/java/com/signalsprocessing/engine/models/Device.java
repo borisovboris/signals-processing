@@ -6,6 +6,7 @@ import java.util.Set;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,6 +18,7 @@ import jakarta.persistence.UniqueConstraint;
 
 @Table(uniqueConstraints = { @UniqueConstraint(name = "UNIQUE_DEVICE_NAME", columnNames = { "composition_id", "name" }),
         @UniqueConstraint(name = "UNIQUE_DEVICE_CODE", columnNames = { "composition_id", "code" }) })
+@EntityListeners(DeviceListener.class)
 @Entity
 public class Device {
     @Id

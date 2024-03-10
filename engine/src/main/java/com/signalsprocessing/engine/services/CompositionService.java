@@ -416,12 +416,12 @@ public class CompositionService {
                 LocalDate lastThirtyDays = LocalDate.now().minusDays(30);
 
                 TypedQuery<DeviceDateStatusDTO> query = entityManager.createQuery(
-                                "SELECT NEW DeviceDateStatusDTO(COUNT(dsr.id) as occurrences, dsr.creationAt as date) "
+                                "SELECT NEW DeviceDateStatusDTO(COUNT(dsr.id) as occurrences,  cast(dsr.creationAt as LocalDate) as date) "
                                                 +
                                                 "from DeviceStatusRecord dsr WHERE dsr.device.id = :id " +
                                                 "AND dsr.creationAt > :lastThirtyDays " +
                                                 "AND dsr.status.isOperational != true " +
-                                                "GROUP BY dsr.creationAt",
+                                                "GROUP BY cast(dsr.creationAt as LocalDate)",
                                 DeviceDateStatusDTO.class)
                                 .setParameter("id", id)
                                 .setParameter("lastThirtyDays", lastThirtyDays);

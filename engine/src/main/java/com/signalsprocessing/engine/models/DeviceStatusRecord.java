@@ -26,4 +26,12 @@ public class DeviceStatusRecord {
 
     @Column(insertable = false, updatable = false, nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
     public LocalDate creationAt;
+
+    public void setDevice(Device device) {
+        this.device = device;
+    }
+
+    public void setStatus(DeviceStatus status) {
+        this.status = status;
+    }
 }
