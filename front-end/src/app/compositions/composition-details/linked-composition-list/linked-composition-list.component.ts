@@ -65,4 +65,8 @@ export class LinkedCompositionListComponent {
       );
     }
   }
+
+  goToComposition(id: number) {
+    this.router.navigate([`compositions`, id]);
+  }
 }

@@ -13,3 +13,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
         text-align: center;
     }
 }
+
+.snackbar-warn-color-text {
+    .mat-mdc-snack-bar-label {
+        color: map.get($warn, 300) !important;
+        text-align: center;
+    }
+}

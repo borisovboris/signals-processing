@@ -1,12 +1,12 @@
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { DialogService } from '../../../shared/services/dialog.service';
 import { CompositionActions } from '../../../store/composition/composition.actions';
 import { CreateEditDevice, DeviceFormComponent } from '../device-form/device-form.component';
-import { CompositionDetailsDTO, DeviceDTO } from '../../../../../generated-sources/openapi';
+import { DeviceDTO } from '../../../../../generated-sources/openapi';
 import { MaterialModule } from '../../../material/material.module';
 import { ListActionsComponent } from '../../../shared/list-actions/list-actions.component';
 import { fadeIn } from '../../../shared/animations';

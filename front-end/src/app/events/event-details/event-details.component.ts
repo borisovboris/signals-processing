@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { EventActions } from '../../store/event/event.actions';
 import { MaterialModule } from '../../material/material.module';
@@ -24,11 +24,16 @@ export class EventDetailsComponent implements OnInit {
   constructor(
     private readonly store: Store,
     private readonly route: ActivatedRoute,
+    private readonly router: Router,
   ) {}
 
   ngOnInit(): void {
    const id = Number(this.route.snapshot.paramMap.get('id'));;
 
       this.store.dispatch(EventActions.getEventDetails({ id }));
+  }
+
+  goToDevice(id: number) {
+    this.router.navigate(['compositions/device-details', id]);
   }
 }

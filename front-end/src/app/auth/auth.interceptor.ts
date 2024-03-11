@@ -8,7 +8,7 @@ import {
 import { Injectable, inject } from '@angular/core';
 import { TokenService } from './token.service';
 import { Router } from '@angular/router';
-import { Observable, catchError, of } from 'rxjs';
+import { Observable, catchError, of, throwError } from 'rxjs';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -34,6 +34,8 @@ export class AuthInterceptor implements HttpInterceptor {
     if (err.status === 401) {
       this.router.navigateByUrl('/login');
     }
+    
+    return throwError(() => err);
   }
 
   handleResponseError(res: Observable<HttpEvent<any>>) {
@@ -43,7 +45,7 @@ export class AuthInterceptor implements HttpInterceptor {
           this.handleError(err);
         }
 
-        return of(err as any);
+        return throwError(() => err);
       })
     );
   }

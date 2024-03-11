@@ -24,6 +24,7 @@
         *cdkVirtualFor="let composition of linkedCompositions"
       >
         <div
+        (click)="goToComposition(composition.id)"
           class="row mat-elevation-z2"
           [class.not-operational]="!composition.status.isOperational"
         >

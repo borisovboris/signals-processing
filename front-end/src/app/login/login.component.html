@@ -13,6 +13,7 @@
             [type]="hide ? 'password' : 'text'"
             matInput
             formControlName="password"
+            autocomplete="on"
           />
           <mat-icon
             matSuffix
@@ -30,7 +31,7 @@
       <button
         mat-raised-button
         color="accent"
-        [disabled]="false"
+        [disabled]="form.invalid"
         (click)="login()"
       >
         Login

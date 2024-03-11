@@ -2,12 +2,21 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { CompositionsService } from '../../../../generated-sources/openapi';
 import { Store } from '@ngrx/store';
-import { EMPTY, catchError, map, switchMap, withLatestFrom } from 'rxjs';
+import {
+  EMPTY,
+  catchError,
+  filter,
+  map,
+  switchMap,
+  withLatestFrom,
+} from 'rxjs';
 import { CompositionActions } from './composition.actions';
 import {
   compositionFilters,
   currentlyViewedCompositionId,
 } from './composition.selectors';
+import { routerNavigatedAction } from '@ngrx/router-store';
+import { compositionDetailsPath } from './composition.reducer';
 
 @Injectable()
 export class CompositionEffects {
@@ -34,7 +43,6 @@ export class CompositionEffects {
   loadDetails = createEffect(() =>
     this.actions$.pipe(
       ofType(
-        CompositionActions.getDetails,
         CompositionActions.deviceCreated,
         CompositionActions.deviceEdited,
         CompositionActions.compositionsLinked,
@@ -45,6 +53,36 @@ export class CompositionEffects {
       switchMap(([_, compositionId]) =>
         this.compositionService.readCompositionDetails(compositionId!).pipe(
           map((details) => CompositionActions.detailsFetched({ details })),
+          catchError(() => EMPTY)
+        )
+      )
+    )
+  );
+
+  loadDetailsOnNavigation = createEffect(() =>
+    this.actions$.pipe(
+      ofType(routerNavigatedAction),
+      filter(({ payload }) => compositionDetailsPath.test(payload.event.url)),
+      withLatestFrom(this.store.select(currentlyViewedCompositionId)),
+      switchMap(([_, compositionId]) =>
+        this.compositionService.readCompositionDetails(compositionId!).pipe(
+          map((details) => CompositionActions.detailsFetched({ details })),
+          catchError(() => EMPTY)
+        )
+      )
+    )
+  );
+
+  loadCompositionOnNavigation = createEffect(() =>
+    this.actions$.pipe(
+      ofType(routerNavigatedAction),
+      filter(({ payload }) => compositionDetailsPath.test(payload.event.url)),
+      withLatestFrom(this.store.select(currentlyViewedCompositionId)),
+      switchMap(([_, id]) =>
+        this.compositionService.readComposition(id!).pipe(
+          map((composition) =>
+            CompositionActions.compositionFetched({ composition })
+          ),
           catchError(() => EMPTY)
         )
       )
@@ -69,18 +107,6 @@ export class CompositionEffects {
       switchMap(({ device }) =>
         this.compositionService.editDevice(device).pipe(
           map(() => CompositionActions.deviceEdited()),
-          catchError(() => EMPTY)
-        )
-      )
-    )
-  );
-
-  getComposition = createEffect(() =>
-    this.actions$.pipe(
-      ofType(CompositionActions.getComposition),
-      switchMap(({ id }) =>
-        this.compositionService.readComposition(id).pipe(
-          map((composition) => CompositionActions.compositionFetched({ composition })),
           catchError(() => EMPTY)
         )
       )

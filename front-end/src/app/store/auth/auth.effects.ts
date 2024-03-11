@@ -21,9 +21,15 @@ export class AuthEffects {
             this.router.navigateByUrl('/countries');
             return AuthActions.userLogged({ token });
           }),
-          catchError(() => EMPTY)
+          catchError(() => {
+            this.snackbarService.open('Wrong password or username', {
+              duration: 5000,
+              panelClasses: ['snackbar-warn-color-text'],
+            });
+            return EMPTY;
+          })
         )
-      )
+      ),
     )
   );
 

@@ -34,7 +34,7 @@
               class="row-wrapper"
               *cdkVirtualFor="let device of details.affectedDevices"
             >
-              <div class="row mat-elevation-z2">
+              <div class="row mat-elevation-z2" (click)="goToDevice(device.id)">
                 <p>{{ device.name }}</p>
                 <p>{{ device.creationAt | date }}</p>
                 <p>

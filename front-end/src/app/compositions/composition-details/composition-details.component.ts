@@ -6,7 +6,6 @@ import {
   OnInit,
   inject,
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { CommonModule } from '@angular/common';
@@ -16,10 +15,11 @@ import {
   CompositionDTO,
   CompositionDetailsDTO,
 } from '../../../../generated-sources/openapi';
-import { DialogService } from '../../shared/services/dialog.service';
-import { isDefined } from '../../shared/utils';
-import { CompositionActions } from '../../store/composition/composition.actions';
-import { currentlyViewedComposition, details } from '../../store/composition/composition.selectors';
+import {
+  currentlyViewedComposition,
+  currentlyViewedCompositionId,
+  details,
+} from '../../store/composition/composition.selectors';
 import { DeviceListComponent } from './device-list/device-list.component';
 import { LinkedCompositionListComponent } from './linked-composition-list/linked-composition-list.component';
 import { filter, take } from 'rxjs';
@@ -49,41 +49,29 @@ export class CompositionDetailsComponent implements OnInit {
 
   constructor(
     private readonly store: Store,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly dialogService: DialogService,
     private readonly changeRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
-    this.compositionId = Number(this.route.snapshot.paramMap.get('id'));
-
-    if (isDefined(this.compositionId)) {
-      this.store.dispatch(
-        CompositionActions.getDetails({ id: this.compositionId })
-      );
-
-      this.store.dispatch(
-        CompositionActions.getComposition({ id: this.compositionId })
-      );
-    }
+    this.store
+      .select(currentlyViewedCompositionId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((id) => {
+        this.compositionId = id;
+        this.changeRef.markForCheck();
+      });
 
     this.store
       .select(details)
-      .pipe(
-       takeUntilDestroyed(this.destroyRef)
-      )
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((details) => {
         this.details = details;
         this.changeRef.markForCheck();
       });
 
-      this.store
+    this.store
       .select(currentlyViewedComposition)
-      .pipe(
-        filter((composition) => composition !== undefined),
-        take(1)
-      )
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((composition) => {
         this.currentComposition = composition;
         this.changeRef.markForCheck();

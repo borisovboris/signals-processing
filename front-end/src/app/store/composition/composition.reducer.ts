@@ -34,12 +34,6 @@ export const compositionReducer = createReducer(
       filters: { ...state.filters, offset: 0 },
     })
   ),
-  on(CompositionActions.getDetails, (state, { id }) => {
-    return {
-      ...state,
-      currentlyViewedCompositionId: id,
-    };
-  }),
   on(CompositionActions.detailsFetched, (state, { details }) => {
     return {
       ...state,
@@ -77,10 +71,16 @@ function resetDataOnPageVisit(
   if (compositionDetailsPath.test(url)) {
     return {
       ...state,
+      currentlyViewedCompositionId: extractCompositionId(url),
       currentlyViewedComposition: undefined,
       details: undefined,
     };
   }
 
   return state;
+}
+
+function extractCompositionId(url: string) {
+  const brokenDown = url.split('/');
+  return Number(brokenDown[brokenDown.length - 1]);
 }
