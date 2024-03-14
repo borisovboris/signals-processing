@@ -25,7 +25,11 @@ public class JWTAuthFilter extends OncePerRequestFilter {
             new AntPathRequestMatcher("/v3/api-docs"),
             new AntPathRequestMatcher("/register-user"),
             new AntPathRequestMatcher("/login-user"),
-            new AntPathRequestMatcher("/check-username-exists/**"));
+            new AntPathRequestMatcher("/check-username-exists/**"),
+            // Requesting static resources
+            new AntPathRequestMatcher("/ui/**/"),
+            new AntPathRequestMatcher("/*")
+            );
 
     public JWTAuthFilter(TokenProviderService tokenProvider) {
         this.tokenProvider = tokenProvider;

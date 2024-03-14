@@ -1,0 +1,1 @@
+import{Ab as o,wb as e,xb as a,yb as t}from"./chunk-OWV6CK4N.js";var n=e("fadeIn",[o(":enter",[t({opacity:0}),a("0.2s ease-in",t({opacity:1}))])]),r=e("fadeOut",[o(":leave",[t({opacity:1}),a("0.2s ease-out",t({opacity:0}))])]);export{n as a,r as b};
