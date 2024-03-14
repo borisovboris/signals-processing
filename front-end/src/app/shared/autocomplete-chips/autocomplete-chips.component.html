@@ -12,7 +12,7 @@
 
   <input
     matInput
-    placeholder="{{ getInputPlaceholder() }}"
+    placeholder="{{ placeholder }}"
     [matAutocomplete]="auto"
     #textInput
     [formControl]="textCtrl"
@@ -34,9 +34,5 @@
     } @else {
       <mat-option disabled>Loading...</mat-option>
     }
-    <!-- @for (option of options$ | async; track option.value) {
-    <mat-option [value]="option.value">{{ option.label }}</mat-option>
-    }
-      <mat-option disabled>No results</mat-option> -->
   </mat-autocomplete>
 </mat-form-field>

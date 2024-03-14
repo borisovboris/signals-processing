@@ -107,10 +107,6 @@ export class AutocompleteChipsComponent implements OnInit, AfterViewInit {
     this.changeRef.markForCheck();
   }
 
-  getInputPlaceholder(): string {
-    return this.itemsCtrl.value.length === 0 ? this.placeholder : '';
-  }
-
   notifyAboutTextChange() {
     this.options = undefined;
     this.inputTextChanged.emit(this.textInput.nativeElement.value);

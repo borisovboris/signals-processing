@@ -5,6 +5,10 @@ mat-form-field {
   width: 100%;
 }
 
+.mat-mdc-autocomplete-trigger {
+  margin-top: 5px;
+}
+
 .example-chip-list mat-chip-option {
   background-color: map.get($primary, 500);
 }
