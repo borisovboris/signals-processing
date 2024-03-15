@@ -155,7 +155,7 @@ export class EventsService {
             }
         }
 
-        let localVarPath = `/create-event`;
+        let localVarPath = `/api/events/create-event`;
         return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -212,7 +212,7 @@ export class EventsService {
             }
         }
 
-        let localVarPath = `/delete-event/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        let localVarPath = `/api/events/delete-event/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
         return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -269,7 +269,7 @@ export class EventsService {
             }
         }
 
-        let localVarPath = `/read-event-details/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        let localVarPath = `/api/events/read-event-details/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
         return this.httpClient.request<EventDetailsDTO>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -332,7 +332,7 @@ export class EventsService {
             }
         }
 
-        let localVarPath = `/event-types`;
+        let localVarPath = `/api/events/event-types`;
         return this.httpClient.request<Array<EventTypeDTO>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -396,7 +396,7 @@ export class EventsService {
             }
         }
 
-        let localVarPath = `/read-events`;
+        let localVarPath = `/api/events/read-events`;
         return this.httpClient.request<Array<EventDTO>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -462,7 +462,7 @@ export class EventsService {
             }
         }
 
-        let localVarPath = `/upload-signals`;
+        let localVarPath = `/api/events/upload-signals`;
         return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,

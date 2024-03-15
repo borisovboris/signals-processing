@@ -155,7 +155,7 @@ export class CountriesService {
             }
         }
 
-        let localVarPath = `/city-exists/${this.configuration.encodeParam({name: "countryId", value: countryId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/${this.configuration.encodeParam({name: "name", value: name, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        let localVarPath = `/api/countries/city-exists/${this.configuration.encodeParam({name: "countryId", value: countryId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/${this.configuration.encodeParam({name: "name", value: name, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
         return this.httpClient.request<boolean>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -212,7 +212,7 @@ export class CountriesService {
             }
         }
 
-        let localVarPath = `/country-exists/${this.configuration.encodeParam({name: "name", value: name, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        let localVarPath = `/api/countries/country-exists/${this.configuration.encodeParam({name: "name", value: name, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
         return this.httpClient.request<boolean>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -273,7 +273,7 @@ export class CountriesService {
             }
         }
 
-        let localVarPath = `/location-name-exists/${this.configuration.encodeParam({name: "cityId", value: cityId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/${this.configuration.encodeParam({name: "name", value: name, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        let localVarPath = `/api/countries/location-name-exists/${this.configuration.encodeParam({name: "cityId", value: cityId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/${this.configuration.encodeParam({name: "name", value: name, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
         return this.httpClient.request<boolean>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -334,7 +334,7 @@ export class CountriesService {
             }
         }
 
-        let localVarPath = `/postal-code-exists/${this.configuration.encodeParam({name: "countryId", value: countryId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/${this.configuration.encodeParam({name: "postalCode", value: postalCode, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        let localVarPath = `/api/countries/postal-code-exists/${this.configuration.encodeParam({name: "countryId", value: countryId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/${this.configuration.encodeParam({name: "postalCode", value: postalCode, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
         return this.httpClient.request<boolean>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -399,7 +399,7 @@ export class CountriesService {
             }
         }
 
-        let localVarPath = `/create-city`;
+        let localVarPath = `/api/countries/create-city`;
         return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -465,7 +465,7 @@ export class CountriesService {
             }
         }
 
-        let localVarPath = `/create-country`;
+        let localVarPath = `/api/countries/create-country`;
         return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -531,7 +531,7 @@ export class CountriesService {
             }
         }
 
-        let localVarPath = `/create-location`;
+        let localVarPath = `/api/countries/create-location`;
         return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -588,7 +588,7 @@ export class CountriesService {
             }
         }
 
-        let localVarPath = `/delete-city/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        let localVarPath = `/api/countries/delete-city/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
         return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -644,7 +644,7 @@ export class CountriesService {
             }
         }
 
-        let localVarPath = `/delete-country/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        let localVarPath = `/api/countries/delete-country/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
         return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -700,7 +700,7 @@ export class CountriesService {
             }
         }
 
-        let localVarPath = `/delete-location/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        let localVarPath = `/api/countries/delete-location/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
         return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -765,7 +765,7 @@ export class CountriesService {
             }
         }
 
-        let localVarPath = `/edit-city`;
+        let localVarPath = `/api/countries/edit-city`;
         return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -828,7 +828,7 @@ export class CountriesService {
             }
         }
 
-        let localVarPath = `/edit-country`;
+        let localVarPath = `/api/countries/edit-country`;
         return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -894,7 +894,7 @@ export class CountriesService {
             }
         }
 
-        let localVarPath = `/edit-location`;
+        let localVarPath = `/api/countries/edit-location`;
         return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -958,7 +958,7 @@ export class CountriesService {
             }
         }
 
-        let localVarPath = `/read-cities-like-name`;
+        let localVarPath = `/api/countries/read-cities-like-name`;
         return this.httpClient.request<Array<CityDTO>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -1022,7 +1022,7 @@ export class CountriesService {
             }
         }
 
-        let localVarPath = `/read-cities-of-country`;
+        let localVarPath = `/api/countries/read-cities-of-country`;
         return this.httpClient.request<Array<CityDTO>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -1080,7 +1080,7 @@ export class CountriesService {
             }
         }
 
-        let localVarPath = `/read-city/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        let localVarPath = `/api/countries/read-city/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
         return this.httpClient.request<CityDTO>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -1140,7 +1140,7 @@ export class CountriesService {
             }
         }
 
-        let localVarPath = `/read-countries`;
+        let localVarPath = `/api/countries/read-countries`;
         return this.httpClient.request<Array<CountryDTO>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -1198,7 +1198,7 @@ export class CountriesService {
             }
         }
 
-        let localVarPath = `/read-country/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        let localVarPath = `/api/countries/read-country/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
         return this.httpClient.request<CountryDTO>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -1261,7 +1261,7 @@ export class CountriesService {
             }
         }
 
-        let localVarPath = `/read-locations`;
+        let localVarPath = `/api/countries/read-locations`;
         return this.httpClient.request<Array<LocationDTO>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -1319,7 +1319,7 @@ export class CountriesService {
             }
         }
 
-        let localVarPath = `/read-locations-of-city/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        let localVarPath = `/api/countries/read-locations-of-city/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
         return this.httpClient.request<Array<LocationDTO>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,

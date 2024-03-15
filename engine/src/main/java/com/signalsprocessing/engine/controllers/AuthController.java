@@ -15,7 +15,7 @@ import com.signalsprocessing.engine.transfer.user.UserDTO;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@RequestMapping(name = "/api/auth/", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/auth/", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "auth")
 @RestController
 public class AuthController {

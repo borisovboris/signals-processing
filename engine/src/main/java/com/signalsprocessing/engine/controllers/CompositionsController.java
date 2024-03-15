@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@RequestMapping(name = "/api/compositions/", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/compositions/", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "compositions")
 @RestController
 public class CompositionsController {

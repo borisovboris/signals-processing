@@ -161,7 +161,7 @@ export class CompositionsService {
             }
         }
 
-        let localVarPath = `/composition-exists/${this.configuration.encodeParam({name: "locationId", value: locationId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/${this.configuration.encodeParam({name: "code", value: code, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        let localVarPath = `/api/compositions/composition-exists/${this.configuration.encodeParam({name: "locationId", value: locationId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/${this.configuration.encodeParam({name: "code", value: code, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
         return this.httpClient.request<boolean>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -222,7 +222,7 @@ export class CompositionsService {
             }
         }
 
-        let localVarPath = `/device-code-exists/${this.configuration.encodeParam({name: "compositionId", value: compositionId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/${this.configuration.encodeParam({name: "code", value: code, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        let localVarPath = `/api/compositions/device-code-exists/${this.configuration.encodeParam({name: "compositionId", value: compositionId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/${this.configuration.encodeParam({name: "code", value: code, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
         return this.httpClient.request<boolean>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -283,7 +283,7 @@ export class CompositionsService {
             }
         }
 
-        let localVarPath = `/device-name-exists/${this.configuration.encodeParam({name: "compositionId", value: compositionId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/${this.configuration.encodeParam({name: "name", value: name, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        let localVarPath = `/api/compositions/device-name-exists/${this.configuration.encodeParam({name: "compositionId", value: compositionId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/${this.configuration.encodeParam({name: "name", value: name, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
         return this.httpClient.request<boolean>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -348,7 +348,7 @@ export class CompositionsService {
             }
         }
 
-        let localVarPath = `/create-composition`;
+        let localVarPath = `/api/compositions/create-composition`;
         return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -414,7 +414,7 @@ export class CompositionsService {
             }
         }
 
-        let localVarPath = `/create-device`;
+        let localVarPath = `/api/compositions/create-device`;
         return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -471,7 +471,7 @@ export class CompositionsService {
             }
         }
 
-        let localVarPath = `/delete-composition/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        let localVarPath = `/api/compositions/delete-composition/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
         return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -527,7 +527,7 @@ export class CompositionsService {
             }
         }
 
-        let localVarPath = `/delete-device/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        let localVarPath = `/api/compositions/delete-device/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
         return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -592,7 +592,7 @@ export class CompositionsService {
             }
         }
 
-        let localVarPath = `/edit-composition`;
+        let localVarPath = `/api/compositions/edit-composition`;
         return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -658,7 +658,7 @@ export class CompositionsService {
             }
         }
 
-        let localVarPath = `/edit-device`;
+        let localVarPath = `/api/compositions/edit-device`;
         return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -724,7 +724,7 @@ export class CompositionsService {
             }
         }
 
-        let localVarPath = `/link-compositions`;
+        let localVarPath = `/api/compositions/link-compositions`;
         return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -782,7 +782,7 @@ export class CompositionsService {
             }
         }
 
-        let localVarPath = `/read-composition/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        let localVarPath = `/api/compositions/read-composition/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
         return this.httpClient.request<CompositionDTO>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -839,7 +839,7 @@ export class CompositionsService {
             }
         }
 
-        let localVarPath = `/read-composition-details/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        let localVarPath = `/api/compositions/read-composition-details/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
         return this.httpClient.request<CompositionDetailsDTO>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -902,7 +902,7 @@ export class CompositionsService {
             }
         }
 
-        let localVarPath = `/read-composition-statuses`;
+        let localVarPath = `/api/compositions/read-composition-statuses`;
         return this.httpClient.request<Array<LabeledValueDTO>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -966,7 +966,7 @@ export class CompositionsService {
             }
         }
 
-        let localVarPath = `/read-composition-types`;
+        let localVarPath = `/api/compositions/read-composition-types`;
         return this.httpClient.request<Array<LabeledValueDTO>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -1030,7 +1030,7 @@ export class CompositionsService {
             }
         }
 
-        let localVarPath = `/read-compositions`;
+        let localVarPath = `/api/compositions/read-compositions`;
         return this.httpClient.request<Array<CompositionDTO>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -1088,7 +1088,7 @@ export class CompositionsService {
             }
         }
 
-        let localVarPath = `/read-device-details/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        let localVarPath = `/api/compositions/read-device-details/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
         return this.httpClient.request<DeviceDetailsDTO>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -1151,7 +1151,7 @@ export class CompositionsService {
             }
         }
 
-        let localVarPath = `/read-device-statuses`;
+        let localVarPath = `/api/compositions/read-device-statuses`;
         return this.httpClient.request<Array<LabeledValueDTO>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -1215,7 +1215,7 @@ export class CompositionsService {
             }
         }
 
-        let localVarPath = `/read-devices`;
+        let localVarPath = `/api/compositions/read-devices`;
         return this.httpClient.request<Array<DeviceDTO>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -1281,7 +1281,7 @@ export class CompositionsService {
             }
         }
 
-        let localVarPath = `/unlink-compositions`;
+        let localVarPath = `/api/compositions/unlink-compositions`;
         return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,

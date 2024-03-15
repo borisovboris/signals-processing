@@ -24,7 +24,7 @@ import com.signalsprocessing.engine.transfer.events.UploadedSignalDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@RequestMapping(name = "/api/events/", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/events/", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "events")
 public class EventsController {
     private EventService service;

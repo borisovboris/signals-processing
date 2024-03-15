@@ -23,11 +23,12 @@ public class JWTAuthFilter extends OncePerRequestFilter {
     private final TokenProviderService tokenProvider;
     private final List<AntPathRequestMatcher> excludedMatchers = List.of(new AntPathRequestMatcher("/swagger-ui"),
             new AntPathRequestMatcher("/v3/api-docs"),
-            new AntPathRequestMatcher("/register-user"),
-            new AntPathRequestMatcher("/login-user"),
-            new AntPathRequestMatcher("/check-username-exists/**"),
+            new AntPathRequestMatcher("/api/auth/register-user"),
+            new AntPathRequestMatcher("/api/auth/login-user"),
+            new AntPathRequestMatcher("/api/auth/check-username-exists/**"),
             // Requesting static resources
             new AntPathRequestMatcher("/ui/**/"),
+            // Path for requesting index.html
             new AntPathRequestMatcher("/*")
             );
 

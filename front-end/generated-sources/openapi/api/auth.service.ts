@@ -135,7 +135,7 @@ export class AuthService {
             }
         }
 
-        let localVarPath = `/check-username-exists/${this.configuration.encodeParam({name: "name", value: name, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        let localVarPath = `/api/auth/check-username-exists/${this.configuration.encodeParam({name: "name", value: name, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
         return this.httpClient.request<boolean>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -201,7 +201,7 @@ export class AuthService {
             }
         }
 
-        let localVarPath = `/login-user`;
+        let localVarPath = `/api/auth/login-user`;
         return this.httpClient.request<string>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -267,7 +267,7 @@ export class AuthService {
             }
         }
 
-        let localVarPath = `/register-user`;
+        let localVarPath = `/api/auth/register-user`;
         return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
