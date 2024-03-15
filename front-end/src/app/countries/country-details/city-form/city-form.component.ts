@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -31,8 +30,10 @@ import {
   finalize,
   first,
   map,
+  of,
   switchMap,
 } from 'rxjs';
+import { FloatLabelType } from '@angular/material/form-field';
 
 export interface CityDialogData {
   countryId: number;
@@ -49,51 +50,64 @@ export interface CityDialogData {
   styleUrl: './city-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CityFormComponent implements AfterViewInit {
+export class CityFormComponent {
   uniqueCityNameValidatorFn(): AsyncValidatorFn {
-    return (control) =>
-      control.valueChanges.pipe(
-        debounceTime(400),
-        distinctUntilChanged(),
-        switchMap((value) => {
-          const { countryId } = this.dialogData;
-          return this.service
-            .checkIfCityExists(countryId, value)
-            .pipe(map((exists) => [exists, value]));
-        }),
-        map(([exists, value]) => {
-          if (exists && !stringsLike(this.dialogData.name, value)) {
-            return { countryExists: true };
-          }
+    return (control) => {
+      // When using a form for editing, we need to return an observable immediately
+      // as the form is being constructed, otherwise the form status will be stuck on pending
+      // https://stackoverflow.com/questions/72170790/angular-formcontrol-with-async-validator-stays-in-pending-status
+      if (!control.valueChanges || control.pristine) {
+        return of(null);
+      } else {
+        return control.valueChanges.pipe(
+          debounceTime(400),
+          distinctUntilChanged(),
+          switchMap((value) => {
+            const { countryId } = this.dialogData;
+            return this.service
+              .checkIfCityExists(countryId, value)
+              .pipe(map((exists) => [exists, value]));
+          }),
+          map(([exists, value]) => {
+            if (exists && !stringsLike(this.dialogData.name, value)) {
+              return { countryExists: true };
+            }
 
-          return null;
-        }),
-        first(),
-        finalize(() => this.changeRef.markForCheck())
-      ); // important to make observable finite
+            return null;
+          }),
+          first(),
+          finalize(() => this.changeRef.markForCheck())
+        );
+      }
+    };
   }
 
   uniquePostalCodeValidatorFn(): AsyncValidatorFn {
-    return (control) =>
-      control.valueChanges.pipe(
-        debounceTime(400),
-        distinctUntilChanged(),
-        switchMap((value) => {
-          const { countryId } = this.dialogData;
-          return this.service
-            .checkIfPostalCodeExists(countryId, value)
-            .pipe(map((exists) => [exists, value]));
-        }),
-        map(([exists, value]) => {
-          if (exists && !stringsLike(this.dialogData.postalCode, value)) {
-            return { postalCodeExists: true };
-          }
+    return (control) => {
+      if (!control.valueChanges || control.pristine) {
+        return of(null);
+      } else {
+        return control.valueChanges.pipe(
+          debounceTime(400),
+          distinctUntilChanged(),
+          switchMap((value) => {
+            const { countryId } = this.dialogData;
+            return this.service
+              .checkIfPostalCodeExists(countryId, value)
+              .pipe(map((exists) => [exists, value]));
+          }),
+          map(([exists, value]) => {
+            if (exists && !stringsLike(this.dialogData.postalCode, value)) {
+              return { postalCodeExists: true };
+            }
 
-          return null;
-        }),
-        first(),
-        finalize(() => this.changeRef.markForCheck())
-      ); // important to make observable finite
+            return null;
+          }),
+          first(),
+          finalize(() => this.changeRef.markForCheck())
+        );
+      }
+    };
   }
 
   dialogData: CityDialogData = this.injector.get(DIALOG_DATA);
@@ -107,21 +121,16 @@ export class CityFormComponent implements AfterViewInit {
     private readonly store: Store,
     private readonly injector: Injector
   ) {
-    if (this.dialogData.name !== undefined) {
-      this.inEditMode = true;
-    }
-  }
-
-  ngAfterViewInit() {
     const name = this.dialogData.name;
     const postalCode = this.dialogData.postalCode;
 
-    if (name && postalCode) {
-      this.cityForm.get('cityName')?.setValue(name);
-      this.cityForm.get('postalCode')?.setValue(postalCode);
+    if (name !== undefined) {
+      this.inEditMode = true;
 
-      this.cityForm.markAllAsTouched();
-      this.cityForm.updateValueAndValidity();
+      if (name && postalCode) {
+        this.cityForm.get('cityName')?.setValue(name);
+        this.cityForm.get('postalCode')?.setValue(postalCode);
+      }
     }
   }
 

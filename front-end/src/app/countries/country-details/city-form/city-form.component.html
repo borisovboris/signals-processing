@@ -1,34 +1,37 @@
 <mat-card>
-    <h1>{{ inEditMode ? 'Edit city' : 'Add city' }}</h1>
-    <form [formGroup]="cityForm" (ngSubmit)="saveCity()">
-      <mat-form-field class="example-full-width">
-        <mat-label>City name</mat-label>
-        <input
-          formControlName="cityName"
-          matInput
-          [errorStateMatcher]="matcher"
-        />
-        <mat-error *ngIf="cityName?.hasError('countryExists')"
-          >City name exists</mat-error
-        >
-      </mat-form-field>
-      <mat-form-field class="example-full-width">
-        <mat-label>Postal code</mat-label>
-        <input
-          formControlName="postalCode"
-          matInput
-          [errorStateMatcher]="matcher"
-        />
-        <mat-error *ngIf="postalCode?.hasError('postalCodeExists')"
-          >Postal code exists</mat-error
-        >
-      </mat-form-field>
-  
-      <div class="actions">
-        <button mat-raised-button color="accent" [disabled]="cityForm.invalid || formPending || !cityChangedThroughEdit">
-          {{ inEditMode ? 'Edit' : 'Add' }}
-        </button>
-      </div>
-    </form>
-  </mat-card>
-  
+  <h1>{{ inEditMode ? "Edit city" : "Add city" }}</h1>
+  <form [formGroup]="cityForm" (ngSubmit)="saveCity()">
+    <mat-form-field class="example-full-width">
+      <mat-label>City name</mat-label>
+      <input
+        formControlName="cityName"
+        matInput
+        [errorStateMatcher]="matcher"
+      />
+      <mat-error *ngIf="cityName?.hasError('countryExists')"
+        >City name exists</mat-error
+      >
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Postal code</mat-label>
+      <input
+        formControlName="postalCode"
+        matInput
+        [errorStateMatcher]="matcher"
+      />
+      <mat-error *ngIf="postalCode?.hasError('postalCodeExists')"
+        >Postal code exists</mat-error
+      >
+    </mat-form-field>
+
+    <div class="actions">
+      <button
+        mat-raised-button
+        color="accent"
+        [disabled]="cityForm.invalid || formPending || !cityChangedThroughEdit"
+      >
+        {{ inEditMode ? "Edit" : "Add" }}
+      </button>
+    </div>
+  </form>
+</mat-card>

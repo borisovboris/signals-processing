@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -44,12 +43,12 @@ export interface CountryDialogData {
 @Component({
   selector: 'app-country-form',
   standalone: true,
-  imports: [FormsModule, MaterialModule, ReactiveFormsModule, CommonModule],
+  imports: [MaterialModule, FormsModule, ReactiveFormsModule, CommonModule],
   templateUrl: './country-form.component.html',
   styleUrl: './country-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CountryFormComponent implements AfterViewInit {
+export class CountryFormComponent {
   uniqueCountryValidatorFn(): AsyncValidatorFn {
     return (control) =>
       control.valueChanges.pipe(
@@ -83,15 +82,9 @@ export class CountryFormComponent implements AfterViewInit {
     private readonly store: Store,
     private readonly injector: Injector
   ) {
-    this.inEditMode = this.dialogData?.name !== undefined;
-  }
-
-  ngAfterViewInit(): void {
     if (this.dialogData?.name !== undefined) {
       this.countryName?.setValue(this.dialogData.name);
-
-      this.countryForm.markAllAsTouched();
-      this.countryForm.updateValueAndValidity();
+      this.inEditMode = true;
     }
   }
 
@@ -115,7 +108,7 @@ export class CountryFormComponent implements AfterViewInit {
   }
 
   editCountry() {
-    const  id = this.dialogData?.id;
+    const id = this.dialogData?.id;
     const name = this.countryName?.value;
 
     if (id && name) {

@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -25,6 +24,7 @@ import {
   finalize,
   first,
   map,
+  of,
   switchMap,
 } from 'rxjs';
 import { DIALOG_DATA } from '../../../shared/services/dialog.service';
@@ -54,28 +54,33 @@ export interface LocationDialogData {
   styleUrl: './location-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LocationFormComponent implements AfterViewInit {
+export class LocationFormComponent {
   uniqueCityNameValidatorFn(): AsyncValidatorFn {
-    return (control) =>
-      control.valueChanges.pipe(
-        debounceTime(400),
-        distinctUntilChanged(),
-        switchMap((value) => {
-          const { cityId } = this.dialogData;
-          return this.service
-            .checkIfLocationNameExists(cityId, value)
-            .pipe(map((exists) => [exists, value]));
-        }),
-        map(([exists, value]) => {
-          if (exists && !stringsLike(this.dialogData.editInfo?.name, value)) {
-            return { locationExists: true };
-          }
+    return (control) => {
+      if (!control.valueChanges || control.pristine) {
+        return of(null);
+      } else {
+        return control.valueChanges.pipe(
+          debounceTime(400),
+          distinctUntilChanged(),
+          switchMap((value) => {
+            const { cityId } = this.dialogData;
+            return this.service
+              .checkIfLocationNameExists(cityId, value)
+              .pipe(map((exists) => [exists, value]));
+          }),
+          map(([exists, value]) => {
+            if (exists && !stringsLike(this.dialogData.editInfo?.name, value)) {
+              return { locationExists: true };
+            }
 
-          return null;
-        }),
-        first(),
-        finalize(() => this.changeRef.markForCheck())
-      ); // important to make observable finite
+            return null;
+          }),
+          first(),
+          finalize(() => this.changeRef.markForCheck())
+        );
+      }
+    };
   }
 
   dialogData: LocationDialogData = this.injector.get(DIALOG_DATA);
@@ -89,19 +94,13 @@ export class LocationFormComponent implements AfterViewInit {
     private readonly store: Store,
     private readonly injector: Injector
   ) {
-    this.inEditMode = this.dialogData.editInfo !== undefined;
-  }
-
-  ngAfterViewInit() {
     if (this.dialogData.editInfo !== undefined) {
+      this.inEditMode = true;
       this.locationName?.setValue(this.dialogData.editInfo.name);
       this.address?.setValue(this.dialogData.editInfo.address);
       this.isOperational?.setValue(this.dialogData.editInfo.isOperational);
       this.coordinates?.setValue(this.dialogData.editInfo.coordinates ?? null);
       this.description?.setValue(this.dialogData.editInfo.description ?? null);
-
-      this.locationForm.markAllAsTouched();
-      this.locationForm.updateValueAndValidity();
     }
   }
 
@@ -203,12 +202,23 @@ export class LocationFormComponent implements AfterViewInit {
   }
 
   locationChangedThroughEdit() {
-    const nameChanged = this.dialogData.editInfo?.name !== this.locationName?.value;
-    const addressChanged = this.dialogData.editInfo?.address !== this.address?.value;
-    const coordinatesChanged = this.dialogData.editInfo?.coordinates !== this.coordinates?.value;
-    const descriptionChanged = this.dialogData.editInfo?.description !== this.description?.value;
-    const isOperationalChanged = this.dialogData.editInfo?.isOperational !== this.isOperational?.value;
+    const nameChanged =
+      this.dialogData.editInfo?.name !== this.locationName?.value;
+    const addressChanged =
+      this.dialogData.editInfo?.address !== this.address?.value;
+    const coordinatesChanged =
+      this.dialogData.editInfo?.coordinates !== this.coordinates?.value;
+    const descriptionChanged =
+      this.dialogData.editInfo?.description !== this.description?.value;
+    const isOperationalChanged =
+      this.dialogData.editInfo?.isOperational !== this.isOperational?.value;
 
-    return nameChanged || addressChanged || coordinatesChanged || descriptionChanged || isOperationalChanged;
+    return (
+      nameChanged ||
+      addressChanged ||
+      coordinatesChanged ||
+      descriptionChanged ||
+      isOperationalChanged
+    );
   }
 }
