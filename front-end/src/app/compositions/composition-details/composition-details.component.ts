@@ -22,7 +22,6 @@ import {
 } from '../../store/composition/composition.selectors';
 import { DeviceListComponent } from './device-list/device-list.component';
 import { LinkedCompositionListComponent } from './linked-composition-list/linked-composition-list.component';
-import { filter, take } from 'rxjs';
 import { fadeIn } from '../../shared/animations';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 

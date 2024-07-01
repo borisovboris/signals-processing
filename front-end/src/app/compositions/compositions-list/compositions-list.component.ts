@@ -79,8 +79,6 @@ export class CompositionsListComponent
   locationOptions$ = this.locations$.asObservable();
 
   compositions?: CompositionDTO[];
-  cityNames: string[] = [];
-  locationNames: string[] = [];
   private destroyRef = inject(DestroyRef);
 
   sidepanelForm = new FormGroup({

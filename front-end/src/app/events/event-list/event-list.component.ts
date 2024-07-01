@@ -181,15 +181,15 @@ export class EventListComponent extends BatchList implements OnInit {
     this.endDateCtrl.reset();
   }
 
-  clearDisabled() {
+  clearDisabled(): boolean {
     return this.startDateCtrl.value === null && this.endDateCtrl.value === null;
   }
 
-  getEventTypeIds() {
+  getEventTypeIds(): number[] {
     return this.typesCtrl.value.map((t) => Number(t));
   }
 
-  getDeviceIds() {
+  getDeviceIds(): number[] {
     return this.devicesCtrl.value.map((t) => Number(t));
   }
 

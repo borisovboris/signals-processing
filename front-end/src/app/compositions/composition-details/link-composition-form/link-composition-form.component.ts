@@ -46,9 +46,9 @@ export interface LinkCompositionData {
 export class LinkCompositionFormComponent {
   dialogData: LinkCompositionData = this.injector.get(DIALOG_DATA);
   dialogRef: DialogReference = this.injector.get(DialogReference);
-  compositionTypes$: BehaviorSubject<LabeledValue<number>[]> =
+  compositions$: BehaviorSubject<LabeledValue<number>[]> =
     new BehaviorSubject<LabeledValue<number>[]>([]);
-  options$ = this.compositionTypes$.asObservable();
+  options$ = this.compositions$.asObservable();
   nameCtrl: FormControl<LabeledValue<number> | string | null> = new FormControl(
     '',
     [labeledValueValidator]
@@ -78,7 +78,7 @@ export class LinkCompositionFormComponent {
         ),
         take(1)
       )
-      .subscribe((data) => this.compositionTypes$.next(data));
+      .subscribe((data) => this.compositions$.next(data));
   }
 
   linkCompositions() {

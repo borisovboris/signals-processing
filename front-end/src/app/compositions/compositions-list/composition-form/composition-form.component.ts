@@ -45,6 +45,7 @@ import {
   getNullOrValue,
   getLabeledValue,
   stringsLike,
+  NULLABLE_LABELED_VALUE,
 } from '../../../shared/utils';
 
 export interface CompositionDialogData {
@@ -57,6 +58,15 @@ export interface CompositionDialogData {
     coordinates?: string;
     description?: string;
   };
+}
+
+export interface CompositionFormData {
+  code: string | undefined;
+  coordinates: string | undefined;
+  description: string | undefined;
+  location: NULLABLE_LABELED_VALUE;
+  type: NULLABLE_LABELED_VALUE;
+  status: NULLABLE_LABELED_VALUE;
 }
 
 @Component({
@@ -238,7 +248,7 @@ export class CompositionFormComponent implements AfterViewInit {
   }
 
   createOrEditComposition() {
-    if(this.inEditMode) {
+    if (this.inEditMode) {
       this.editComposition();
     } else {
       this.createComposition();
@@ -302,7 +312,7 @@ export class CompositionFormComponent implements AfterViewInit {
     this.dialogRef.close(true);
   }
 
-  getCompositionData() {
+  getCompositionData(): CompositionFormData {
     const code = this.code?.value ?? undefined;
     const coordinates = this.coordinates?.value ?? undefined;
     const description = this.description?.value ?? undefined;
